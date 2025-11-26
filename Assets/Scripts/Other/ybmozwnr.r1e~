@@ -1,0 +1,34 @@
+using UnityEngine;
+
+public class MoveCamera : MonoBehaviour
+{
+    [Tooltip("カメラをプレイヤーに合わせて動かす")]
+    public bool summary;
+
+    // アタッチ
+    [SerializeField] private PlayerMovementHandler playerMovementHandler;
+
+    // 変数
+    [SerializeField] private float zOffset;
+
+    private void Start()
+    {
+        //位置を初期化
+        transform.position = new Vector3(0, 0, zOffset);
+    }
+
+    private void Update()
+    {
+        // カメラがプレイヤーより後ろにいる場合、x座標をプレイヤーと同じにする。
+        // y座標は常に同じにする。
+        if (transform.position.x < playerMovementHandler.playerPos.x)
+        {
+            transform.position = new Vector3(playerMovementHandler.playerPos.x, playerMovementHandler.playerPos.y, zOffset);
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x, playerMovementHandler.playerPos.y, zOffset);
+        }
+
+    }
+}

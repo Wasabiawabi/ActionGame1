@@ -1,0 +1,11 @@
+{
+    "increaseMaxSpeedLevel": 0,
+    "increaceMaxInitialMovementSpeedLevel": 0,
+    "decreaceSpeedDumpingLevel": 1,
+    "increaseVerticalMovementSpeedLevel": 1,
+    "increaseMaxNakamaLevel": 1,
+    "decreaceBuffDampingWithNakamaLevel": 0,
+    "increaceDecreaceSpeedDumpingWithNakamaLevel": 0,
+    "increasePlayerHpLevel": 1,
+    "increaseRewardLateLevel": 1
+}

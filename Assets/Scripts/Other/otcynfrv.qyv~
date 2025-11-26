@@ -1,0 +1,118 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+public class GroundGenerator : MonoBehaviour
+{
+    [Tooltip("プレイヤーに合わせて地面を生成する")]
+    public bool summary;
+
+    // アタッチ
+    [SerializeField] private PlayerMovementHandler playerMovementHandler;
+    [SerializeField] private Camera mainCamera;
+
+    // 変数
+    [SerializeField] private GameObject[] groundPrefab;
+    [SerializeField] private int prefabIdx = 0;
+    private float groundWidth = 0f;
+    [SerializeField] private float groundYOffset;
+    // 生成済みのグリッドインデックス管理（重複防止）
+    private HashSet<int> spawnedIndices = new HashSet<int>();
+
+    void Start()
+    {
+        // 参照チェック
+        if (playerMovementHandler == null)
+        {
+            Debug.LogError("GroundGenerator: playerMovementHandler が未設定です。");
+            enabled = false;
+            return;
+        }
+        if (mainCamera == null)
+        {
+            Debug.LogError("GroundGenerator: mainCamera が未設定です。");
+            enabled = false;
+            return;
+        }
+        if (groundPrefab == null || groundPrefab.Length == 0)
+        {
+            Debug.LogError("GroundGenerator: groundPrefab が設定されていません。");
+            enabled = false;
+            return;
+        }
+
+        // groundWidth をプレハブから決定（Renderer / SpriteRenderer を探す）
+        var prefab = groundPrefab[Mathf.Clamp(prefabIdx, 0, groundPrefab.Length - 1)];
+        if (prefab != null)
+        {
+            Renderer r = prefab.GetComponentInChildren<Renderer>();
+            if (r != null)
+            {
+                groundWidth = r.bounds.size.x;
+            }
+        }
+
+        // フォールバック
+        if (groundWidth <= 0f)
+        {
+            groundWidth = 5f; // 適当なデフォルト幅（プロジェクトに合わせて調整してください）
+            Debug.LogWarning($"GroundGenerator: groundWidth をプレハブから取得できませんでした。デフォルト値 {groundWidth} を使用します。");
+        }
+    }
+
+    void Update()
+    {
+        GenerateGround();
+    }
+
+    private void GenerateGround()
+    {
+        // カメラとプレイヤー参照チェック
+        if (mainCamera == null || playerMovementHandler == null) return;
+
+        // カメラの左端・右端（ワールド座標）を取得
+        float camZDist = Mathf.Abs(mainCamera.transform.position.z);
+        Vector3 leftWorld = mainCamera.ViewportToWorldPoint(new Vector3(0f, 0.5f, camZDist));
+        Vector3 rightWorld = mainCamera.ViewportToWorldPoint(new Vector3(1f, 0.5f, camZDist));
+        float leftX = leftWorld.x;
+        float rightX = rightWorld.x;
+
+        float half = groundWidth * 0.5f;
+
+        // 画面内に入れるべき中心位置の範囲（左端＋半幅 .. 右端−半幅）
+        float startX = leftX + half;
+        float endX = rightX - half;
+
+        // グリッドインデックス範囲（中心 x を groundWidth で割って丸める）
+        int startIdx = Mathf.FloorToInt(startX / groundWidth);
+        int endIdx = Mathf.FloorToInt(endX / groundWidth);
+
+        // 指定範囲をループしてまだ生成されていないインデックスを生成する
+        for (int idx = startIdx; idx <= endIdx; idx++)
+        {
+            if (spawnedIndices.Contains(idx)) continue;
+
+            float centerX = idx * groundWidth;
+            // もし中心が画面内範囲から外れる場合は調整（厳密には不要だが安全策）
+            if (centerX < startX - 0.001f || centerX > endX + 0.001f) continue;
+
+            // プレハブを選択（バリエーションさせたい場合は idx による選択を行う）
+            int useIdx = Mathf.Clamp(prefabIdx, 0, groundPrefab.Length - 1);
+            if (groundPrefab.Length > 1)
+            {
+                useIdx = Mathf.Abs(idx) % groundPrefab.Length; // 例：交互に並べたい場合
+            }
+
+            var prefab = groundPrefab[useIdx];
+            if (prefab == null)
+            {
+                Debug.LogWarning($"GroundGenerator: groundPrefab[{useIdx}] が null です。スキップします。");
+                spawnedIndices.Add(idx); // スキップ済みとして扱う（無限ループ防止）
+                continue;
+            }
+
+            Vector3 spawnPos = new Vector3(centerX, groundYOffset, 0f);
+            Instantiate(prefab, spawnPos, Quaternion.identity, transform);
+            spawnedIndices.Add(idx);
+        }
+    }
+}

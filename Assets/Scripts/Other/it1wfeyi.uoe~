@@ -1,0 +1,39 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+public class GroundGenerator : MonoBehaviour
+{
+    [Tooltip("プレイヤーに合わせて地面を生成する")]
+    public bool summary;
+
+    // アタッチ
+    [SerializeField] private MoveCamera moveCamera;
+
+    // 変数
+    [SerializeField] private GameObject[] groundPrefab;
+    [SerializeField] private int prefabIdx = 0;
+    [SerializeField] private float groundYOffset;
+    private float groundWidth = 0f;
+    // 生成済みのグリッドインデックス管理（重複防止）
+    private HashSet<int> spawnedIndices = new HashSet<int>();
+
+    private void Start()// 変数の取得
+    {
+        // 地面の幅を取得
+        if (groundPrefab.Length > 0)
+        {
+            groundWidth = groundPrefab[0].transform.localScale.x;
+        }
+    }
+
+    private void Update()// 地面の生成処理
+    {
+        GenerateGrounds();
+    }
+
+    private void GenerateGrounds()// 地面の生成
+    {
+        int minXPos = (int)(moveCamera.GetMinXPos() - groundWidth);
+        int maxXPos = (int)(moveCamera.GetMaxXPos() + groundWidth);
+    }
+}

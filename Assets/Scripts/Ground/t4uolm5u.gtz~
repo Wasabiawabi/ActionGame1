@@ -1,0 +1,54 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class GroundGenerator : MonoBehaviour
+{
+    [Tooltip("プレイヤーに合わせて地面を生成する")]
+    public bool summary;
+
+    // アタッチ
+    [SerializeField] private MoveCamera moveCamera;
+    [SerializeField] private GameObject[] groundPrefab;
+
+    // 変数
+    [SerializeField] private HashSet<float> generatedGroundsCoord;
+    [SerializeField] private int prefabIdx = 0;
+    [SerializeField] private float groundYOffset;
+    private float[] prefabWidths;
+
+    private void Awake()// 変数の取得(他のプログラムでNullになるエラーが発生するため、 Awake で行う)
+    {
+        // プレハブ幅を取得（SpriteRenderer/Renderer 対応）
+        if (groundPrefab != null && groundPrefab.Length > 0)
+        {
+            prefabWidths = new float[groundPrefab.Length];
+            for (int i = 0; i < groundPrefab.Length; i++)
+            {
+                prefabWidths[i] = groundPrefab[i].GetComponentInChildren<SpriteRenderer>().bounds.size.x;
+            }
+        }
+        else
+        {
+            prefabWidths = new float[0];
+            Debug.LogWarning("GroundGenerator: groundPrefab が設定されていません。");
+        }
+
+        // 地面の初回生成はMoveCamera の Start から行う
+    }
+
+
+    public void GenerateGrounds(float cameraMinX = 0f, float cameraMaxX = 0f)// 地面の生成（重複チェックを行う）
+    {
+        // 生成されているべき地面のインデックス番号を求める
+        int minXCoord = (int)(cameraMinX / prefabWidths[prefabIdx]) - 1;
+        int maxXCoord = (int)(cameraMaxX / prefabWidths[prefabIdx]) + 1;
+
+        for (float x = minXCoord; x <= minXCoord; x++)
+        {
+            if (generatedGroundsCoord.Contains(x)) continue;
+            generatedGroundsCoord.Add(x);
+            Instantiate(groundPrefab[prefabIdx], new Vector3(x * prefabWidths[prefabIdx], groundYOffset, 0f), Quaternion.identity);
+        }
+    }
+}

@@ -1,0 +1,185 @@
+using System.Collections;
+using System.Collections.Generic;
+using HandmadeLibrary.DataBase.InitialStatus.Player;
+using UnityEngine;
+using System.Linq;
+using System.Reflection;
+using HandmadeLibrary.DataBase.Upgrade;
+using HandmadeLibrary.DataBase.Upgrade.Increment;
+using HandmadeLibrary.DataBase.Upgrade.Multiply;
+
+public class PlayerStatus : MonoBehaviour
+{
+    [Tooltip("プレイヤーのステータスやバフの効果、仲間の人数やその効果を管理する.")]
+    public bool summary;
+
+    //スクリプト
+    [SerializeField] private DataSearchHandler dataSearchHandler;
+    [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
+    [SerializeField] private PlayerBuffHandler playerBuffHandler;
+    [SerializeField] private NakamaHandler nakamaHandler;
+
+    //データベースへの接続用
+    private int playerId = 0;
+
+    //プレイヤーのステータス
+    public float maxSpeed;
+    public float speedDampingPerSecond;
+    public float maxInitialMovementSpeed;
+    public float verticalMovementSpeed;
+    public int maxNakama;
+    public float buffDampingWithNakama;
+    public float speedDampingReductionWithNakama;
+    public int playerHp;
+    public float rewardLate;
+
+    private void Start()
+    {
+        GetPlayerInitialStatus();
+        UpgradePlayerStatus();
+    }
+
+    private void GetPlayerInitialStatus()//プレイヤーの初期ステータスを取得
+    {
+        var playerInitialStatusData = dataSearchHandler.playerStatusDataStore.GetDataByID(playerId);
+        maxSpeed = playerInitialStatusData.MaxSpeed;
+        speedDampingPerSecond = playerInitialStatusData.SpeedDampingPerSecond;
+        maxInitialMovementSpeed = playerInitialStatusData.MaxInitialMovementSpeed;
+        verticalMovementSpeed = playerInitialStatusData.VerticalMovementSpeed;
+        maxNakama = playerInitialStatusData.MaxCompanion;
+        buffDampingWithNakama = playerInitialStatusData.BuffDampingWithCompanion;
+        speedDampingReductionWithNakama = playerInitialStatusData.SpeedDampingReductionWithCompanion;
+        playerHp = playerInitialStatusData.PlayerHp;
+        rewardLate = playerInitialStatusData.RewardLate;
+
+    }
+
+    private void UpgradePlayerStatus()//プレイヤーのステータスのアップグレードの情報から、ステータスを変更する
+    {
+        if (upgradesLevelHandler == null || dataSearchHandler == null || dataSearchHandler.upgradeDataStore == null) return;
+
+        var upgrades = dataSearchHandler.upgradeDataStore.DataBase?.DataList;
+        if (upgrades == null || upgrades.Count == 0) return;
+
+        // アップグレード名 -> PlayerStatus のフィールド名マッピング
+        var nameToFieldMap = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase)
+        {
+            { "IncreaseMaxSpeed", nameof(maxSpeed) },
+            { "IncreaceMaxInitialMovementSpeed", nameof(maxInitialMovementSpeed) }, // NOTE: "Increace" の綴りがソース側にある場合を想定
+            { "decreaceSpeedDumping", nameof(speedDampingPerSecond) },
+            { "increaseBuffEffect", nameof(buffDampingWithNakama) },
+            { "increaseVerticalMovementSpeed", nameof(verticalMovementSpeed) },
+            { "increaseRewardLate", nameof(rewardLate) },
+            { "increasePlayerHp", nameof(playerHp) },
+            { "decreaceSpeedDumpingWithNakama", nameof(speedDampingReductionWithNakama) },
+            { "increaseMaxNakama", nameof(maxNakama) }
+        };
+
+        // playerUpgradeData の各 Level フィールドを走査し、対応するアップグレードを適用
+        var playerUpgradeData = upgradesLevelHandler.playerUpgradeData;
+        if (playerUpgradeData == null) return;
+
+        var levelFields = playerUpgradeData.GetType()
+            .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(f => f.FieldType == typeof(int));
+
+        foreach (var levelField in levelFields)
+        {
+            // フィールド名から "Level" を取り除きアップグレード名を得る
+            var level = (int)levelField.GetValue(playerUpgradeData);
+            if (level <= 0) continue;
+
+            var baseName = levelField.Name;
+            if (baseName.EndsWith("Level"))
+            {
+                baseName = baseName.Substring(0, baseName.Length - "Level".Length);
+            }
+
+            // マッピングで対象 PlayerStatus のフィールド名を得る
+            if (!nameToFieldMap.TryGetValue(baseName, out var targetFieldName)) continue;
+
+            // アップグレード定義を検索（ターゲットが Player のもの）
+            var upgradeDef = upgrades.FirstOrDefault(u =>
+                string.Equals(u.Name, baseName, System.StringComparison.OrdinalIgnoreCase)
+                && u.TargetName == BaseOfUpgradeData.TargetType.Player);
+
+            if (upgradeDef == null) continue;
+
+            // 対象フィールドを取得
+            var targetField = this.GetType().GetField(targetFieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (targetField == null) continue;
+
+            // 現在値を読み取り、型に応じて計算
+            var currentObj = targetField.GetValue(this);
+            if (currentObj == null) continue;
+
+            // 決定: upgradeDef.upgradeType に従って加算 or 乗算を行う
+            if (upgradeDef.upgradeType == BaseOfUpgradeData.UpgradeType.Increment)
+            {
+                // IncrementUpgradeData からレベルに対応する増分を取得
+                if (upgradeDef is IncrementUpgradeData inc)
+                {
+                    float increment = 0f;
+                    var list = inc.IncrementAmountList;
+                    if (list != null && list.Count > 0)
+                    {
+                        // レベルは 1..N を想定 -> index = level-1、範囲外は最後の要素を使う
+                        var idx = Mathf.Clamp(level - 1, 0, list.Count - 1);
+                        increment = list[idx];
+                    }
+
+                    ApplyAddToField(targetField, currentObj, increment);
+                }
+            }
+            else if (upgradeDef.upgradeType == BaseOfUpgradeData.UpgradeType.Multiply)
+            {
+                // MultiplyUpgradeData の MultiplyRate をレベル分適用（累乗）
+                if (upgradeDef is MultiplyUpgradeData mul)
+                {
+                    float rate = mul.MultiplyRate;
+                    float factor = Mathf.Pow(rate, level); // level==0 -> 1
+                    ApplyMultiplyToField(targetField, currentObj, factor);
+                }
+            }
+        }
+    }
+
+    // フィールドに加算（float / int に対応）
+    private void ApplyAddToField(FieldInfo field, object currentValue, float add)
+    {
+        if (field.FieldType == typeof(float))
+        {
+            float v = (float)currentValue;
+            v += add;
+            field.SetValue(this, v);
+        }
+        else if (field.FieldType == typeof(int))
+        {
+            int v = (int)currentValue;
+            v = Mathf.RoundToInt(v + add);
+            field.SetValue(this, v);
+        }
+    }
+
+    // フィールドに乗算（float / int に対応）
+    private void ApplyMultiplyToField(FieldInfo field, object currentValue, float factor)
+    {
+        if (field.FieldType == typeof(float))
+        {
+            float v = (float)currentValue;
+            v *= factor;
+            field.SetValue(this, v);
+        }
+        else if (field.FieldType == typeof(int))
+        {
+            int v = (int)currentValue;
+            v = Mathf.RoundToInt(v * factor);
+            field.SetValue(this, v);
+        }
+    }
+
+    public Vector3 GetPlayerPos()
+    {
+        return transform.position;
+    }
+}

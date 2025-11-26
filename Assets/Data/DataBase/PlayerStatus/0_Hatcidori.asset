@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0079a8004e138d847b5c95d24cfb1f3c, type: 3}
+  m_Name: 0_Hatcidori
+  m_EditorClassIdentifier: 
+  name: hatcidori
+  id: 0
+  maxSpeed: 50
+  speedDampingPerSecond: 10
+  maxInitialMovementSpeed: 60
+  verticalMovementSpeed: 10
+  maxCompanion: 1
+  buffDampingWithCompanion: 1
+  speedDampingReductionWithCompanion: 2
+  playerHp: 1
+  rewardLate: 1
