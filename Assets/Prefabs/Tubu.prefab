@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8223864688946092449}
   - component: {fileID: -2262143095634404353}
   m_Layer: 0
-  m_Name: Satoukibi
+  m_Name: Tubu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -74,9 +74,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.37994462, g: 1, b: 0.34901965, a: 1}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 35ec751954a5d1a459dbde77e1d01dac, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,8 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66725e97834e40140b6120293f4fc32c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minWindY: 0
-  minBallonPlaneY: 0
+  summary: 0
 --- !u!114 &-2262143095634404353
 MonoBehaviour:
   m_ObjectHideFlags: 0
