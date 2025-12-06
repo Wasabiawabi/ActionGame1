@@ -25,11 +25,6 @@ public class MoveCamera : MonoBehaviour
         groundGenerator.GenerateGrounds(minXPos, maxXPos);
     }
 
-    private void Update()
-    {
-        CalcBound();
-    }
-
     public void Move(float playerPosX ,float playerPosY)// カメラの移動処理
     {
         // カメラがプレイヤーより後ろにいる場合、x座標をプレイヤーと同じにする。

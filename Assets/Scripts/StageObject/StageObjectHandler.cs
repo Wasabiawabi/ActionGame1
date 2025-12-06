@@ -11,6 +11,7 @@ public class StageObjectHandler : MonoBehaviour
     [SerializeField] private DataSearchHandler dataSearchHandler;
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerBuffHandler playerBuffHandler;
 
     //プレイヤーの情報など
     [SerializeField] private CircleCollider2D playerCollider;
@@ -115,7 +116,7 @@ public class StageObjectHandler : MonoBehaviour
                     {
                         // playerMovementHandler があれば playerSpeed を渡す（無ければ 0 を渡す）
                         float playerSpeed = (playerMovementHandler != null) ? playerMovementHandler.playerSpeed : 0f;
-                        mover.Initialize(i, playerSpeed, mainCamera);
+                        mover.Initialize(i, playerSpeed, mainCamera, playerBuffHandler, dataSearchHandler);
                     }
                 }
 
