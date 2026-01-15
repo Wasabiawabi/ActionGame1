@@ -12,6 +12,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private GameObject gameoveredSummary;
 
     //変数
     [SerializeField] private float maxSecondToGameOver = 2f;
@@ -47,5 +48,8 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
         float distanceMoved = Mathf.Abs(transform.position.x + offSet.x); // 移動距離の計算
         moneyManager.totalMoney += distanceMoved; // ゲームオーバー時の移動距離を合計金額に加算
         Debug.Log("Total Money Collected: " + moneyManager.totalMoney);
+
+        //ゲームオーバー画面を表示
+        gameoveredSummary.SetActive(true);
     }
 }
