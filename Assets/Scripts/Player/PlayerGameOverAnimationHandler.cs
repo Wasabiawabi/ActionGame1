@@ -11,6 +11,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     //スクリプト
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private MoneyManager moneyManager;
 
     //変数
     [SerializeField] private float maxSecondToGameOver = 2f;
@@ -22,10 +23,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     private void Update()
     {
         //スタート済みで、移動していなければカウントを行う
-        if(playerController.started && playerMovementHandler.playerSpeed == 0)CalcGameOver();
-
-        //ゲームオーバー判定
-        if (secondToGameOver <= 0 && !isgameovered) GameOverAnimation();
+        if(playerController.started && playerMovementHandler.playerSpeed == 0 && !isgameovered)CalcGameOver();
 
         //移動していればリセットし続ける
         if (playerMovementHandler.playerSpeed != 0) secondToGameOver = maxSecondToGameOver;
@@ -34,16 +32,20 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     private void CalcGameOver()//ゲームオーバーまでの残り時間を計算する
     {
         secondToGameOver -= Time.deltaTime;
+        if (secondToGameOver <= 0) 
+        {
+            secondToGameOver = 0;
+            isgameovered = true;
+            GameOverAnimation();
+        }
     }
 
     private void GameOverAnimation()//ゲームオーバー時の処理
     {
-        isgameovered = true;
         Debug.Log("Game Over");
 
         float distanceMoved = Mathf.Abs(transform.position.x + offSet.x); // 移動距離の計算
-        totalMoney += distanceMoved; // ゲームオーバー時の移動距離を合計金額に加算
-
-        isgameovered = false;
+        moneyManager.totalMoney += distanceMoved; // ゲームオーバー時の移動距離を合計金額に加算
+        Debug.Log("Total Money Collected: " + moneyManager.totalMoney);
     }
 }

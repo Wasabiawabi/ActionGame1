@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoneyManager : MonoBehaviour
 {
-    [Tooltip("金を管理する.\n獲得金の計算もする.")]
+    [Tooltip("金を管理する.")]
     bool summary;
-    int totalMoney;
+    public float totalMoney;
 }
