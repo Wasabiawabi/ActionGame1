@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 
 public class PlayerGameOverAnimationHandler : MonoBehaviour
@@ -16,13 +17,15 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     private float secondToGameOver = 2f;
     private bool isgameovered = false;
 
+    float totalMoney = 0f; // 追加: ゲームオーバー時の合計金額
+    Vector3 offSet;
     private void Update()
     {
         //スタート済みで、移動していなければカウントを行う
         if(playerController.started && playerMovementHandler.playerSpeed == 0)CalcGameOver();
 
         //ゲームオーバー判定
-        if (secondToGameOver <= 0) GameOverAnimation();
+        if (secondToGameOver <= 0 && !isgameovered) GameOverAnimation();
 
         //移動していればリセットし続ける
         if (playerMovementHandler.playerSpeed != 0) secondToGameOver = maxSecondToGameOver;
@@ -35,6 +38,12 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
 
     private void GameOverAnimation()//ゲームオーバー時の処理
     {
+        isgameovered = true;
         Debug.Log("Game Over");
+
+        float distanceMoved = Mathf.Abs(transform.position.x + offSet.x); // 移動距離の計算
+        totalMoney += distanceMoved; // ゲームオーバー時の移動距離を合計金額に加算
+
+        isgameovered = false;
     }
 }
