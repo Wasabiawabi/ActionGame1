@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.CompareTag("Ground")) return;
         isTouchingGround = true;
        //Debug.Log("touch");
     }

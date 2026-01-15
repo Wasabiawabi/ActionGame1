@@ -9,13 +9,6 @@ public class PlayerUpgradeData
     public int increaseMaxSpeedLevel;
     public int increaceMaxInitialMovementSpeedLevel;
     public int decreaceSpeedDumpingLevel;
-    public int increaseVerticalMovementSpeedLevel;
-    public int increaseMaxNakamaLevel;
-    public int decreaceBuffDampingWithNakamaLevel;
-    public int increaceDecreaceSpeedDumpingWithNakamaLevel;
-    public int increasePlayerHpLevel;
-    public int increaseRewardLateLevel;
-    
     
 }
 
@@ -23,17 +16,10 @@ public class PlayerUpgradeData
 public class StageObjectUpgradeData
 {
     // ステージオブジェクトのアップグレードレベル
-    public int increaseFlowerInstantiateProbabiltyPerFrameLevel;
-    public int increaseSatoukibiInstantiateProbabiltyPerFrameLevel;
-    public int increaseHoneycombInstantiateProbabiltyPerFrameLevel;
-    public int increaseWindInstantiateProbabiltyPerFrameLevel;
-    public int increaseWindPowerLevel;
-    public int decreaceHeadWindInstantiateProbability;
-    public int increaseNakamaInstantiateProbabiltyPerFrameLevel;
-    public int increaseBalloonInstantiateProbabiltyPerFrameLevel;
-    public int increasePlaneInstantiateProbabiltyPerFrameLevel;
+    public int increaseInstantiateProbabiltyPerFrameLevel;
     public int increaseMultipleBuffProbablityLevel;
-    public int MaxMultipleBuffLevel;
+    public int maxMultipleBuffLevel;
+    public int increaseBuffEffect;
 }
 
 public class UpgradesLevelHandler : MonoBehaviour

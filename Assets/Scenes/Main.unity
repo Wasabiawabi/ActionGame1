@@ -325,6 +325,7 @@ MonoBehaviour:
   playerStatus: {fileID: 182115587}
   playerBuffHandler: {fileID: 182115586}
   moveCamera: {fileID: 2098643509}
+  upgradesLevelHandler: {fileID: 0}
   offSet: {x: -10, y: 0, z: 0}
   initialSpeedPower: 0
   playerPos: {x: 0, y: 0, z: 0}
@@ -492,6 +493,8 @@ MonoBehaviour:
   dataSearchHandler: {fileID: 1232959535}
   playerMovementHandler: {fileID: 182115588}
   playerController: {fileID: 182115584}
+  playerBuffHandler: {fileID: 182115586}
+  upgradesLevelHandler: {fileID: 385117595}
   playerCollider: {fileID: 182115590}
   mainCamera: {fileID: 2098643506}
   stageObjectPrefabs:
@@ -567,25 +570,12 @@ MonoBehaviour:
   playerUpgradeData:
     increaseMaxSpeedLevel: 0
     increaceMaxInitialMovementSpeedLevel: 0
-    decreaceSpeedDumpingLevel: 1
-    increaseVerticalMovementSpeedLevel: 1
-    increaseMaxNakamaLevel: 1
-    decreaceBuffDampingWithNakamaLevel: 0
-    increaceDecreaceSpeedDumpingWithNakamaLevel: 0
-    increasePlayerHpLevel: 1
-    increaseRewardLateLevel: 1
+    decreaceSpeedDumpingLevel: 5
   stageObjectUpgradeData:
-    increaseFlowerInstantiateProbabiltyPerFrameLevel: 0
-    increaseSatoukibiInstantiateProbabiltyPerFrameLevel: 0
-    increaseHoneycombInstantiateProbabiltyPerFrameLevel: 0
-    increaseWindInstantiateProbabiltyPerFrameLevel: 0
-    increaseWindPowerLevel: 0
-    decreaceHeadWindInstantiateProbability: 0
-    increaseNakamaInstantiateProbabiltyPerFrameLevel: 0
-    increaseBalloonInstantiateProbabiltyPerFrameLevel: 0
-    increasePlaneInstantiateProbabiltyPerFrameLevel: 0
+    increaseInstantiateProbabiltyPerFrameLevel: 5
     increaseMultipleBuffProbablityLevel: 0
-    MaxMultipleBuffLevel: 0
+    maxMultipleBuffLevel: 0
+    increaseBuffEffect: 0
 --- !u!1 &808295943
 GameObject:
   m_ObjectHideFlags: 0

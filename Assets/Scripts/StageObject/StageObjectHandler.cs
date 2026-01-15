@@ -12,6 +12,7 @@ public class StageObjectHandler : MonoBehaviour
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
+    [SerializeField] private UpgradesLevelHandler upgradesLevelHandler; // 追加: レベル参照用
 
     //プレイヤーの情報など
     [SerializeField] private CircleCollider2D playerCollider;
@@ -25,51 +26,68 @@ public class StageObjectHandler : MonoBehaviour
 
     private void Start()
     {
-        // 参照チェック
+        // 必要な参照がセットされているか確認
         if (dataSearchHandler == null)
         {
             Debug.LogError("StageObjectHandler: dataSearchHandler が割り当てられていません。Inspectorで設定してください。");
             enabled = false;
             return;
         }
-        if (dataSearchHandler.stageObjectStatusDataStore == null || dataSearchHandler.stageObjectStatusDataStore.DataBase == null)
+
+        var store = dataSearchHandler.stageObjectStatusDataStore;
+        if (store == null)
         {
-            Debug.LogError("StageObjectHandler: stageObjectStatusDataStore またはその DataBase が割り当てられていません。");
-            enabled = false;
-            return;
-        }
-        if (dataSearchHandler.stageObjectStatusDataStore.DataBase.DataList == null)
-        {
-            Debug.LogError("StageObjectHandler: DataBase.DataList が null です。");
+            Debug.LogError("StageObjectHandler: dataSearchHandler.stageObjectStatusDataStore が null です。");
             enabled = false;
             return;
         }
 
-        int capacity = dataSearchHandler.stageObjectStatusDataStore.DataBase.DataList.Count;
+        var db = store.DataBase;
+        if (db == null || db.DataList == null)
+        {
+            Debug.LogError("StageObjectHandler: stageObjectStatusDataStore.DataBase または DataList が null です。DataBase アセットが設定されているか確認してください。");
+            enabled = false;
+            return;
+        }
 
-        // リストをクリアしてから初期化（再実行に耐える）
+        int capacity = db.DataList.Count;
+
+        // リストを初期化（再起動時の残存を防ぐ）
         minSpawnProbablity.Clear();
         incrementSpawnProbablityPerSecond.Clear();
         nowSpawnProbablity.Clear();
 
-        // 各IDごとの出現確率の初期値を設定
+        // レベル取得（存在しない場合は0）
+        int levelMultiplier = 0;
+        if (upgradesLevelHandler != null && upgradesLevelHandler.stageObjectUpgradeData != null)
+        {
+            levelMultiplier = Mathf.Max(0, upgradesLevelHandler.stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel);
+        }
+
+        float multiplier = Mathf.Pow(1.2f, levelMultiplier);
+
+        // それぞれのIdごとの出現確率の初期値を設定する
         for (int i = 0; i < capacity; i++)
         {
-            var statusData = dataSearchHandler.stageObjectStatusDataStore.GetDataByID(i);
+            var statusData = store.GetDataByID(i);
             if (statusData == null)
             {
-                minSpawnProbablity.Add(0f);
-                incrementSpawnProbablityPerSecond.Add(0f);
-                nowSpawnProbablity.Add(0f);
+                // null のデータが存在する場合はデフォルトを入れて続行
+                minSpawnProbablity.Add(0.0f);
+                incrementSpawnProbablityPerSecond.Add(0.0f);
+                nowSpawnProbablity.Add(0.0f);
                 continue;
             }
 
-            float min = statusData.MinInstantiateProbability;
-            float inc = statusData.InstantiateProbabilityIncrementPerSecond;
+            float minVal = statusData.MinInstantiateProbability;
+            float incVal = statusData.InstantiateProbabilityIncrementPerSecond;
 
-            minSpawnProbablity.Add(min);
-            incrementSpawnProbablityPerSecond.Add(inc);
-            nowSpawnProbablity.Add(min);
+            // レベルに応じて増分を 1.2^level 倍する
+            incVal *= multiplier;
+
+            minSpawnProbablity.Add(minVal);
+            incrementSpawnProbablityPerSecond.Add(incVal);
+            nowSpawnProbablity.Add(minSpawnProbablity[i]);
         }
     }
 
@@ -116,7 +134,7 @@ public class StageObjectHandler : MonoBehaviour
                     {
                         // playerMovementHandler があれば playerSpeed を渡す（無ければ 0 を渡す）
                         float playerSpeed = (playerMovementHandler != null) ? playerMovementHandler.playerSpeed : 0f;
-                        mover.Initialize(i, playerSpeed, mainCamera, playerBuffHandler, dataSearchHandler);
+                        mover.Initialize(i, playerSpeed, mainCamera, playerBuffHandler, dataSearchHandler, upgradesLevelHandler);
                     }
                 }
 

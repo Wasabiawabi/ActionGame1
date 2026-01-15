@@ -13,6 +13,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private PlayerStatus playerStatus;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
     [SerializeField] private MoveCamera moveCamera;
+    [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
 
     //使う変数
     [SerializeField] private Vector3 offSet = new Vector3(0, 0, 0);
@@ -54,8 +55,22 @@ public class PlayerMovementHandler : MonoBehaviour
         if (playerStatus == null) return;
         int idx = playerStatus.playerStatusName.IndexOf("maxInitialMovementSpeed");
         if (idx < 0 || idx >= playerStatus.playerStatusValue.Count) return;
+
+        // 元の maxInitialMovementSpeed を取得
         float maxInitialSpeed = playerStatus.playerStatusValue[idx];
-        playerSpeed = maxInitialSpeed * initialSpeedPower;
+
+        // Upgrade レベルを取得（存在しない場合は0）
+        int levelIncreaseInitial = 0;
+        if (upgradesLevelHandler != null && upgradesLevelHandler.playerUpgradeData != null)
+        {
+            levelIncreaseInitial = upgradesLevelHandler.playerUpgradeData.increaceMaxInitialMovementSpeedLevel;
+        }
+
+        // レベルごとに +10 する
+        float modifiedMaxInitialSpeed = maxInitialSpeed + 10f * levelIncreaseInitial;
+
+        // 初速を設定
+        playerSpeed = modifiedMaxInitialSpeed * initialSpeedPower;
     }
 
     private void MoveForward()//プレイヤーの移動処理
@@ -87,8 +102,18 @@ public class PlayerMovementHandler : MonoBehaviour
             idxReduce >= playerStatus.playerStatusValue.Count) return;
 
         float speedDampingPerSecond = playerStatus.playerStatusValue[idxDamp]; // 秒あたりの減衰量
-        float maxSpeed = playerStatus.playerStatusValue[idxMax];
+        float baseMaxSpeed = playerStatus.playerStatusValue[idxMax];
         float speedDampingReductionWithNakamaPerSecond = playerStatus.playerStatusValue[idxReduce];
+
+        // Upgrade による変更：maxSpeed をレベルごとに +10 する
+        int levelIncreaseMaxSpeed = 0;
+        int levelDecreaseDamping = 0;
+        if (upgradesLevelHandler != null && upgradesLevelHandler.playerUpgradeData != null)
+        {
+            levelIncreaseMaxSpeed = upgradesLevelHandler.playerUpgradeData.increaseMaxSpeedLevel;
+            levelDecreaseDamping = upgradesLevelHandler.playerUpgradeData.decreaceSpeedDumpingLevel;
+        }
+        float modifiedMaxSpeed = baseMaxSpeed + 10f * levelIncreaseMaxSpeed;
 
         // 高さ依存の追加減衰（秒あたり）
         float additionalSpeedDampingPerSecond = 0f;
@@ -105,17 +130,32 @@ public class PlayerMovementHandler : MonoBehaviour
         float totalPerSecond = speedDampingPerSecond - speedDampingReductionWithNakamaPerSecond + additionalSpeedDampingPerSecond;
         float delta = totalPerSecond * Time.deltaTime;
 
+        // decreaceSpeedDumpingLevel による調整：レベル0はそのまま、1以上は (level + 1) で割る
+        if (levelDecreaseDamping >= 1)
+        {
+            float divisor = (float)(levelDecreaseDamping + 1);
+            delta /= divisor;
+        }
+
         // 減衰を適用（最低0）
         playerSpeed -= delta;
         playerSpeed = Mathf.Max(0f, playerSpeed);
 
         // 速度制限を超えている場合は超過分に対して追加減衰（秒あたりの減衰を倍率的に適用）
-        if (playerSpeed > maxSpeed)
+        if (playerSpeed > modifiedMaxSpeed)
         {
             // ここでは超過量に比例して追加で減衰させる（元の意図を保ちつつ Time.deltaTime を適用）
-            float over = playerSpeed - maxSpeed;
+            float over = playerSpeed - modifiedMaxSpeed;
             float extraPerSecond = speedDampingPerSecond * over; // over が大きいほど強く減衰
             float extraDelta = extraPerSecond * Time.deltaTime;
+
+            // 追加の減衰にもレベルによる緩和を適用（同じ divisor を使用）
+            if (levelDecreaseDamping >= 1)
+            {
+                float divisor = (float)(levelDecreaseDamping + 1);
+                extraDelta /= divisor;
+            }
+
             // 追加の減衰でも仲間による減衰軽減を考慮
             extraDelta = Mathf.Max(0f, extraDelta - speedDampingReductionWithNakamaPerSecond * Time.deltaTime);
             playerSpeed -= extraDelta;

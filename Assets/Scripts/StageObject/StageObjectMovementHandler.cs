@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class StageObjectMovementHandler : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class StageObjectMovementHandler : MonoBehaviour
     private Camera mainCamera;
     private PlayerBuffHandler playerBuffHandler;
     private DataSearchHandler dataSearchHandler;
+    private UpgradesLevelHandler upgradesLevelHandler;
     //変数
     private int objID;
     private float playerXSpeed;
@@ -27,18 +27,20 @@ public class StageObjectMovementHandler : MonoBehaviour
     float speedIncremnt;
     float speedMultiply;
     float maintainSpeedtime;
-    float multipleBuffPercent;
+    int multipleBuffPercentLevel;
+    int maxMultipleBuffLevel;
+    int increaseBuffEffectLevel;
     int maxMultipleBuff;
-    float increamentBuffMultiplyer;
-    float multipleBuffMultiplyer;
+    int multipleBuffPercent;
 
-    public void Initialize(int id, float playerSpeed, Camera mainCamera, PlayerBuffHandler playerBuffHandler, DataSearchHandler dataSearchHandler) // ステージオブジェクトの初期化
+    public void Initialize(int id, float playerSpeed, Camera mainCamera, PlayerBuffHandler playerBuffHandler, DataSearchHandler dataSearchHandler, UpgradesLevelHandler upgradesLevelHandler) // ステージオブジェクトの初期化
     {
         this.objID = id;
         this.playerXSpeed = playerSpeed;
         this.mainCamera = mainCamera ?? Camera.main; // フォールバック
         this.playerBuffHandler = playerBuffHandler ?? null; // フォールバック
         this.dataSearchHandler = dataSearchHandler ?? null; // フォールバック
+        this.upgradesLevelHandler = upgradesLevelHandler ?? null; // フォールバック
         //Debug.Log("minWindY" + minWindY + "minBallonPlaneY" + minBallonPlaneY);
 
         if (this.mainCamera == null)
@@ -139,13 +141,65 @@ public class StageObjectMovementHandler : MonoBehaviour
         if (maintainSpeedtime > 0) availableBuff[2] = true;
 
         // 自身のバフの性能に関わるアップグレードのレベルを取得する
+        increaseBuffEffectLevel = upgradesLevelHandler.stageObjectUpgradeData.increaseBuffEffect;
+        maxMultipleBuffLevel = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
+        multipleBuffPercentLevel = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
 
+        // 実際に付与されるバフの効果を計算する
+        speedIncremnt = Mathf.Pow(speedIncremnt, increaseBuffEffectLevel);
+        speedMultiply = Mathf.Pow(speedMultiply, increaseBuffEffectLevel);
+        maintainSpeedtime = Mathf.Pow(maintainSpeedtime, increaseBuffEffectLevel);
+
+        var data2 = dataSearchHandler.upgradeDataStore.GetDataByID(20);
+        maxMultipleBuff = data2.UpgradeCostList[maxMultipleBuffLevel];
+
+        var data3 = dataSearchHandler.upgradeDataStore.GetDataByID(19);
+        multipleBuffPercent = data2.UpgradeCostList[multipleBuffPercentLevel];
+    }
+
+    private void InvokeBuff()
+    {
+        while (true)
+        {
+            int buffId = Random.Range(0, 3);
+            Debug.Log("buffId" + buffId);
+            if (buffId == 0 && availableBuff[0])
+            {
+                playerBuffHandler.IncrementSpeed(speedIncremnt);
+                Debug.Log("speedIncremnt" + speedIncremnt);
+                return;
+            }
+
+            if (buffId == 1 && availableBuff[1])
+            {
+                playerBuffHandler.MultiplySpeed(speedMultiply);
+                Debug.Log("speedMultiply" + speedMultiply);
+                return;
+            }
+
+            if (buffId == 2 && availableBuff[2])
+            {
+                playerBuffHandler.maintainSpeedDurationSum += maintainSpeedtime;
+                Debug.Log("Added time" + maintainSpeedtime);
+                return;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) //  プレイヤーが当たったときにバフを付与する
     {
         if (collision.CompareTag("Player"))
         {
+            int buffCount = 1;
+            InvokeBuff();
+            for (int i = buffCount; i <= maxMultipleBuff; i++)
+            {
+                if (Random.Range(0, 100) <= multipleBuffPercent)
+                {
+                    buffCount++;
+                    InvokeBuff();
+                }
+            }
             Destroy(gameObject);
         }
     }

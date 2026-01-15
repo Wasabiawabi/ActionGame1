@@ -14,6 +14,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     //変数
     [SerializeField] private float maxSecondToGameOver = 2f;
     private float secondToGameOver = 2f;
+    private bool isgameovered = false;
 
     private void Update()
     {
@@ -34,6 +35,6 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
 
     private void GameOverAnimation()//ゲームオーバー時の処理
     {
-
+        Debug.Log("Game Over");
     }
 }

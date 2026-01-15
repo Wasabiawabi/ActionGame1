@@ -35,13 +35,14 @@ public class PlayerBuffHandler : MonoBehaviour
     {
         int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
-        playerMovementHandler.playerSpeed *= multiplyNum / (1 + buffDampingWithNakama);
+        Debug.Log(buffDampingWithNakama);
+        playerMovementHandler.playerSpeed *= multiplyNum;
     }
 
     public void UpdateMaintainSpeed(float dulation)
     {
         int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
-        maintainSpeedDurationSum += dulation / (1 + buffDampingWithNakama);
+        maintainSpeedDurationSum += dulation;
     }
 }
