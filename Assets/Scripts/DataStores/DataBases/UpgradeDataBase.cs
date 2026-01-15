@@ -3,7 +3,7 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.Upgrade
 {
     /// <summary>
-    /// UpgradeDataBase は BaseOfUpgradeData を要素とするデータベース
+    /// UpgradeDataBase 縺ｯ BaseOfUpgradeData 繧定ｦ∫ｴ縺ｨ縺吶ｋ繝�繝ｼ繧ｿ繝吶�ｼ繧ｹ
     /// </summary>
     [CreateAssetMenu(menuName = "DataBase/Upgrade")]
     public class UpgradeDataBase : BaseOfDataBase<BaseOfUpgradeData> { }

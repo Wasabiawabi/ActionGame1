@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class MoneyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Tooltip("金を管理する.\n獲得金の計算もする.")]
+    bool summary;
+    int totalMoney;
 }

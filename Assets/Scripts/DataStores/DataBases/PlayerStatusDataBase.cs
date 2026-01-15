@@ -3,7 +3,7 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.InitialStatus.Player
 {
     /// <summary>
-    /// PlayerStatusDataBase は PlayerInitialStatusData を要素とするデータベース
+    /// PlayerStatusDataBase 縺ｯ PlayerInitialStatusData 繧定ｦ∫ｴ縺ｨ縺吶ｋ繝�繝ｼ繧ｿ繝吶�ｼ繧ｹ
     /// </summary>
     [CreateAssetMenu(menuName = "DataBase/PlayerStatus")]
     public class PlayerStatusDataBase: BaseOfDataBase<PlayerInitialStatusData> { }

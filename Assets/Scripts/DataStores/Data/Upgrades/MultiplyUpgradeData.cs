@@ -3,8 +3,8 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.Upgrade.Multiply
 {
     /// <summary>
-    /// ���Z�����̃A�b�v�O���[�h�Ɋւ���f�[�^
-    /// ���x���A�b�v���Ƃ̔{��
+    /// 加算方式のアップグレードに関するデータ
+    /// レベルアップごとの倍率
     /// </summary>
     [CreateAssetMenu(menuName = "Data/Upgrade/Multiply")]
     public class MultiplyUpgradeData : BaseOfUpgradeData

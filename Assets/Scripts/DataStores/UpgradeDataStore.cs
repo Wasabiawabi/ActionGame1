@@ -4,13 +4,13 @@ using UnityEngine;
 namespace HandmadeLibrary.DataStore.Upgrade
 {
     /// <summary>
-    /// UpgradeDataBase �����N���X�̃��X�g�Ɋi�[�ł���悤�ɂ��� DataStore
-    /// T �� BaseOfUpgradeData ���p�������^
+    /// UpgradeDataBase を基底クラスのリストに格納できるようにした DataStore
+    /// T は BaseOfUpgradeData を継承した型
     /// </summary>
     
     public class UpgradeDataStore : BaseOfDataStore<UpgradeDataBase, BaseOfUpgradeData>{ }
-    /*�׋������FMonoBehaviour�̌p��
-     * �W�F�l���b�N�^�̃N���X�ɂ́AMonoBehaviour���p�������邱�Ƃ��ł��Ȃ��B
-     * �ŏI�I�ɃX�N���v�g�Ƃ���Unity���̃R���|�[�l���g�ɃA�^�b�`�����N���X�ł́A�W�F�l���b�N�^�̎g�p�������K�v������B
+    /*勉強メモ：MonoBehaviourの継承
+     * ジェネリック型のクラスには、MonoBehaviourを継承させることができない。
+     * 最終的にスクリプトとしてUnity側のコンポーネントにアタッチされるクラスでは、ジェネリック型の使用を避ける必要がある。
      */
 }

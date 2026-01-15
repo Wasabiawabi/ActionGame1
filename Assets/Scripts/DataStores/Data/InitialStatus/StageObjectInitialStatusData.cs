@@ -3,10 +3,10 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.InitialStatus.StageObject
 {
     /// <summary>
-    /// ƒXƒe[ƒW‚É“oê‚·‚éƒIƒuƒWƒFƒNƒg‚ÌƒXƒe[ƒ^ƒX‚Ì‰Šú’l
-    /// ƒIƒuƒWƒFƒNƒg‚ÌoŒ»Šm—¦‚ÌÅ’á’lAƒtƒŒ[ƒ€‚²‚Æ‚Ì‰ÁZ’l
-    /// Á”ï‚³‚ê‚½‚Æ‚«‚ÌƒvƒŒƒCƒ„[‚ÌƒXƒs[ƒh‚Ì‰ÁZ—ÊAæZ—ÊAˆÛŠÔ
-    /// –I‚ªoŒ»‚·‚é‚©‚Ç‚¤‚©
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ã«ç™»å ´ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®åˆæœŸå€¤
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‡ºç¾ç¢ºç‡ã®æœ€ä½å€¤ã€ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã®åŠ ç®—å€¤
+    /// æ¶ˆè²»ã•ã‚ŒãŸã¨ãã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ”ãƒ¼ãƒ‰ã®åŠ ç®—é‡ã€ä¹—ç®—é‡ã€ç¶­æŒæ™‚é–“
+    /// èœ‚ãŒå‡ºç¾ã™ã‚‹ã‹ã©ã†ã‹
     /// </summary>
     [CreateAssetMenu(menuName = "Data/InitialStatus/StageObject")]
     public class StageObjectInitialStatusData : BaseOfInitialStatusData

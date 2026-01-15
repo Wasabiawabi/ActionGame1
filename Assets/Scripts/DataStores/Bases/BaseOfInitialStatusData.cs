@@ -1,8 +1,8 @@
 namespace HandmadeLibrary.DataBase.InitialStatus
 {
     /// <summary>
-    /// �X�e�[�^�X�Ɋւ���f�[�^�̊��
-    /// �S�ẴX�e�[�^�X�ɋ��ʂ̃f�[�^�͂Ȃ����߁A�f�[�^�\���𕪂���₷�����邽�߂̑���
+    /// ステータスに関するデータの基盤
+    /// 全てのステータスに共通のデータはないため、データ構造を分かりやすくするための存在
     /// </summary>
     public abstract class BaseOfInitialStatusData : BaseOfData
     {

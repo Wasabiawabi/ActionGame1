@@ -5,7 +5,7 @@ using HandmadeLibrary.Json;
 [System.Serializable]
 public class PlayerUpgradeData
 {
-    // ƒvƒŒƒCƒ„[‚ÌƒAƒbƒvƒOƒŒ[ƒhƒŒƒxƒ‹
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ãƒ¬ãƒ™ãƒ«
     public int increaseMaxSpeedLevel;
     public int increaceMaxInitialMovementSpeedLevel;
     public int decreaceSpeedDumpingLevel;
@@ -15,7 +15,7 @@ public class PlayerUpgradeData
 [System.Serializable]
 public class StageObjectUpgradeData
 {
-    // ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚ÌƒAƒbƒvƒOƒŒ[ƒhƒŒƒxƒ‹
+    // ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ãƒ¬ãƒ™ãƒ«
     public int increaseInstantiateProbabiltyPerFrameLevel;
     public int increaseMultipleBuffProbablityLevel;
     public int maxMultipleBuffLevel;
@@ -24,15 +24,15 @@ public class StageObjectUpgradeData
 
 public class UpgradesLevelHandler : MonoBehaviour
 {
-    [Tooltip("ƒvƒŒƒCƒ„[‚âƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚ÌŒ»İ‚ÌƒŒƒxƒ‹‚ğJsonŒ`®‚ÅŠÇ—‚·‚é.")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¾åœ¨ã®ãƒ¬ãƒ™ãƒ«ã‚’Jsonå½¢å¼ã§ç®¡ç†ã™ã‚‹.")]
     public bool summary;
 
-    //•K—v‚ÈƒXƒNƒŠƒvƒg
+    //å¿…è¦ãªã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     public PlayerUpgradeData playerUpgradeData;
     public StageObjectUpgradeData stageObjectUpgradeData;
     private JsonFileHandler jsonFileHandler = new JsonFileHandler();
 
-    //Path‚ğw’è
+    //Pathã‚’æŒ‡å®š
     string path_playerData = Path.Combine(Application.dataPath, "Data/Json/playerData.json");
     string path_stageObjectData = Path.Combine(Application.dataPath, "Data/Json/stageObjectData.json");
 
@@ -44,19 +44,19 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     private void ReadUpgradesDataFile()
     {
-        //ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+        //ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
         playerUpgradeData = jsonFileHandler.ReadFromJson<PlayerUpgradeData>(path_playerData, playerUpgradeData);
         stageObjectUpgradeData = jsonFileHandler.ReadFromJson<StageObjectUpgradeData>(path_stageObjectData, stageObjectUpgradeData);
     }
 
     public void SaveUpgradesDataFile()
     {
-        //ƒf[ƒ^‚ğ•Û‘¶‚·‚é
+        //ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
         jsonFileHandler.SaveToJson<PlayerUpgradeData>(path_playerData, playerUpgradeData);
         jsonFileHandler.SaveToJson<StageObjectUpgradeData>(path_stageObjectData, stageObjectUpgradeData);
 
         /*
-        //•Û‘¶‚³‚ê‚½ƒf[ƒ^‚ğŠm”F‚·‚é
+        //ä¿å­˜ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’ç¢ºèªã™ã‚‹
         Debug.Log("Player Upgrade Data Saved:");
         Debug.Log(JsonUtility.ToJson(playerUpgradeData, true));
         Debug.Log("Stage Object Upgrade Data Saved:");

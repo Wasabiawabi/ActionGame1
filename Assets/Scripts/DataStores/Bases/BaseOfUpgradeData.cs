@@ -4,12 +4,12 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.Upgrade
 {
     /// <summary>
-    /// ƒAƒbƒvƒOƒŒ[ƒh‚ÉŠÖ‚·‚éƒf[ƒ^‚ÌŠî”Õ
-    /// ƒAƒbƒvƒOƒŒ[ƒh‚Ì‘ÎÛ(Player ‚à‚µ‚­‚Í StageObject)AƒŒƒxƒ‹ãŒÀAƒAƒbƒvƒOƒŒ[ƒh‚Ì‹­‰»Œ`®(Increment ‚à‚µ‚­‚Í Multiply)AƒŒƒxƒ‹‚²‚Æ‚Ì‹­‰»ƒRƒXƒg(‹­‰»ƒRƒXƒg‚Í‰‰Z‚ğ—p‚¢‚¸Aè“®‚ÅŒˆ‚ß‚é)
+    /// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã«é–¢ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®åŸºç›¤
+    /// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®å¯¾è±¡(Player ã‚‚ã—ãã¯ StageObject)ã€ãƒ¬ãƒ™ãƒ«ä¸Šé™ã€ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®å¼·åŒ–å½¢å¼(Increment ã‚‚ã—ãã¯ Multiply)ã€ãƒ¬ãƒ™ãƒ«ã”ã¨ã®å¼·åŒ–ã‚³ã‚¹ãƒˆ(å¼·åŒ–ã‚³ã‚¹ãƒˆã¯æ¼”ç®—ã‚’ç”¨ã„ãšã€æ‰‹å‹•ã§æ±ºã‚ã‚‹)
     /// </summary>
     public abstract class BaseOfUpgradeData : BaseOfData
     {
-        //ƒAƒbƒvƒOƒŒ[ƒh‚Ì‘ÎÛ
+        //ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®å¯¾è±¡
         public enum TargetType { Player, StageObject }
         public TargetType TargetName
         {
@@ -20,7 +20,7 @@ namespace HandmadeLibrary.DataBase.Upgrade
         private TargetType targetName;
 
 
-        //ƒŒƒxƒ‹ãŒÀ
+        //ãƒ¬ãƒ™ãƒ«ä¸Šé™
         public int MaxLevel
         {
             get => maxLevel;
@@ -29,7 +29,7 @@ namespace HandmadeLibrary.DataBase.Upgrade
         [SerializeField]
         private int maxLevel;
 
-        //ƒAƒbƒvƒOƒŒ[ƒh‚Ì‹­‰»Œ`®
+        //ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®å¼·åŒ–å½¢å¼
         public enum UpgradeType { Increment, Multiply }
         public UpgradeType upgradeType
         {
@@ -39,7 +39,7 @@ namespace HandmadeLibrary.DataBase.Upgrade
         [SerializeField]
         private UpgradeType _upgradeType;
 
-        //ƒŒƒxƒ‹‚²‚Æ‚Ì‹­‰»ƒRƒXƒg
+        //ãƒ¬ãƒ™ãƒ«ã”ã¨ã®å¼·åŒ–ã‚³ã‚¹ãƒˆ
         public List<int> UpgradeCostList
         {
             get => upgradeCostList;

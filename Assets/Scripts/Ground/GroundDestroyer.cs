@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GroundDestroyer : MonoBehaviour
 {
-    [Tooltip("カメラの左端よりも左に行ったら破壊する\n他のオブジェクトにも適応可能.")]
+    [Tooltip("繧ｫ繝｡繝ｩ縺ｮ蟾ｦ遶ｯ繧医ｊ繧ょｷｦ縺ｫ陦後▲縺溘ｉ遐ｴ螢翫☆繧欺n莉悶�ｮ繧ｪ繝悶ず繧ｧ繧ｯ繝医↓繧る←蠢懷庄閭ｽ.")]
     public bool summary;
 
     private Camera cam;

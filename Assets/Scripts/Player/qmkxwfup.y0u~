@@ -10,19 +10,19 @@ using HandmadeLibrary.DataBase.Upgrade.Multiply;
 
 public class PlayerStatus : MonoBehaviour
 {
-    [Tooltip("ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX‚âƒoƒt‚ÌŒø‰ÊA’‡ŠÔ‚Ìl”‚â‚»‚ÌŒø‰Ê‚ğŠÇ—‚·‚é.")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚„ãƒãƒ•ã®åŠ¹æœã€ä»²é–“ã®äººæ•°ã‚„ãã®åŠ¹æœã‚’ç®¡ç†ã™ã‚‹.")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     [SerializeField] private DataSearchHandler dataSearchHandler;
     [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
     [SerializeField] private NakamaHandler nakamaHandler;
 
-    //ƒf[ƒ^ƒx[ƒX‚Ö‚ÌÚ‘±—p
+    //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¸ã®æ¥ç¶šç”¨
     private int playerId = 0;
 
-    //ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
     public float maxSpeed;
     public float speedDampingPerSecond;
     public float maxInitialMovementSpeed;
@@ -39,7 +39,7 @@ public class PlayerStatus : MonoBehaviour
         UpgradePlayerStatus();
     }
 
-    private void GetPlayerInitialStatus()//ƒvƒŒƒCƒ„[‚Ì‰ŠúƒXƒe[ƒ^ƒX‚ğæ“¾
+    private void GetPlayerInitialStatus()//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å–å¾—
     {
         var playerInitialStatusData = dataSearchHandler.playerStatusDataStore.GetDataByID(playerId);
         maxSpeed = playerInitialStatusData.MaxSpeed;
@@ -54,18 +54,18 @@ public class PlayerStatus : MonoBehaviour
 
     }
 
-    private void UpgradePlayerStatus()//ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX‚ÌƒAƒbƒvƒOƒŒ[ƒh‚Ìî•ñ‚©‚çAƒXƒe[ƒ^ƒX‚ğ•ÏX‚·‚é
+    private void UpgradePlayerStatus()//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®æƒ…å ±ã‹ã‚‰ã€ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å¤‰æ›´ã™ã‚‹
     {
         if (upgradesLevelHandler == null || dataSearchHandler == null || dataSearchHandler.upgradeDataStore == null) return;
 
         var upgrades = dataSearchHandler.upgradeDataStore.DataBase?.DataList;
         if (upgrades == null || upgrades.Count == 0) return;
 
-        // ƒAƒbƒvƒOƒŒ[ƒh–¼ -> PlayerStatus ‚ÌƒtƒB[ƒ‹ƒh–¼ƒ}ƒbƒsƒ“ƒO
+        // ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰å -> PlayerStatus ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åãƒãƒƒãƒ”ãƒ³ã‚°
         var nameToFieldMap = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase)
         {
             { "IncreaseMaxSpeed", nameof(maxSpeed) },
-            { "IncreaceMaxInitialMovementSpeed", nameof(maxInitialMovementSpeed) }, // NOTE: "Increace" ‚Ì’Ô‚è‚ªƒ\[ƒX‘¤‚É‚ ‚éê‡‚ğ‘z’è
+            { "IncreaceMaxInitialMovementSpeed", nameof(maxInitialMovementSpeed) }, // NOTE: "Increace" ã®ç¶´ã‚ŠãŒã‚½ãƒ¼ã‚¹å´ã«ã‚ã‚‹å ´åˆã‚’æƒ³å®š
             { "decreaceSpeedDumping", nameof(speedDampingPerSecond) },
             { "increaseBuffEffect", nameof(buffDampingWithNakama) },
             { "increaseVerticalMovementSpeed", nameof(verticalMovementSpeed) },
@@ -75,7 +75,7 @@ public class PlayerStatus : MonoBehaviour
             { "increaseMaxNakama", nameof(maxNakama) }
         };
 
-        // playerUpgradeData ‚ÌŠe Level ƒtƒB[ƒ‹ƒh‚ğ‘–¸‚µA‘Î‰‚·‚éƒAƒbƒvƒOƒŒ[ƒh‚ğ“K—p
+        // playerUpgradeData ã®å„ Level ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’èµ°æŸ»ã—ã€å¯¾å¿œã™ã‚‹ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã‚’é©ç”¨
         var playerUpgradeData = upgradesLevelHandler.playerUpgradeData;
         if (playerUpgradeData == null) return;
 
@@ -85,7 +85,7 @@ public class PlayerStatus : MonoBehaviour
 
         foreach (var levelField in levelFields)
         {
-            // ƒtƒB[ƒ‹ƒh–¼‚©‚ç "Level" ‚ğæ‚èœ‚«ƒAƒbƒvƒOƒŒ[ƒh–¼‚ğ“¾‚é
+            // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åã‹ã‚‰ "Level" ã‚’å–ã‚Šé™¤ãã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰åã‚’å¾—ã‚‹
             var level = (int)levelField.GetValue(playerUpgradeData);
             if (level <= 0) continue;
 
@@ -95,35 +95,35 @@ public class PlayerStatus : MonoBehaviour
                 baseName = baseName.Substring(0, baseName.Length - "Level".Length);
             }
 
-            // ƒ}ƒbƒsƒ“ƒO‚Å‘ÎÛ PlayerStatus ‚ÌƒtƒB[ƒ‹ƒh–¼‚ğ“¾‚é
+            // ãƒãƒƒãƒ”ãƒ³ã‚°ã§å¯¾è±¡ PlayerStatus ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åã‚’å¾—ã‚‹
             if (!nameToFieldMap.TryGetValue(baseName, out var targetFieldName)) continue;
 
-            // ƒAƒbƒvƒOƒŒ[ƒh’è‹`‚ğŒŸõiƒ^[ƒQƒbƒg‚ª Player ‚Ì‚à‚Ìj
+            // ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰å®šç¾©ã‚’æ¤œç´¢ï¼ˆã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒ Player ã®ã‚‚ã®ï¼‰
             var upgradeDef = upgrades.FirstOrDefault(u =>
                 string.Equals(u.Name, baseName, System.StringComparison.OrdinalIgnoreCase)
                 && u.TargetName == BaseOfUpgradeData.TargetType.Player);
 
             if (upgradeDef == null) continue;
 
-            // ‘ÎÛƒtƒB[ƒ‹ƒh‚ğæ“¾
+            // å¯¾è±¡ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å–å¾—
             var targetField = this.GetType().GetField(targetFieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             if (targetField == null) continue;
 
-            // Œ»İ’l‚ğ“Ç‚İæ‚èAŒ^‚É‰‚¶‚ÄŒvZ
+            // ç¾åœ¨å€¤ã‚’èª­ã¿å–ã‚Šã€å‹ã«å¿œã˜ã¦è¨ˆç®—
             var currentObj = targetField.GetValue(this);
             if (currentObj == null) continue;
 
-            // Œˆ’è: upgradeDef.upgradeType ‚É]‚Á‚Ä‰ÁZ or æZ‚ğs‚¤
+            // æ±ºå®š: upgradeDef.upgradeType ã«å¾“ã£ã¦åŠ ç®— or ä¹—ç®—ã‚’è¡Œã†
             if (upgradeDef.upgradeType == BaseOfUpgradeData.UpgradeType.Increment)
             {
-                // IncrementUpgradeData ‚©‚çƒŒƒxƒ‹‚É‘Î‰‚·‚é‘•ª‚ğæ“¾
+                // IncrementUpgradeData ã‹ã‚‰ãƒ¬ãƒ™ãƒ«ã«å¯¾å¿œã™ã‚‹å¢—åˆ†ã‚’å–å¾—
                 if (upgradeDef is IncrementUpgradeData inc)
                 {
                     float increment = 0f;
                     var list = inc.IncrementAmountList;
                     if (list != null && list.Count > 0)
                     {
-                        // ƒŒƒxƒ‹‚Í 1..N ‚ğ‘z’è -> index = level-1A”ÍˆÍŠO‚ÍÅŒã‚Ì—v‘f‚ğg‚¤
+                        // ãƒ¬ãƒ™ãƒ«ã¯ 1..N ã‚’æƒ³å®š -> index = level-1ã€ç¯„å›²å¤–ã¯æœ€å¾Œã®è¦ç´ ã‚’ä½¿ã†
                         var idx = Mathf.Clamp(level - 1, 0, list.Count - 1);
                         increment = list[idx];
                     }
@@ -133,7 +133,7 @@ public class PlayerStatus : MonoBehaviour
             }
             else if (upgradeDef.upgradeType == BaseOfUpgradeData.UpgradeType.Multiply)
             {
-                // MultiplyUpgradeData ‚Ì MultiplyRate ‚ğƒŒƒxƒ‹•ª“K—pi—İæj
+                // MultiplyUpgradeData ã® MultiplyRate ã‚’ãƒ¬ãƒ™ãƒ«åˆ†é©ç”¨ï¼ˆç´¯ä¹—ï¼‰
                 if (upgradeDef is MultiplyUpgradeData mul)
                 {
                     float rate = mul.MultiplyRate;
@@ -144,7 +144,7 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    // ƒtƒB[ƒ‹ƒh‚É‰ÁZifloat / int ‚É‘Î‰j
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«åŠ ç®—ï¼ˆfloat / int ã«å¯¾å¿œï¼‰
     private void ApplyAddToField(FieldInfo field, object currentValue, float add)
     {
         if (field.FieldType == typeof(float))
@@ -161,7 +161,7 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    // ƒtƒB[ƒ‹ƒh‚ÉæZifloat / int ‚É‘Î‰j
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ä¹—ç®—ï¼ˆfloat / int ã«å¯¾å¿œï¼‰
     private void ApplyMultiplyToField(FieldInfo field, object currentValue, float factor)
     {
         if (field.FieldType == typeof(float))

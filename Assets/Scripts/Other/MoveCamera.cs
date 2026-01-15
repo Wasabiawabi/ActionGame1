@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class MoveCamera : MonoBehaviour
 {
-    [Tooltip("ƒJƒƒ‰‚ğƒvƒŒƒCƒ„[‚É‡‚í‚¹‚Ä“®‚©‚·")]
+    [Tooltip("ã‚«ãƒ¡ãƒ©ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«åˆã‚ã›ã¦å‹•ã‹ã™")]
     public bool summary;
 
-    // ƒAƒ^ƒbƒ`
+    // ã‚¢ã‚¿ãƒƒãƒ
     [SerializeField] private BackgroundHandler backgroundHandler;
     [SerializeField] private GroundGenerator groundGenerator;
 
-    // •Ï”
+    // å¤‰æ•°
     [SerializeField] private float zOffset;
     [SerializeField] private float minXPos;
     [SerializeField] private float maxXPos;
@@ -18,17 +18,17 @@ public class MoveCamera : MonoBehaviour
 
     private void Start()
     {
-        //ˆÊ’u‚ğ‰Šú‰»
+        //ä½ç½®ã‚’åˆæœŸåŒ–
         transform.position = new Vector3(0, 0, zOffset);
         CalcBound();
         groundGenerator.Init();
         groundGenerator.GenerateGrounds(minXPos, maxXPos);
     }
 
-    public void Move(float playerPosX ,float playerPosY)// ƒJƒƒ‰‚ÌˆÚ“®ˆ—
+    public void Move(float playerPosX ,float playerPosY)// ã‚«ãƒ¡ãƒ©ã®ç§»å‹•å‡¦ç†
     {
-        // ƒJƒƒ‰‚ªƒvƒŒƒCƒ„[‚æ‚èŒã‚ë‚É‚¢‚éê‡AxÀ•W‚ğƒvƒŒƒCƒ„[‚Æ“¯‚¶‚É‚·‚éB
-        // yÀ•W‚Íí‚É“¯‚¶‚É‚·‚éB
+        // ã‚«ãƒ¡ãƒ©ãŒãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ˆã‚Šå¾Œã‚ã«ã„ã‚‹å ´åˆã€xåº§æ¨™ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨åŒã˜ã«ã™ã‚‹ã€‚
+        // yåº§æ¨™ã¯å¸¸ã«åŒã˜ã«ã™ã‚‹ã€‚
         if (transform.position.x < playerPosX)
         {
             transform.position = new Vector3(playerPosX, playerPosY, zOffset);
@@ -39,12 +39,12 @@ public class MoveCamera : MonoBehaviour
         }
         CalcBound();
 
-        // ”wŒi‚Æ’n–Ê‚Ìˆ—‚ğ‚±‚±‚ÅÀs
+        // èƒŒæ™¯ã¨åœ°é¢ã®å‡¦ç†ã‚’ã“ã“ã§å®Ÿè¡Œ
         backgroundHandler.CalcBackground(transform.position.x, transform.position.y);
         groundGenerator.GenerateGrounds(maxXPos, minXPos);
     }
 
-    private void CalcBound()// ƒJƒƒ‰‚Ì•`‰æ”ÍˆÍ‚ğƒQ[ƒ€“à‚ÌÀ•W‚ÅŒvZ
+    private void CalcBound()// ã‚«ãƒ¡ãƒ©ã®æç”»ç¯„å›²ã‚’ã‚²ãƒ¼ãƒ å†…ã®åº§æ¨™ã§è¨ˆç®—
     {
         Vector3 maxPos = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, Mathf.Abs(zOffset)));
         Vector3 minPos = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Mathf.Abs(zOffset)));

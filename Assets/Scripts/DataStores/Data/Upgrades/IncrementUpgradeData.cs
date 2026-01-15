@@ -4,8 +4,8 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.Upgrade.Increment
 {
     /// <summary>
-    /// ‰ÁŽZ•ûŽ®‚ÌƒAƒbƒvƒOƒŒ[ƒh‚ÉŠÖ‚·‚éƒf[ƒ^
-    /// ƒŒƒxƒ‹ƒAƒbƒv‚²‚Æ‚Ì‰ÁŽZ—Ê
+    /// åŠ ç®—æ–¹å¼ã®ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã«é–¢ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+    /// ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—ã”ã¨ã®åŠ ç®—é‡
     /// </summary>
     [CreateAssetMenu(menuName = "Data/Upgrade/Increment")]
     public class IncrementUpgradeData : BaseOfUpgradeData

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    [Tooltip("ボタンを押すなどして関数が実行された場合、任意のシーンへ遷移する")]
+    [Tooltip("繝懊ち繝ｳ繧呈款縺吶↑縺ｩ縺励※髢｢謨ｰ縺悟ｮ溯｡後＆繧後◆蝣ｴ蜷医∽ｻｻ諢上�ｮ繧ｷ繝ｼ繝ｳ縺ｸ驕ｷ遘ｻ縺吶ｋ")]
     [SerializeField] private bool summary;
     [SerializeField] private string sceneName;
 
