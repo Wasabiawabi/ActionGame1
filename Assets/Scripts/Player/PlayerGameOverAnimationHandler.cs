@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PlayerGameOverAnimationHandler : MonoBehaviour
 {
@@ -46,10 +47,13 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
         Debug.Log("Game Over");
 
         float distanceMoved = Mathf.Abs(transform.position.x + offSet.x); // 移動距離の計算
+        moneyManager.totalMoney = PlayerPrefs.GetFloat("TotalMoney", 0f); // 保存された合計金額を取得
         moneyManager.totalMoney += distanceMoved; // ゲームオーバー時の移動距離を合計金額に加算
+        PlayerPrefs.SetFloat("TotalMoney", moneyManager.totalMoney); // 合計金額をPlayerPrefsに保存
         Debug.Log("Total Money Collected: " + moneyManager.totalMoney);
 
         //ゲームオーバー画面を表示
         gameoveredSummary.SetActive(true);
+        gameoveredSummary.GetComponent<GameoveredSummaryManager>().SetupSummary(moneyManager.totalMoney, distanceMoved);
     }
 }
