@@ -63,4 +63,39 @@ public class UpgradesLevelHandler : MonoBehaviour
         Debug.Log(JsonUtility.ToJson(stageObjectUpgradeData, true));
         */
     }
+
+    public void UpgradePlayerMaxSpeed()
+    {
+        playerUpgradeData.increaseMaxSpeedLevel += 1;
+    }
+
+    public void UpgradePlayerMaxInitialMovementSpeed()
+    {
+        playerUpgradeData.increaceMaxInitialMovementSpeedLevel += 1;
+    }
+
+    public void UpgradePlayerSpeedDumping()
+    {
+        playerUpgradeData.decreaceSpeedDumpingLevel += 1;
+    }
+
+    public void UpgradeStageObjectInstantiateProbabilityPerFrame()
+    {
+        stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel += 1;
+    }
+
+    public void UpgradeStageObjectMultipleBuffProbability()
+    {
+        stageObjectUpgradeData.increaseMultipleBuffProbablityLevel += 1;
+    }
+
+    public void UpgradeStageObjectMaxMultipleBuff()
+    {
+        stageObjectUpgradeData.maxMultipleBuffLevel += 1;
+    }
+
+    public void UpgradeStageObjectBuffEffect()
+    {
+        stageObjectUpgradeData.increaseBuffEffect += 1;
+    }
 }
