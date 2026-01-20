@@ -10,6 +10,10 @@ public class PlayerUpgradeData
     public int increaceMaxInitialMovementSpeedLevel;
     public int decreaceSpeedDumpingLevel;
     
+    // アップグレードコスト（レベルごと）
+    public int[] increaseMaxSpeedCosts = { 100, 200, 400, 800, 1600 };
+    public int[] increaceMaxInitialMovementSpeedCosts = { 150, 300, 600, 1200, 2400 };
+    public int[] decreaceSpeedDumpingCosts = { 120, 240, 480, 960, 1920 };
 }
 
 [System.Serializable]
@@ -20,6 +24,12 @@ public class StageObjectUpgradeData
     public int increaseMultipleBuffProbablityLevel;
     public int maxMultipleBuffLevel;
     public int increaseBuffEffect;
+    
+    // アップグレードコスト（レベルごと）
+    public int[] increaseInstantiateProbabiltyPerFrameCosts = { 200, 400, 800, 1600, 3200 };
+    public int[] increaseMultipleBuffProbablityCosts = { 250, 500, 1000, 2000, 4000 };
+    public int[] maxMultipleBuffCosts = { 300, 600, 1200, 2400, 4800 };
+    public int[] increaseBuffEffectCosts = { 180, 360, 720, 1440, 2880 };
 }
 
 public class UpgradesLevelHandler : MonoBehaviour
@@ -33,7 +43,6 @@ public class UpgradesLevelHandler : MonoBehaviour
     private JsonFileHandler jsonFileHandler = new JsonFileHandler();
 
     [SerializeField] private MoneyManager moneyManager;
-    [SerializeField] private DataSearchHandler dataSearchHandler;
 
     //Pathを指定
     string path_playerData = Path.Combine(Application.dataPath, "Data/Json/playerData.json");
@@ -69,71 +78,197 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradePlayerMaxSpeed()
     {
-        if(moneyManager.totalMoney < dataSearchHandler.upgradeDataStore.GetDataByName("IncreaseMaxSpeed").UpgradeCostList[playerUpgradeData.increaseMaxSpeedLevel])
+        if (moneyManager == null)
         {
-            Debug.Log("Not enough money to upgrade Max Speed.");
+            Debug.LogError("MoneyManager is not initialized.");
             return;
         }
+        if (playerUpgradeData == null || playerUpgradeData.increaseMaxSpeedCosts == null)
+        {
+            Debug.LogError("PlayerUpgradeData or increaseMaxSpeedCosts is not initialized.");
+            return;
+        }
+        if (playerUpgradeData.increaseMaxSpeedLevel >= playerUpgradeData.increaseMaxSpeedCosts.Length)
+        {
+            Debug.Log("Max Speed upgrade is already at maximum level.");
+            return;
+        }
+        int cost = playerUpgradeData.increaseMaxSpeedCosts[playerUpgradeData.increaseMaxSpeedLevel];
+        if (moneyManager.totalMoney < cost)
+        {
+            Debug.Log("Not enough money to upgrade Max Speed. Required: " + cost + ", Available: " + moneyManager.totalMoney);
+            return;
+        }
+        moneyManager.totalMoney -= cost;
         playerUpgradeData.increaseMaxSpeedLevel += 1;
+        Debug.Log("Max Speed upgraded to level " + playerUpgradeData.increaseMaxSpeedLevel);
     }
 
     public void UpgradePlayerMaxInitialMovementSpeed()
     {
-        if (moneyManager.totalMoney < dataSearchHandler.upgradeDataStore.GetDataByName("IncreaseMaxInitialMovementSpeed").UpgradeCostList[playerUpgradeData.increaceMaxInitialMovementSpeedLevel])
+        if (moneyManager == null)
         {
-            Debug.Log("Not enough money to upgrade Max Initial Movement Speed.");
+            Debug.LogError("MoneyManager is not initialized.");
             return;
         }
+        if (playerUpgradeData == null || playerUpgradeData.increaceMaxInitialMovementSpeedCosts == null)
+        {
+            Debug.LogError("PlayerUpgradeData or increaceMaxInitialMovementSpeedCosts is not initialized.");
+            return;
+        }
+        if (playerUpgradeData.increaceMaxInitialMovementSpeedLevel >= playerUpgradeData.increaceMaxInitialMovementSpeedCosts.Length)
+        {
+            Debug.Log("Max Initial Movement Speed upgrade is already at maximum level.");
+            return;
+        }
+        int cost = playerUpgradeData.increaceMaxInitialMovementSpeedCosts[playerUpgradeData.increaceMaxInitialMovementSpeedLevel];
+        if (moneyManager.totalMoney < cost)
+        {
+            Debug.Log("Not enough money to upgrade Max Initial Movement Speed. Required: " + cost + ", Available: " + moneyManager.totalMoney);
+            return;
+        }
+        moneyManager.totalMoney -= cost;
         playerUpgradeData.increaceMaxInitialMovementSpeedLevel += 1;
+        Debug.Log("Max Initial Movement Speed upgraded to level " + playerUpgradeData.increaceMaxInitialMovementSpeedLevel);
     }
 
     public void UpgradePlayerSpeedDumping()
     {
-        if (moneyManager.totalMoney < dataSearchHandler.upgradeDataStore.GetDataByName("DecreaceSpeedDumping").UpgradeCostList[playerUpgradeData.decreaceSpeedDumpingLevel])
+        if (moneyManager == null)
         {
-            Debug.Log("Not enough money to upgrade Speed Dumping.");
+            Debug.LogError("MoneyManager is not initialized.");
             return;
         }
+        if (playerUpgradeData == null || playerUpgradeData.decreaceSpeedDumpingCosts == null)
+        {
+            Debug.LogError("PlayerUpgradeData or decreaceSpeedDumpingCosts is not initialized.");
+            return;
+        }
+        if (playerUpgradeData.decreaceSpeedDumpingLevel >= playerUpgradeData.decreaceSpeedDumpingCosts.Length)
+        {
+            Debug.Log("Speed Dumping upgrade is already at maximum level.");
+            return;
+        }
+        int cost = playerUpgradeData.decreaceSpeedDumpingCosts[playerUpgradeData.decreaceSpeedDumpingLevel];
+        if (moneyManager.totalMoney < cost)
+        {
+            Debug.Log("Not enough money to upgrade Speed Dumping. Required: " + cost + ", Available: " + moneyManager.totalMoney);
+            return;
+        }
+        moneyManager.totalMoney -= cost;
         playerUpgradeData.decreaceSpeedDumpingLevel += 1;
+        Debug.Log("Speed Dumping upgraded to level " + playerUpgradeData.decreaceSpeedDumpingLevel);
     }
 
     public void UpgradeStageObjectInstantiateProbabilityPerFrame()
     {
-        if (moneyManager.totalMoney < dataSearchHandler.upgradeDataStore.GetDataByName("IncreaseInstantiateProbabilityPerFrame").UpgradeCostList[stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel])
+        if (moneyManager == null)
         {
-            Debug.Log("Not enough money to upgrade Instantiate Probability Per Frame.");
+            Debug.LogError("MoneyManager is not initialized.");
             return;
         }
+        if (stageObjectUpgradeData == null || stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameCosts == null)
+        {
+            Debug.LogError("StageObjectUpgradeData or increaseInstantiateProbabiltyPerFrameCosts is not initialized.");
+            return;
+        }
+        if (stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel >= stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameCosts.Length)
+        {
+            Debug.Log("Instantiate Probability Per Frame upgrade is already at maximum level.");
+            return;
+        }
+        int cost = stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameCosts[stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel];
+        if (moneyManager.totalMoney < cost)
+        {
+            Debug.Log("Not enough money to upgrade Instantiate Probability Per Frame. Required: " + cost + ", Available: " + moneyManager.totalMoney);
+            return;
+        }
+        moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel += 1;
+        Debug.Log("Instantiate Probability Per Frame upgraded to level " + stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel);
     }
 
     public void UpgradeStageObjectMultipleBuffProbability()
     {
-        if (moneyManager.totalMoney < dataSearchHandler.upgradeDataStore.GetDataByName("IncreaseMultipleBuffProbability").UpgradeCostList[stageObjectUpgradeData.increaseMultipleBuffProbablityLevel])
+        if (moneyManager == null)
         {
-            Debug.Log("Not enough money to upgrade Multiple Buff Probability.");
+            Debug.LogError("MoneyManager is not initialized.");
             return;
         }
+        if (stageObjectUpgradeData == null || stageObjectUpgradeData.increaseMultipleBuffProbablityCosts == null)
+        {
+            Debug.LogError("StageObjectUpgradeData or increaseMultipleBuffProbablityCosts is not initialized.");
+            return;
+        }
+        if (stageObjectUpgradeData.increaseMultipleBuffProbablityLevel >= stageObjectUpgradeData.increaseMultipleBuffProbablityCosts.Length)
+        {
+            Debug.Log("Multiple Buff Probability upgrade is already at maximum level.");
+            return;
+        }
+        int cost = stageObjectUpgradeData.increaseMultipleBuffProbablityCosts[stageObjectUpgradeData.increaseMultipleBuffProbablityLevel];
+        if (moneyManager.totalMoney < cost)
+        {
+            Debug.Log("Not enough money to upgrade Multiple Buff Probability. Required: " + cost + ", Available: " + moneyManager.totalMoney);
+            return;
+        }
+        moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.increaseMultipleBuffProbablityLevel += 1;
+        Debug.Log("Multiple Buff Probability upgraded to level " + stageObjectUpgradeData.increaseMultipleBuffProbablityLevel);
     }
 
     public void UpgradeStageObjectMaxMultipleBuff()
     {
-        if (moneyManager.totalMoney < dataSearchHandler.upgradeDataStore.GetDataByName("MaxMultipleBuff").UpgradeCostList[stageObjectUpgradeData.maxMultipleBuffLevel])
+        if (moneyManager == null)
         {
-            Debug.Log("Not enough money to upgrade Max Multiple Buff.");
+            Debug.LogError("MoneyManager is not initialized.");
             return;
         }
+        if (stageObjectUpgradeData == null || stageObjectUpgradeData.maxMultipleBuffCosts == null)
+        {
+            Debug.LogError("StageObjectUpgradeData or maxMultipleBuffCosts is not initialized.");
+            return;
+        }
+        if (stageObjectUpgradeData.maxMultipleBuffLevel >= stageObjectUpgradeData.maxMultipleBuffCosts.Length)
+        {
+            Debug.Log("Max Multiple Buff upgrade is already at maximum level.");
+            return;
+        }
+        int cost = stageObjectUpgradeData.maxMultipleBuffCosts[stageObjectUpgradeData.maxMultipleBuffLevel];
+        if (moneyManager.totalMoney < cost)
+        {
+            Debug.Log("Not enough money to upgrade Max Multiple Buff. Required: " + cost + ", Available: " + moneyManager.totalMoney);
+            return;
+        }
+        moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.maxMultipleBuffLevel += 1;
+        Debug.Log("Max Multiple Buff upgraded to level " + stageObjectUpgradeData.maxMultipleBuffLevel);
     }
 
     public void UpgradeStageObjectBuffEffect()
     {
-        if (moneyManager.totalMoney < dataSearchHandler.upgradeDataStore.GetDataByName("IncreaseBuffEffect").UpgradeCostList[stageObjectUpgradeData.increaseBuffEffect])
+        if (moneyManager == null)
         {
-            Debug.Log("Not enough money to upgrade Buff Effect.");
+            Debug.LogError("MoneyManager is not initialized.");
             return;
         }
+        if (stageObjectUpgradeData == null || stageObjectUpgradeData.increaseBuffEffectCosts == null)
+        {
+            Debug.LogError("StageObjectUpgradeData or increaseBuffEffectCosts is not initialized.");
+            return;
+        }
+        if (stageObjectUpgradeData.increaseBuffEffect >= stageObjectUpgradeData.increaseBuffEffectCosts.Length)
+        {
+            Debug.Log("Buff Effect upgrade is already at maximum level.");
+            return;
+        }
+        int cost = stageObjectUpgradeData.increaseBuffEffectCosts[stageObjectUpgradeData.increaseBuffEffect];
+        if (moneyManager.totalMoney < cost)
+        {
+            Debug.Log("Not enough money to upgrade Buff Effect. Required: " + cost + ", Available: " + moneyManager.totalMoney);
+            return;
+        }
+        moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.increaseBuffEffect += 1;
+        Debug.Log("Buff Effect upgraded to level " + stageObjectUpgradeData.increaseBuffEffect);
     }
 }
