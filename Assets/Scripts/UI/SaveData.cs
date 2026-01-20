@@ -9,6 +9,7 @@ public class SaveData : MonoBehaviour
     
     public void SaveUpgradesData()
     {
+        Debug.Log("saved");
         upgradesLevelHandler.SaveUpgradesDataFile();
     }
 }

@@ -440,7 +440,7 @@ MonoBehaviour:
   playerStatus: {fileID: 182115587}
   playerBuffHandler: {fileID: 182115586}
   moveCamera: {fileID: 2098643509}
-  upgradesLevelHandler: {fileID: 0}
+  upgradesLevelHandler: {fileID: 385117595}
   offSet: {x: -10, y: 0, z: 0}
   initialSpeedPower: 0
   playerPos: {x: 0, y: 0, z: 0}
@@ -1236,12 +1236,20 @@ MonoBehaviour:
   playerUpgradeData:
     increaseMaxSpeedLevel: 0
     increaceMaxInitialMovementSpeedLevel: 0
-    decreaceSpeedDumpingLevel: 5
+    decreaceSpeedDumpingLevel: 0
+    increaseMaxSpeedCosts: 64000000c8000000900100002003000040060000
+    increaceMaxInitialMovementSpeedCosts: 960000002c01000058020000b004000060090000
+    decreaceSpeedDumpingCosts: 78000000f0000000e0010000c003000080070000
   stageObjectUpgradeData:
-    increaseInstantiateProbabiltyPerFrameLevel: 5
+    increaseInstantiateProbabiltyPerFrameLevel: 0
     increaseMultipleBuffProbablityLevel: 0
     maxMultipleBuffLevel: 0
     increaseBuffEffect: 0
+    increaseInstantiateProbabiltyPerFrameCosts: c8000000900100002003000040060000800c0000
+    increaseMultipleBuffProbablityCosts: fa000000f4010000e8030000d0070000a00f0000
+    maxMultipleBuffCosts: 2c01000058020000b004000060090000c0120000
+    increaseBuffEffectCosts: b400000068010000d0020000a0050000400b0000
+  moneyManager: {fileID: 182115593}
 --- !u!1 &539807441
 GameObject:
   m_ObjectHideFlags: 0
@@ -1327,7 +1335,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 385117595}
         m_TargetAssemblyTypeName: UpgradesLevelHandler, Assembly-CSharp
-        m_MethodName: UpgradeStageObjectMultipleBuffProbability
+        m_MethodName: UpgradeStageObjectBuffEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1460,7 +1468,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 385117595}
         m_TargetAssemblyTypeName: UpgradesLevelHandler, Assembly-CSharp
-        m_MethodName: UpgradePlayerMaxInitialMovementSpeed
+        m_MethodName: UpgradePlayerMaxSpeed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1593,7 +1601,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 385117595}
         m_TargetAssemblyTypeName: UpgradesLevelHandler, Assembly-CSharp
-        m_MethodName: UpgradeStageObjectInstantiateProbabilityPerFrame
+        m_MethodName: UpgradeStageObjectMultipleBuffProbability
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1660,7 +1668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &808295944
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1970,7 +1978,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 385117595}
         m_TargetAssemblyTypeName: UpgradesLevelHandler, Assembly-CSharp
-        m_MethodName: UpgradePlayerMaxSpeed
+        m_MethodName: UpgradePlayerMaxInitialMovementSpeed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3170,7 +3178,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 385117595}
         m_TargetAssemblyTypeName: UpgradesLevelHandler, Assembly-CSharp
-        m_MethodName: UpgradeStageObjectBuffEffect
+        m_MethodName: UpgradeStageObjectInstantiateProbabilityPerFrame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
