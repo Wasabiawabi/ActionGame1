@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerMovementHandler : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
     [SerializeField] private MoveCamera moveCamera;
     [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
+    [SerializeField] private Slider speedGaugeSlider;
 
     //使う変数
     [SerializeField] private Vector3 offSet = new Vector3(0, 0, 0);
@@ -48,6 +51,7 @@ public class PlayerMovementHandler : MonoBehaviour
         //1に近づくほど値の変化のスピードが上昇する
         //上がったり下がったりを周期的に繰り返す
         initialSpeedPower = 1 - Mathf.Abs(Mathf.Sin(Time.time * initialSpeedPowerMultiply));
+        speedGaugeSlider.value = initialSpeedPower;
     }
 
     public void GameStart()// ゲームスタート瞬間の処理
@@ -71,6 +75,9 @@ public class PlayerMovementHandler : MonoBehaviour
 
         // 初速を設定
         playerSpeed = modifiedMaxInitialSpeed * initialSpeedPower;
+
+        // スピードゲージを非表示にする
+        speedGaugeSlider.gameObject.SetActive(false);
     }
 
     private void MoveForward()//プレイヤーの移動処理
