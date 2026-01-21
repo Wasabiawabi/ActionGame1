@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using HandmadeLibrary.DataBase.Upgrade.Increment;
 
 
 public class PlayerMovementHandler : MonoBehaviour
@@ -16,6 +17,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
     [SerializeField] private MoveCamera moveCamera;
     [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
+    [SerializeField] private DataSearchHandler dataSearchHandler;
     [SerializeField] private Slider speedGaugeSlider;
 
     //使う変数
@@ -70,8 +72,10 @@ public class PlayerMovementHandler : MonoBehaviour
             levelIncreaseInitial = upgradesLevelHandler.playerUpgradeData.increaceMaxInitialMovementSpeedLevel;
         }
 
-        // レベルごとに +10 する
-        float modifiedMaxInitialSpeed = maxInitialSpeed + 10f * levelIncreaseInitial;
+        // レベルごとに加算する
+        var data = dataSearchHandler.upgradeDataStore.GetDataByID(2);
+        Debug.Log(data);
+        float modifiedMaxInitialSpeed = maxInitialSpeed + ((IncrementUpgradeData)dataSearchHandler.upgradeDataStore.GetDataByID(2)).IncrementAmountList[levelIncreaseInitial];
 
         // 初速を設定
         playerSpeed = modifiedMaxInitialSpeed * initialSpeedPower;
