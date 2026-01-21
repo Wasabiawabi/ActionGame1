@@ -1,5 +1,5 @@
 {
-    "increaseInstantiateProbabiltyPerFrameLevel": 3,
+    "increaseInstantiateProbabiltyPerFrameLevel": 0,
     "increaseMultipleBuffProbablityLevel": 0,
     "maxMultipleBuffLevel": 0,
     "increaseBuffEffect": 0,

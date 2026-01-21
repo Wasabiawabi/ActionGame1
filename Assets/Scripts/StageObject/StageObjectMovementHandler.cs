@@ -146,9 +146,9 @@ public class StageObjectMovementHandler : MonoBehaviour
         multipleBuffPercentLevel = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
 
         // 実際に付与されるバフの効果を計算する
-        speedIncremnt = Mathf.Pow(speedIncremnt, increaseBuffEffectLevel);
-        speedMultiply = Mathf.Pow(speedMultiply, increaseBuffEffectLevel);
-        maintainSpeedtime = Mathf.Pow(maintainSpeedtime, increaseBuffEffectLevel);
+        speedIncremnt = Mathf.Pow(speedIncremnt, increaseBuffEffectLevel + 1);
+        speedMultiply = Mathf.Pow(speedMultiply, increaseBuffEffectLevel + 1);
+        maintainSpeedtime = Mathf.Pow(maintainSpeedtime, increaseBuffEffectLevel + 1);
 
         var data2 = dataSearchHandler.upgradeDataStore.GetDataByID(20);
         maxMultipleBuff = data2.UpgradeCostList[maxMultipleBuffLevel];
