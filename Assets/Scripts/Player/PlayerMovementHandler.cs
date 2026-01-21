@@ -88,9 +88,6 @@ public class PlayerMovementHandler : MonoBehaviour
         if (playerStatus == null || playerBuffHandler == null) return;
         if (playerController != null && !playerController.started) return; // ゲーム未開始なら処理しない
 
-        // スピード維持フラグが有効なら何もしない
-        if (playerBuffHandler.maintaining) return;
-
         // 各ステータス（秒あたりの値）を取得
         int idxDamp = playerStatus.playerStatusName.IndexOf("speedDampingPerSecond");
         int idxMax = playerStatus.playerStatusName.IndexOf("maxSpeed");
@@ -137,11 +134,14 @@ public class PlayerMovementHandler : MonoBehaviour
             delta /= divisor;
         }
 
+        // スピード維持フラグが有効なら減衰は0
+        if (playerBuffHandler.maintaining) delta = 0f;
+
         // 減衰を適用（最低0）
         playerSpeed -= delta;
         playerSpeed = Mathf.Max(0f, playerSpeed);
 
-        // 速度制限を超えている場合は超過分に対して追加減衰（秒あたりの減衰を倍率的に適用）
+        // 速度制限を超えている場合は超過分に対して追加減衰（スピード維持フラグが有効でも実行する）
         if (playerSpeed > modifiedMaxSpeed)
         {
             // ここでは超過量に比例して追加で減衰させる（元の意図を保ちつつ Time.deltaTime を適用）
