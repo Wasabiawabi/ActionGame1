@@ -25,8 +25,8 @@ public class PlayerStatus : MonoBehaviour
     private List<string> playerUpgrades = new List<string>();
 
     //プレイヤーのステータス(ステータスとそれにかかるアップグレードのIDは一致している)
-    public List<string> playerStatusName = new List<string> { "maxSpeed", "speedDampingPerSecond", "maxInitialMovementSpeed", };
-    public List<float> playerStatusValue = new List<float> { 0f, 0f, 0f, };
+    public List<string> playerStatusName = new List<string> { "maxSpeed", "speedDampingPerSecond", "maxInitialMovementSpeed", "moveVerticalSpeed" };
+    public List<float> playerStatusValue = new List<float> { 0f, 0f, 0f, 0f };
 
     private int incrementMaxSpeedLevel;
     private int multiplySpeedDampingLevel;
@@ -59,6 +59,8 @@ public class PlayerStatus : MonoBehaviour
         playerStatusValue[0] = playerInitialStatusData.MaxSpeed;
         playerStatusValue[1] = playerInitialStatusData.SpeedDampingPerSecond;
         playerStatusValue[2] = playerInitialStatusData.MaxInitialMovementSpeed;
+        playerStatusValue[3] = playerInitialStatusData.VerticalMovementSpeed;
+
         //foreach(var i in playerStatusValue)
           //  Debug.Log(i);
     }
