@@ -21,7 +21,7 @@ public class PlayerMovementHandler : MonoBehaviour
     //使う変数
     [SerializeField] private Vector3 offSet = new Vector3(0, 0, 0);
     [HideInInspector] public float initialSpeedPower = 0f;
-    private float initialSpeedPowerMultiply = 1f;
+    public float initialSpeedPowerMultiply = 1f;
     [HideInInspector] public Vector3 playerPos = new Vector3(0, 0, 0);
     public float playerSpeed = 0f;
     [SerializeField] private float incrementSpeedReductionPerHeight = 10f;
