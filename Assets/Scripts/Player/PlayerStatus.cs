@@ -34,6 +34,7 @@ public class PlayerStatus : MonoBehaviour
         GetPlayerInitialStatus();
         GetPlayerUpgradeName();
         UpgradePlayerStatus();
+        PrintPlayerStatus(); // デバッグ
     }
 
     private void GetPlayerUpgradeName()
@@ -162,5 +163,14 @@ public class PlayerStatus : MonoBehaviour
     public float GetPlayerHeight()
     {
         return transform.position.y;
+    }
+
+    public void PrintPlayerStatus() // デバッグ用：現在のステータスをコンソールに出力
+    {
+        Debug.Log("Current Player Status:");
+        for (int i = 0; i < playerStatusName.Count; i++)
+        {
+            Debug.Log($"{playerStatusName[i]}: {playerStatusValue[i]}");
+        }
     }
 }
