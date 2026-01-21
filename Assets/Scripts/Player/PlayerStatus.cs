@@ -76,9 +76,9 @@ public class PlayerStatus : MonoBehaviour
         incrementMaxInitialSpeedLevel = upgradesLevelHandler.playerUpgradeData.increaceMaxInitialMovementSpeedLevel;
 
         // アップグレードを適用
-        playerStatusValue[0] += incrementMaxSpeedLevel >= 1 ? maxSpeedData.UpgradeCostList[incrementMaxSpeedLevel - 1] : 0;
+        playerStatusValue[0] += incrementMaxSpeedLevel >= 1 ? maxSpeedData.IncrementAmountList[incrementMaxSpeedLevel - 1] : 0;
         playerStatusValue[1] *= MathF.Pow(speedDampingData.MultiplyRate, multiplySpeedDampingLevel);
-        playerStatusValue[2] += incrementMaxInitialSpeedLevel >= 1 ? maxInitialSpeedData.UpgradeCostList[incrementMaxInitialSpeedLevel - 1] : 0;
+        playerStatusValue[2] += incrementMaxInitialSpeedLevel >= 1 ? maxInitialSpeedData.IncrementAmountList[incrementMaxInitialSpeedLevel - 1] : 0;
     }
 
     public Vector3 GetPlayerPos()
