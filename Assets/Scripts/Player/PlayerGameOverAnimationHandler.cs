@@ -18,7 +18,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     //変数
     [SerializeField] private float maxSecondToGameOver = 2f;
     private float secondToGameOver = 2f;
-    private bool isgameovered = false;
+    public bool isgameovered = false;
 
     float totalMoney = 0f; // 追加: ゲームオーバー時の合計金額
     Vector3 offSet;

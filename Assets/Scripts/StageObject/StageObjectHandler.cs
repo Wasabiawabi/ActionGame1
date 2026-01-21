@@ -13,6 +13,7 @@ public class StageObjectHandler : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
     [SerializeField] private UpgradesLevelHandler upgradesLevelHandler; // 追加: レベル参照用
+    [SerializeField] private PlayerGameOverAnimationHandler playerGameOverAnimationHandler;
 
     //プレイヤーの情報など
     [SerializeField] private CircleCollider2D playerCollider;
@@ -93,7 +94,7 @@ public class StageObjectHandler : MonoBehaviour
 
     private void Update()
     {
-        if(playerController.started)CalcSpawnProbablity();
+        if(playerController.started && !playerGameOverAnimationHandler.isgameovered)CalcSpawnProbablity();
     }
 
     private void CalcSpawnProbablity()//出現確率を計算する

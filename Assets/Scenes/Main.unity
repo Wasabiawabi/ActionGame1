@@ -441,7 +441,7 @@ MonoBehaviour:
   playerBuffHandler: {fileID: 182115586}
   moveCamera: {fileID: 2098643509}
   upgradesLevelHandler: {fileID: 385117595}
-  offSet: {x: -10, y: 0, z: 0}
+  offSet: {x: 0, y: 0, z: 0}
   initialSpeedPower: 0
   playerPos: {x: 0, y: 0, z: 0}
   playerSpeed: 0
