@@ -1,6 +1,6 @@
 {
-    "increaseMaxSpeedLevel": 5,
-    "increaceMaxInitialMovementSpeedLevel": 5,
+    "increaseMaxSpeedLevel": 4,
+    "increaceMaxInitialMovementSpeedLevel": 0,
     "decreaceSpeedDumpingLevel": 0,
     "increaseMaxSpeedCosts": [
         100,

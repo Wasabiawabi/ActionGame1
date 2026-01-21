@@ -28,6 +28,11 @@ public class PlayerStatus : MonoBehaviour
     public List<string> playerStatusName = new List<string> { "maxSpeed", "speedDampingPerSecond", "maxInitialMovementSpeed", };
     public List<float> playerStatusValue = new List<float> { 0f, 0f, 0f, };
 
+    private int incrementMaxSpeedLevel;
+    private int multiplySpeedDampingLevel;
+    private int incrementMaxInitialSpeedLevel;
+
+
     private void Start()
     {
         GetPlayerInitialStatus();
@@ -66,13 +71,13 @@ public class PlayerStatus : MonoBehaviour
         IncrementUpgradeData maxInitialSpeedData = dataSearchHandler.upgradeDataStore.GetDataByID(2) as IncrementUpgradeData;
 
         // 各アップグレードの現在のレベルを取得
-        int incrementMaxSpeedLevel = upgradesLevelHandler.playerUpgradeData.increaseMaxSpeedLevel;
-        int multiplySpeedDampingLevel = upgradesLevelHandler.playerUpgradeData.decreaceSpeedDumpingLevel;
-        int incrementMaxInitialSpeedLevel = upgradesLevelHandler.playerUpgradeData.increaceMaxInitialMovementSpeedLevel;
+        incrementMaxSpeedLevel = upgradesLevelHandler.playerUpgradeData.increaseMaxSpeedLevel;
+        multiplySpeedDampingLevel = upgradesLevelHandler.playerUpgradeData.decreaceSpeedDumpingLevel;
+        incrementMaxInitialSpeedLevel = upgradesLevelHandler.playerUpgradeData.increaceMaxInitialMovementSpeedLevel;
 
         // アップグレードを適用
         playerStatusValue[0] += incrementMaxSpeedLevel >= 1 ? maxSpeedData.UpgradeCostList[incrementMaxSpeedLevel - 1] : 0;
-        playerStatusValue[1] *= multiplySpeedDampingLevel >= 1 ? speedDampingData.UpgradeCostList[multiplySpeedDampingLevel - 1] : 1f;
+        playerStatusValue[1] *= MathF.Pow(speedDampingData.MultiplyRate, multiplySpeedDampingLevel);
         playerStatusValue[2] += incrementMaxInitialSpeedLevel >= 1 ? maxInitialSpeedData.UpgradeCostList[incrementMaxInitialSpeedLevel - 1] : 0;
     }
 
@@ -89,10 +94,9 @@ public class PlayerStatus : MonoBehaviour
     public void PrintPlayerStatus() // デバッグ用：現在のステータスをコンソールに出力
     {
         String s = "Current Player Status:\n";
-        for (int i = 0; i < playerStatusName.Count; i++)
-        {
-            s = String.Concat(s, $"{playerStatusName[i]}: {playerStatusValue[i]}\n");
-        }
+        s = String.Concat(s, $"{playerStatusName[0]}:level{incrementMaxSpeedLevel}:{playerStatusValue[0]}\n");
+        s = String.Concat(s, $"{playerStatusName[1]}:level{multiplySpeedDampingLevel}:{playerStatusValue[1]}\n");
+        s = String.Concat(s, $"{playerStatusName[2]}:level{incrementMaxInitialSpeedLevel}:{playerStatusValue[2]}\n");
         Debug.Log(s);
     }
 }
