@@ -37,11 +37,11 @@ public class PlayerStatus : MonoBehaviour
     {
         GetPlayerInitialStatus();
         GetPlayerUpgradeName();
-        UpgradePlayerStatus();
-        PrintPlayerStatus(); // デバッグ
+        //UpgradePlayerStatus(); // データがロードされた後に呼び出す
+        //PrintPlayerStatus(); // デバッグ
     }
 
-    private void GetPlayerUpgradeName()
+    public void GetPlayerUpgradeName()
     {
         // アップグレードデータを全部調べて、プレイヤーに関するアップグレードであれば名前を保存しておく
         foreach (var upgrade in dataSearchHandler.upgradeDataStore.DataBase.DataList)
@@ -65,7 +65,7 @@ public class PlayerStatus : MonoBehaviour
           //  Debug.Log(i);
     }
 
-    private void UpgradePlayerStatus()//プレイヤーのステータスのアップグレードの情報から、ステータスを変更する
+    public void UpgradePlayerStatus()//プレイヤーのステータスのアップグレードの情報から、ステータスを変更する
     {
         // レベルごとの強化量(配列)を取得
         IncrementUpgradeData maxSpeedData = dataSearchHandler.upgradeDataStore.GetDataByID(0) as IncrementUpgradeData;
@@ -81,6 +81,8 @@ public class PlayerStatus : MonoBehaviour
         playerStatusValue[0] += incrementMaxSpeedLevel >= 1 ? maxSpeedData.IncrementAmountList[incrementMaxSpeedLevel - 1] : 0;
         playerStatusValue[1] *= MathF.Pow(speedDampingData.MultiplyRate, multiplySpeedDampingLevel);
         playerStatusValue[2] += incrementMaxInitialSpeedLevel >= 1 ? maxInitialSpeedData.IncrementAmountList[incrementMaxInitialSpeedLevel - 1] : 0;
+
+        PrintPlayerStatus(); // デバッグ
     }
 
     public Vector3 GetPlayerPos()
