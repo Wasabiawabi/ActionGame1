@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02278146fe5f3942bdefa2b9cb20b5c, type: 3}
   m_Name: 0_IncreaseFlowerInstantiateProbabiltyPerFrame
   m_EditorClassIdentifier: 
-  name: IncreaseFlowerInstantiateProbabiltyPerFrame
+  name: IncreaseInstantiateProbabiltyPerFrame
   id: 9
   targetName: 1
   maxLevel: 4
-  _upgradeType: 0
+  _upgradeType: 1
   upgradeCostList: 00000000000000000000000000000000
   incrementAmountList:
-  - 0.01666667
-  - 0.033333335
-  - 0.05
-  - 0.06666667
+  - 1.2
+  - 1.44
+  - 1.728
+  - 2.0736

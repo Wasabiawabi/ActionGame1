@@ -2,29 +2,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using HandmadeLibrary.DataBase.Upgrade.Increment;
+
 
 public class PlayerMovementHandler : MonoBehaviour
 {
-    [Tooltip("ƒvƒŒƒCƒ„[‚ÌÀÛ‚Ì“®‚«‚ğì‚é.")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å®Ÿéš›ã®å‹•ãã‚’ä½œã‚‹.")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerStatus playerStatus;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
     [SerializeField] private MoveCamera moveCamera;
+    [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
+    [SerializeField] private DataSearchHandler dataSearchHandler;
+    [SerializeField] private Slider speedGaugeSlider;
 
-    //g‚¤•Ï”
+    //ä½¿ã†å¤‰æ•°
     [SerializeField] private Vector3 offSet = new Vector3(0, 0, 0);
     [HideInInspector] public float initialSpeedPower = 0f;
-    private float initialSpeedPowerMultiply = 1f;
+    public float initialSpeedPowerMultiply = 1f;
     [HideInInspector] public Vector3 playerPos = new Vector3(0, 0, 0);
     public float playerSpeed = 0f;
     [SerializeField] private float incrementSpeedReductionPerHeight = 10f;
 
     void Start()
     {
-        //‰‚ß‚ÌˆÊ’u‚ÉˆÚ“®‚³‚¹‚Ä‚¨‚­
+        //åˆã‚ã®ä½ç½®ã«ç§»å‹•ã•ã›ã¦ãŠã
         transform.position = offSet;
     }
 
@@ -41,42 +47,54 @@ public class PlayerMovementHandler : MonoBehaviour
         UpdatePlayerSpeed();
     }
 
-    private void CalcInitialSpeedPower()// ƒXƒ^[ƒg‚ÌuŠÔ‚Ì‘¬“x‚ğŒvZ‚·‚é
+    private void CalcInitialSpeedPower()// ã‚¹ã‚¿ãƒ¼ãƒˆã®ç¬é–“ã®é€Ÿåº¦ã‚’è¨ˆç®—ã™ã‚‹
     {
-        // ƒpƒ[‚Í0‚©‚ç1‚ÌŠÔ‚ğ‚Æ‚é
-        //1‚É‹ß‚Ã‚­‚Ù‚Ç’l‚Ì•Ï‰»‚ÌƒXƒs[ƒh‚ªã¸‚·‚é
-        //ã‚ª‚Á‚½‚è‰º‚ª‚Á‚½‚è‚ğüŠú“I‚ÉŒJ‚è•Ô‚·
+        // ãƒ‘ãƒ¯ãƒ¼ã¯0ã‹ã‚‰1ã®é–“ã‚’ã¨ã‚‹
+        //1ã«è¿‘ã¥ãã»ã©å€¤ã®å¤‰åŒ–ã®ã‚¹ãƒ”ãƒ¼ãƒ‰ãŒä¸Šæ˜‡ã™ã‚‹
+        //ä¸ŠãŒã£ãŸã‚Šä¸‹ãŒã£ãŸã‚Šã‚’å‘¨æœŸçš„ã«ç¹°ã‚Šè¿”ã™
         initialSpeedPower = 1 - Mathf.Abs(Mathf.Sin(Time.time * initialSpeedPowerMultiply));
+        speedGaugeSlider.value = initialSpeedPower;
     }
 
-    public void GameStart()// ƒQ[ƒ€ƒXƒ^[ƒguŠÔ‚Ìˆ—
+    public void GameStart()// ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆç¬é–“ã®å‡¦ç†
     {
         if (playerStatus == null) return;
         int idx = playerStatus.playerStatusName.IndexOf("maxInitialMovementSpeed");
         if (idx < 0 || idx >= playerStatus.playerStatusValue.Count) return;
+
+        // å…ƒã® maxInitialMovementSpeed ã‚’å–å¾—
         float maxInitialSpeed = playerStatus.playerStatusValue[idx];
-        playerSpeed = maxInitialSpeed * initialSpeedPower;
+
+        // Upgrade ãƒ¬ãƒ™ãƒ«ã‚’å–å¾—ï¼ˆå­˜åœ¨ã—ãªã„å ´åˆã¯0ï¼‰
+        int levelIncreaseInitial = 0;
+        if (upgradesLevelHandler != null && upgradesLevelHandler.playerUpgradeData != null)
+        {
+            levelIncreaseInitial = upgradesLevelHandler.playerUpgradeData.increaceMaxInitialMovementSpeedLevel;
+        }
+
+        // åˆé€Ÿã‚’è¨­å®š
+        playerSpeed = playerStatus.playerStatusValue[idx] * initialSpeedPower;
+
+        // ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚²ãƒ¼ã‚¸ã‚’éè¡¨ç¤ºã«ã™ã‚‹
+        speedGaugeSlider.gameObject.SetActive(false);
     }
 
-    private void MoveForward()//ƒvƒŒƒCƒ„[‚ÌˆÚ“®ˆ—
+    private void MoveForward()//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•å‡¦ç†
     {
         if (playerController == null) return;
-        if(!playerController.started) return;//ƒXƒ^[ƒg‚µ‚Ä‚¢‚È‚¯‚ê‚ÎÀs‚µ‚È‚¢
-        if(playerController.stopped) return;//~‚Ü‚Á‚Ä‚¢‚éó‘Ô‚È‚çÀs‚µ‚È‚¢
+        if(!playerController.started) return;//ã‚¹ã‚¿ãƒ¼ãƒˆã—ã¦ã„ãªã‘ã‚Œã°å®Ÿè¡Œã—ãªã„
+        if(playerController.stopped) return;//æ­¢ã¾ã£ã¦ã„ã‚‹çŠ¶æ…‹ãªã‚‰å®Ÿè¡Œã—ãªã„
         transform.position = new Vector3(transform.position.x + playerSpeed * Time.deltaTime, transform.position.y, 0);
         UpdatePlayerPos();
     }
 
-    private void UpdatePlayerSpeed()//ƒvƒŒƒCƒ„[‚ÌˆÚ“®‘¬“x‚ğŒ¸Š‚à‚µ‚­‚ÍˆÛ‚³‚¹‚é
+    private void UpdatePlayerSpeed()//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•é€Ÿåº¦ã‚’æ¸›è¡°ã‚‚ã—ãã¯ç¶­æŒã•ã›ã‚‹
     {
-        // QÆƒ`ƒFƒbƒN
+        // å‚ç…§ãƒã‚§ãƒƒã‚¯
         if (playerStatus == null || playerBuffHandler == null) return;
-        if (playerController != null && !playerController.started) return; // ƒQ[ƒ€–¢ŠJn‚È‚çˆ—‚µ‚È‚¢
+        if (playerController != null && !playerController.started) return; // ã‚²ãƒ¼ãƒ æœªé–‹å§‹ãªã‚‰å‡¦ç†ã—ãªã„
 
-        // ƒXƒs[ƒhˆÛƒtƒ‰ƒO‚ª—LŒø‚È‚ç‰½‚à‚µ‚È‚¢
-        if (playerBuffHandler.maintaining) return;
-
-        // ŠeƒXƒe[ƒ^ƒXi•b‚ ‚½‚è‚Ì’lj‚ğæ“¾
+        // å„ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ï¼ˆç§’ã‚ãŸã‚Šã®å€¤ï¼‰ã‚’å–å¾—
         int idxDamp = playerStatus.playerStatusName.IndexOf("speedDampingPerSecond");
         int idxMax = playerStatus.playerStatusName.IndexOf("maxSpeed");
         int idxReduce = playerStatus.playerStatusName.IndexOf("speedDampingReductionWithNakama");
@@ -86,11 +104,12 @@ public class PlayerMovementHandler : MonoBehaviour
             idxMax >= playerStatus.playerStatusValue.Count ||
             idxReduce >= playerStatus.playerStatusValue.Count) return;
 
-        float speedDampingPerSecond = playerStatus.playerStatusValue[idxDamp]; // •b‚ ‚½‚è‚ÌŒ¸Š—Ê
+        // å„ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+        float speedDampingPerSecond = playerStatus.playerStatusValue[idxDamp]; // ç§’ã‚ãŸã‚Šã®æ¸›è¡°é‡
         float maxSpeed = playerStatus.playerStatusValue[idxMax];
         float speedDampingReductionWithNakamaPerSecond = playerStatus.playerStatusValue[idxReduce];
 
-        // ‚‚³ˆË‘¶‚Ì’Ç‰ÁŒ¸Ši•b‚ ‚½‚èj
+        // é«˜ã•ä¾å­˜ã®è¿½åŠ æ¸›è¡°ï¼ˆç§’ã‚ãŸã‚Šï¼‰
         float additionalSpeedDampingPerSecond = 0f;
         try
         {
@@ -101,35 +120,44 @@ public class PlayerMovementHandler : MonoBehaviour
             additionalSpeedDampingPerSecond = 0f;
         }
 
-        // ‡¬‚µ‚Ä deltai¡‰ñƒtƒŒ[ƒ€‚ÅŒ¸‚ç‚·—Êj‚ğŒvZF‘S‚Ä•b‚ ‚½‚è‚Ì’l‚È‚Ì‚ÅÅŒã‚É Time.deltaTime ‚ğŠ|‚¯‚é
+        // åˆæˆã—ã¦ deltaï¼ˆä»Šå›ãƒ•ãƒ¬ãƒ¼ãƒ ã§æ¸›ã‚‰ã™é‡ï¼‰ã‚’è¨ˆç®—ï¼šå…¨ã¦ç§’ã‚ãŸã‚Šã®å€¤ãªã®ã§æœ€å¾Œã« Time.deltaTime ã‚’æ›ã‘ã‚‹
         float totalPerSecond = speedDampingPerSecond - speedDampingReductionWithNakamaPerSecond + additionalSpeedDampingPerSecond;
         float delta = totalPerSecond * Time.deltaTime;
 
-        // Œ¸Š‚ğ“K—piÅ’á0j
+        // ã‚¹ãƒ”ãƒ¼ãƒ‰ç¶­æŒãƒ•ãƒ©ã‚°ãŒæœ‰åŠ¹ãªã‚‰æ¸›è¡°ã¯0
+        if (playerBuffHandler.maintaining) delta = 0f;
+
+        // æ¸›è¡°ã‚’é©ç”¨ï¼ˆæœ€ä½0ï¼‰
         playerSpeed -= delta;
         playerSpeed = Mathf.Max(0f, playerSpeed);
 
-        // ‘¬“x§ŒÀ‚ğ’´‚¦‚Ä‚¢‚éê‡‚Í’´‰ß•ª‚É‘Î‚µ‚Ä’Ç‰ÁŒ¸Ši•b‚ ‚½‚è‚ÌŒ¸Š‚ğ”{—¦“I‚É“K—pj
+        // é€Ÿåº¦åˆ¶é™ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã¯è¶…éåˆ†ã«å¯¾ã—ã¦è¿½åŠ æ¸›è¡°ï¼ˆã‚¹ãƒ”ãƒ¼ãƒ‰ç¶­æŒãƒ•ãƒ©ã‚°ãŒæœ‰åŠ¹ã§ã‚‚å®Ÿè¡Œã™ã‚‹ï¼‰
         if (playerSpeed > maxSpeed)
         {
-            // ‚±‚±‚Å‚Í’´‰ß—Ê‚É”ä—á‚µ‚Ä’Ç‰Á‚ÅŒ¸Š‚³‚¹‚éiŒ³‚ÌˆÓ}‚ğ•Û‚¿‚Â‚Â Time.deltaTime ‚ğ“K—pj
+            // ã“ã“ã§ã¯è¶…éé‡ã«æ¯”ä¾‹ã—ã¦è¿½åŠ ã§æ¸›è¡°ã•ã›ã‚‹ï¼ˆå…ƒã®æ„å›³ã‚’ä¿ã¡ã¤ã¤ Time.deltaTime ã‚’é©ç”¨ï¼‰
             float over = playerSpeed - maxSpeed;
-            float extraPerSecond = speedDampingPerSecond * over; // over ‚ª‘å‚«‚¢‚Ù‚Ç‹­‚­Œ¸Š
+            float extraPerSecond = speedDampingPerSecond * over; // over ãŒå¤§ãã„ã»ã©å¼·ãæ¸›è¡°
             float extraDelta = extraPerSecond * Time.deltaTime;
-            // ’Ç‰Á‚ÌŒ¸Š‚Å‚à’‡ŠÔ‚É‚æ‚éŒ¸ŠŒyŒ¸‚ğl—¶
+
+            // è¿½åŠ ã®æ¸›è¡°ã«ã‚‚ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚‹ç·©å’Œã‚’é©ç”¨
+            extraDelta = Mathf.Max(0f, extraDelta - additionalSpeedDampingPerSecond * Time.deltaTime);
+            playerSpeed -= extraDelta;
+            playerSpeed = Mathf.Max(0f, playerSpeed);
+
+            // è¿½åŠ ã®æ¸›è¡°ã§ã‚‚ä»²é–“ã«ã‚ˆã‚‹æ¸›è¡°è»½æ¸›ã‚’è€ƒæ…®
             extraDelta = Mathf.Max(0f, extraDelta - speedDampingReductionWithNakamaPerSecond * Time.deltaTime);
             playerSpeed -= extraDelta;
             playerSpeed = Mathf.Max(0f, playerSpeed);
         }
     }
 
-    private void MoveVertical()//ã‰º‚ÌˆÚ“®ˆ—
+    private void MoveVertical()//ä¸Šä¸‹ã®ç§»å‹•å‡¦ç†
     {
         if(playerController == null) return;
-        if(!playerController.started) return;//ƒXƒ^[ƒg‚µ‚Ä‚¢‚È‚¯‚ê‚ÎÀs‚µ‚È‚¢
-        if (playerController.isTouchingGround && playerController.movingToDownward) return;// ’n–Ê‚ÉÚ‚µ‚Ä‚¢‚Ä‰º•ûŒü‚Ìê‡‚ÍˆÚ“®‚µ‚È‚¢
-        //‘€ì‚²‚Æ‚ÉƒxƒNƒgƒ‹‚ğ•Ï‚¦‚é
-        //‚Ç‚¿‚ç‚à‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢‚©A—¼•û‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚Íã‰º‚ÌˆÚ“®‚Í”­¶‚µ‚È‚¢
+        if(!playerController.started) return;//ã‚¹ã‚¿ãƒ¼ãƒˆã—ã¦ã„ãªã‘ã‚Œã°å®Ÿè¡Œã—ãªã„
+        if (playerController.isTouchingGround && playerController.movingToDownward) return;// åœ°é¢ã«æ¥ã—ã¦ã„ã¦ä¸‹æ–¹å‘ã®å ´åˆã¯ç§»å‹•ã—ãªã„
+        //æ“ä½œã”ã¨ã«ãƒ™ã‚¯ãƒˆãƒ«ã‚’å¤‰ãˆã‚‹
+        //ã©ã¡ã‚‰ã‚‚æŠ¼ã•ã‚Œã¦ã„ãªã„ã‹ã€ä¸¡æ–¹æŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ä¸Šä¸‹ã®ç§»å‹•ã¯ç™ºç”Ÿã—ãªã„
         int sign = -1;
         if (playerController.movingToUpward) sign = 1;
         else if (playerController.movingToDownward) sign = -1;
@@ -141,7 +169,7 @@ public class PlayerMovementHandler : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + verticalMovement * sign, 0);
     }
 
-    private void UpdatePlayerPos()// ƒvƒŒƒCƒ„[‚ÌŒ»İˆÊ’u‚ğXV‚·‚é
+    private void UpdatePlayerPos()// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç¾åœ¨ä½ç½®ã‚’æ›´æ–°ã™ã‚‹
     {
         playerPos = transform.position;
         if (moveCamera != null) moveCamera.Move(playerPos.x, playerPos.y);

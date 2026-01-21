@@ -4,7 +4,7 @@ using UnityEngine;
 namespace HandmadeLibrary.DataStore
 {
     /// <summary>
-    /// ƒf[ƒ^ƒx[ƒX‚ğŠO•”‚©‚ç‚ÌQÆ‚·‚é‚½‚ß‚ÌŠî”Õ
+    /// ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’å¤–éƒ¨ã‹ã‚‰ã®å‚ç…§ã™ã‚‹ãŸã‚ã®åŸºç›¤
     /// </summary>
     public abstract class BaseOfDataStore<T, U> : MonoBehaviour where T : BaseOfDataBase<U> where U : BaseOfData
     {
@@ -13,10 +13,10 @@ namespace HandmadeLibrary.DataStore
             get => dataBase;
         }
         [SerializeField]
-        protected T dataBase;//Œp³‚µ‚Ä‚¢‚éƒNƒ‰ƒX‚Å‚ÍƒAƒNƒZƒX‚Å‚«‚é‚æ‚¤‚É‚·‚é
+        protected T dataBase;//ç¶™æ‰¿ã—ã¦ã„ã‚‹ã‚¯ãƒ©ã‚¹ã§ã¯ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 
         /// <summary>
-        /// –¼‘O‚©‚çƒf[ƒ^ƒx[ƒX‚ğæ“¾‚·‚é
+        /// åå‰ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’å–å¾—ã™ã‚‹
         /// </summary>
 
         public U GetDataByName(string name)
@@ -27,7 +27,7 @@ namespace HandmadeLibrary.DataStore
         }
 
         /// <summary>
-        /// Id‚ğ—p‚¢‚Äƒf[ƒ^ƒx[ƒX‚ğæ“¾
+        /// Idã‚’ç”¨ã„ã¦ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’å–å¾—
         /// </summary>
         
         public U GetDataByID(int id)

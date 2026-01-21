@@ -3,10 +3,10 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.InitialStatus.Player
 {
     /// <summary>
-    /// �v���C���[�̃X�e�[�^�X�̏����l
-    /// �X�s�[�h����A���b�̑��x�̌����ʁA�Q�[���J�n���̏����x�̍ő�l�A�㉺�ړ��̃X�s�[�h
-    /// ���Ԃ̐l���̏���A���Ԃ�����Ƃ��̃o�t�̕��U�A���Ԃ�����Ƃ��̖��b�̑��x�����̌�����
-    /// �U���œ|�����m�萔�A��V�̊����̑���
+    /// プレイヤーのステータスの初期値
+    /// スピード上限、毎秒の速度の減衰量、ゲーム開始時の初速度の最大値、上下移動のスピード
+    /// 仲間の人数の上限、仲間がいるときのバフの分散、仲間がいるときの毎秒の速度減衰の減少量
+    /// 攻撃で倒される確定数、報酬の割合の増加
     /// </summary>
     [CreateAssetMenu(menuName = "Data/InitialStatus/Player")]
     public class PlayerInitialStatusData : BaseOfInitialStatusData

@@ -3,11 +3,11 @@ using HandmadeLibrary.DataBase.InitialStatus.Player;
 namespace HandmadeLibrary.DataStore.Player
 {
     /// <summary>
-    /// PlayerStatusDataStore ‚Í PlayerStatusDataBase ‚Æ PlayerInitialStatusData ‚ğˆµ‚¤ DataStore
+    /// PlayerStatusDataStore ã¯ PlayerStatusDataBase ã¨ PlayerInitialStatusData ã‚’æ‰±ã† DataStore
     /// </summary>
     public class PlayerStatusDataStore : BaseOfDataStore<PlayerStatusDataBase, PlayerInitialStatusData> { }
-    /*•×‹­ƒƒ‚FMonoBehaviour‚ÌŒp³
-     * ƒWƒFƒlƒŠƒbƒNŒ^‚ÌƒNƒ‰ƒX‚É‚ÍAMonoBehaviour‚ğŒp³‚³‚¹‚é‚±‚Æ‚ª‚Å‚«‚È‚¢B
-     * ÅI“I‚ÉƒXƒNƒŠƒvƒg‚Æ‚µ‚ÄUnity‘¤‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉƒAƒ^ƒbƒ`‚³‚ê‚éƒNƒ‰ƒX‚Å‚ÍAƒWƒFƒlƒŠƒbƒNŒ^‚Ìg—p‚ğ”ğ‚¯‚é•K—v‚ª‚ ‚éB
+    /*å‹‰å¼·ãƒ¡ãƒ¢ï¼šMonoBehaviourã®ç¶™æ‰¿
+     * ã‚¸ã‚§ãƒãƒªãƒƒã‚¯å‹ã®ã‚¯ãƒ©ã‚¹ã«ã¯ã€MonoBehaviourã‚’ç¶™æ‰¿ã•ã›ã‚‹ã“ã¨ãŒã§ããªã„ã€‚
+     * æœ€çµ‚çš„ã«ã‚¹ã‚¯ãƒªãƒ—ãƒˆã¨ã—ã¦Unityå´ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã‚‹ã‚¯ãƒ©ã‚¹ã§ã¯ã€ã‚¸ã‚§ãƒãƒªãƒƒã‚¯å‹ã®ä½¿ç”¨ã‚’é¿ã‘ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
      */
 }

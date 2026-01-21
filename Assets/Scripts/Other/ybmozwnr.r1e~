@@ -2,25 +2,25 @@ using UnityEngine;
 
 public class MoveCamera : MonoBehaviour
 {
-    [Tooltip("ƒJƒƒ‰‚ğƒvƒŒƒCƒ„[‚É‡‚í‚¹‚Ä“®‚©‚·")]
+    [Tooltip("ã‚«ãƒ¡ãƒ©ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«åˆã‚ã›ã¦å‹•ã‹ã™")]
     public bool summary;
 
-    // ƒAƒ^ƒbƒ`
+    // ã‚¢ã‚¿ãƒƒãƒ
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
 
-    // •Ï”
+    // å¤‰æ•°
     [SerializeField] private float zOffset;
 
     private void Start()
     {
-        //ˆÊ’u‚ğ‰Šú‰»
+        //ä½ç½®ã‚’åˆæœŸåŒ–
         transform.position = new Vector3(0, 0, zOffset);
     }
 
     private void Update()
     {
-        // ƒJƒƒ‰‚ªƒvƒŒƒCƒ„[‚æ‚èŒã‚ë‚É‚¢‚éê‡AxÀ•W‚ğƒvƒŒƒCƒ„[‚Æ“¯‚¶‚É‚·‚éB
-        // yÀ•W‚Íí‚É“¯‚¶‚É‚·‚éB
+        // ã‚«ãƒ¡ãƒ©ãŒãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ˆã‚Šå¾Œã‚ã«ã„ã‚‹å ´åˆã€xåº§æ¨™ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨åŒã˜ã«ã™ã‚‹ã€‚
+        // yåº§æ¨™ã¯å¸¸ã«åŒã˜ã«ã™ã‚‹ã€‚
         if (transform.position.x < playerMovementHandler.playerPos.x)
         {
             transform.position = new Vector3(playerMovementHandler.playerPos.x, playerMovementHandler.playerPos.y, zOffset);

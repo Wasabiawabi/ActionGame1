@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class StageObjectHandler : MonoBehaviour
 {
-    [Tooltip("ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚Ì¶¬‚ğ‚·‚é.")]
+    [Tooltip("ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã‚’ã™ã‚‹.")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     [SerializeField] private DataSearchHandler dataSearchHandler;
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
+    [SerializeField] private UpgradesLevelHandler upgradesLevelHandler; // è¿½åŠ : ãƒ¬ãƒ™ãƒ«å‚ç…§ç”¨
+    [SerializeField] private PlayerGameOverAnimationHandler playerGameOverAnimationHandler;
 
-    //ƒvƒŒƒCƒ„[‚Ìî•ñ‚È‚Ç
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æƒ…å ±ãªã©
     [SerializeField] private CircleCollider2D playerCollider;
     [SerializeField] private Camera mainCamera;
 
-    //•Ï”
+    //å¤‰æ•°
     [SerializeField] private GameObject[] stageObjectPrefabs;
     private List<float> minSpawnProbablity = new List<float>();
     private List<float> incrementSpawnProbablityPerSecond = new List<float>();
@@ -25,73 +27,90 @@ public class StageObjectHandler : MonoBehaviour
 
     private void Start()
     {
-        // QÆƒ`ƒFƒbƒN
+        // å¿…è¦ãªå‚ç…§ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
         if (dataSearchHandler == null)
         {
-            Debug.LogError("StageObjectHandler: dataSearchHandler ‚ªŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚Ü‚¹‚ñBInspector‚Åİ’è‚µ‚Ä‚­‚¾‚³‚¢B");
-            enabled = false;
-            return;
-        }
-        if (dataSearchHandler.stageObjectStatusDataStore == null || dataSearchHandler.stageObjectStatusDataStore.DataBase == null)
-        {
-            Debug.LogError("StageObjectHandler: stageObjectStatusDataStore ‚Ü‚½‚Í‚»‚Ì DataBase ‚ªŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚Ü‚¹‚ñB");
-            enabled = false;
-            return;
-        }
-        if (dataSearchHandler.stageObjectStatusDataStore.DataBase.DataList == null)
-        {
-            Debug.LogError("StageObjectHandler: DataBase.DataList ‚ª null ‚Å‚·B");
+            Debug.LogError("StageObjectHandler: dataSearchHandler ãŒå‰²ã‚Šå½“ã¦ã‚‰ã‚Œã¦ã„ã¾ã›ã‚“ã€‚Inspectorã§è¨­å®šã—ã¦ãã ã•ã„ã€‚");
             enabled = false;
             return;
         }
 
-        int capacity = dataSearchHandler.stageObjectStatusDataStore.DataBase.DataList.Count;
+        var store = dataSearchHandler.stageObjectStatusDataStore;
+        if (store == null)
+        {
+            Debug.LogError("StageObjectHandler: dataSearchHandler.stageObjectStatusDataStore ãŒ null ã§ã™ã€‚");
+            enabled = false;
+            return;
+        }
 
-        // ƒŠƒXƒg‚ğƒNƒŠƒA‚µ‚Ä‚©‚ç‰Šú‰»iÄÀs‚É‘Ï‚¦‚éj
+        var db = store.DataBase;
+        if (db == null || db.DataList == null)
+        {
+            Debug.LogError("StageObjectHandler: stageObjectStatusDataStore.DataBase ã¾ãŸã¯ DataList ãŒ null ã§ã™ã€‚DataBase ã‚¢ã‚»ãƒƒãƒˆãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèªã—ã¦ãã ã•ã„ã€‚");
+            enabled = false;
+            return;
+        }
+
+        int capacity = db.DataList.Count;
+
+        // ãƒªã‚¹ãƒˆã‚’åˆæœŸåŒ–ï¼ˆå†èµ·å‹•æ™‚ã®æ®‹å­˜ã‚’é˜²ãï¼‰
         minSpawnProbablity.Clear();
         incrementSpawnProbablityPerSecond.Clear();
         nowSpawnProbablity.Clear();
 
-        // ŠeID‚²‚Æ‚ÌoŒ»Šm—¦‚Ì‰Šú’l‚ğİ’è
+        // ãƒ¬ãƒ™ãƒ«å–å¾—ï¼ˆå­˜åœ¨ã—ãªã„å ´åˆã¯0ï¼‰
+        int levelMultiplier = 0;
+        if (upgradesLevelHandler != null && upgradesLevelHandler.stageObjectUpgradeData != null)
+        {
+            levelMultiplier = Mathf.Max(0, upgradesLevelHandler.stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel);
+        }
+
+        float multiplier = Mathf.Pow(1.2f, levelMultiplier);
+
+        // ãã‚Œãã‚Œã®Idã”ã¨ã®å‡ºç¾ç¢ºç‡ã®åˆæœŸå€¤ã‚’è¨­å®šã™ã‚‹
         for (int i = 0; i < capacity; i++)
         {
-            var statusData = dataSearchHandler.stageObjectStatusDataStore.GetDataByID(i);
+            var statusData = store.GetDataByID(i);
             if (statusData == null)
             {
-                minSpawnProbablity.Add(0f);
-                incrementSpawnProbablityPerSecond.Add(0f);
-                nowSpawnProbablity.Add(0f);
+                // null ã®ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’å…¥ã‚Œã¦ç¶šè¡Œ
+                minSpawnProbablity.Add(0.0f);
+                incrementSpawnProbablityPerSecond.Add(0.0f);
+                nowSpawnProbablity.Add(0.0f);
                 continue;
             }
 
-            float min = statusData.MinInstantiateProbability;
-            float inc = statusData.InstantiateProbabilityIncrementPerSecond;
+            float minVal = statusData.MinInstantiateProbability;
+            float incVal = statusData.InstantiateProbabilityIncrementPerSecond;
 
-            minSpawnProbablity.Add(min);
-            incrementSpawnProbablityPerSecond.Add(inc);
-            nowSpawnProbablity.Add(min);
+            // ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ã¦å¢—åˆ†ã‚’ 1.2^level å€ã™ã‚‹
+            incVal *= multiplier;
+
+            minSpawnProbablity.Add(minVal);
+            incrementSpawnProbablityPerSecond.Add(incVal);
+            nowSpawnProbablity.Add(minSpawnProbablity[i]);
         }
     }
 
     private void Update()
     {
-        if(playerController.started)CalcSpawnProbablity();
+        if(playerController.started && !playerGameOverAnimationHandler.isgameovered)CalcSpawnProbablity();
     }
 
-    private void CalcSpawnProbablity()//oŒ»Šm—¦‚ğŒvZ‚·‚é
+    private void CalcSpawnProbablity()//å‡ºç¾ç¢ºç‡ã‚’è¨ˆç®—ã™ã‚‹
     {
         for (int i = 0; i < nowSpawnProbablity.Count; i++)
         {
             nowSpawnProbablity[i] += incrementSpawnProbablityPerSecond[i] * Time.deltaTime;
 
-            //oŒ»Šm—¦‚ª—”‚æ‚è‘‚¦‚½‚çoŒ»‚³‚¹‚é
+            //å‡ºç¾ç¢ºç‡ãŒä¹±æ•°ã‚ˆã‚Šå¢—ãˆãŸã‚‰å‡ºç¾ã•ã›ã‚‹
             float rand = Random.Range(0f, 100f);
             if (nowSpawnProbablity[i] >= rand)
             {
-                //‰æ–ÊŠO‚ÌÀ•W‚ğŒvZ‚·‚é
+                //ç”»é¢å¤–ã®åº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹
                 if (mainCamera == null || playerCollider == null)
                 {
-                    Debug.LogWarning("StageObjectHandler: mainCamera ‚Ü‚½‚Í playerCollider ‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñBInstantiate ‚ğƒXƒLƒbƒv‚µ‚Ü‚·B");
+                    Debug.LogWarning("StageObjectHandler: mainCamera ã¾ãŸã¯ playerCollider ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚Instantiate ã‚’ã‚¹ã‚­ãƒƒãƒ—ã—ã¾ã™ã€‚");
                     continue;
                 }
 
@@ -99,10 +118,10 @@ public class StageObjectHandler : MonoBehaviour
                 spawnPosition.x += stageObjectPrefabs[i].transform.lossyScale.x;
                 spawnPosition.z = 0f;
 
-                //ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚ğoŒ»‚³‚¹‚é
+                //ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‡ºç¾ã•ã›ã‚‹
                 if (stageObjectPrefabs == null || i >= stageObjectPrefabs.Length || stageObjectPrefabs[i] == null)
                 {
-                    Debug.LogWarning($"StageObjectHandler: stageObjectPrefabs[{i}] ‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢‚½‚ß Instantiate ‚ğƒXƒLƒbƒv‚µ‚Ü‚·B");
+                    Debug.LogWarning($"StageObjectHandler: stageObjectPrefabs[{i}] ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„ãŸã‚ Instantiate ã‚’ã‚¹ã‚­ãƒƒãƒ—ã—ã¾ã™ã€‚");
                 }
                 else
                 {
@@ -110,17 +129,17 @@ public class StageObjectHandler : MonoBehaviour
                     var mover = stageObject.GetComponent<StageObjectMovementHandler>();
                     if (mover == null)
                     {
-                        Debug.LogError($"StageObjectHandler: ƒvƒŒƒnƒu '{stageObjectPrefabs[i]?.name}' ‚É StageObjectMovementHandler ‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+                        Debug.LogError($"StageObjectHandler: ãƒ—ãƒ¬ãƒãƒ– '{stageObjectPrefabs[i]?.name}' ã« StageObjectMovementHandler ãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
                     }
                     else
                     {
-                        // playerMovementHandler ‚ª‚ ‚ê‚Î playerSpeed ‚ğ“n‚·i–³‚¯‚ê‚Î 0 ‚ğ“n‚·j
+                        // playerMovementHandler ãŒã‚ã‚Œã° playerSpeed ã‚’æ¸¡ã™ï¼ˆç„¡ã‘ã‚Œã° 0 ã‚’æ¸¡ã™ï¼‰
                         float playerSpeed = (playerMovementHandler != null) ? playerMovementHandler.playerSpeed : 0f;
-                        mover.Initialize(i, playerSpeed, mainCamera, playerBuffHandler, dataSearchHandler);
+                        mover.Initialize(i, playerSpeed, mainCamera, playerBuffHandler, dataSearchHandler, upgradesLevelHandler);
                     }
                 }
 
-                //oŒ»Šm—¦‚ğ‰Šú‰»‚·‚é
+                //å‡ºç¾ç¢ºç‡ã‚’åˆæœŸåŒ–ã™ã‚‹
                 nowSpawnProbablity[i] = minSpawnProbablity[i];
             }
         }

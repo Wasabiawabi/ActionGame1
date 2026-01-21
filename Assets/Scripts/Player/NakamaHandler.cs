@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class NakamaHandler : MonoBehaviour
 {
-    [Tooltip("’‡ŠÔ‚ÌŒø‰Ê‚ğŒˆ‚ß‚é.‚Ü‚½A’‡ŠÔ‚Ìl”‚Ì‘Œ¸‚ÌŠÇ—‚ğ‚·‚é")]
+    [Tooltip("ä»²é–“ã®åŠ¹æœã‚’æ±ºã‚ã‚‹.ã¾ãŸã€ä»²é–“ã®äººæ•°ã®å¢—æ¸›ã®ç®¡ç†ã‚’ã™ã‚‹")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     [SerializeField] private PlayerStatus playerStatus;
 
-    //•Ï”
+    //å¤‰æ•°
     public int nakamaNum;
     public float maxMaintainNakamaDuration;
     public float maintainNakamaDuration;
@@ -23,7 +23,7 @@ public class NakamaHandler : MonoBehaviour
         CalcNakamaEffect();
     }
 
-    public void IncrementNakamaNum()//’‡ŠÔ‚ÉG‚ê‚½‚Æ‚«‚ÉÀs
+    public void IncrementNakamaNum()//ä»²é–“ã«è§¦ã‚ŒãŸã¨ãã«å®Ÿè¡Œ
     {
         int idx = playerStatus.playerStatusName.IndexOf("maxNakama");
         float maxNakama = playerStatus.playerStatusValue[idx];
@@ -31,22 +31,22 @@ public class NakamaHandler : MonoBehaviour
         maintainNakamaDuration = maxMaintainNakamaDuration;
     }
 
-    private void CalcMaintainNakamaDuration()//’‡ŠÔ‚ª1•CŒ¸‚é‚Ü‚Å‚ÌŠÔ‚ğŒvZ‚·‚é
+    private void CalcMaintainNakamaDuration()//ä»²é–“ãŒ1åŒ¹æ¸›ã‚‹ã¾ã§ã®æ™‚é–“ã‚’è¨ˆç®—ã™ã‚‹
     {
-        if (nakamaNum <= 0)//‰‚ß‚Ì’l‚Ì“ü—Í‚ğ‚µ‚Â‚ÂA’‡ŠÔ‚ª‚¢‚È‚¢ê‡‚Ìˆ—‚ğ‚·‚é
+        if (nakamaNum <= 0)//åˆã‚ã®å€¤ã®å…¥åŠ›ã‚’ã—ã¤ã¤ã€ä»²é–“ãŒã„ãªã„å ´åˆã®å‡¦ç†ã‚’ã™ã‚‹
         {
             maintainNakamaDuration = maxMaintainNakamaDuration;
             return;
         }
         maintainNakamaDuration -= Time.deltaTime;
-        if(maintainNakamaDuration <= 0)// c‚èŠÔ‚ª0‚É‚È‚Á‚½‚çˆê•CŒ¸‚ç‚µ‚ÄŠÔ‚ğXV
+        if(maintainNakamaDuration <= 0)// æ®‹ã‚Šæ™‚é–“ãŒ0ã«ãªã£ãŸã‚‰ä¸€åŒ¹æ¸›ã‚‰ã—ã¦æ™‚é–“ã‚’æ›´æ–°
         {
             nakamaNum--;
             maintainNakamaDuration = maxMaintainNakamaDuration;
         }
     }
 
-    private void CalcNakamaEffect()//’‡ŠÔ‚ª‚¢‚é‚±‚Æ‚É‚æ‚éŒø‰Ê‚ğŒvZ‚·‚é.Œø‰Ê‚Í’‡ŠÔ1•C‚²‚Æ‚É‘‚¦‚é
+    private void CalcNakamaEffect()//ä»²é–“ãŒã„ã‚‹ã“ã¨ã«ã‚ˆã‚‹åŠ¹æœã‚’è¨ˆç®—ã™ã‚‹.åŠ¹æœã¯ä»²é–“1åŒ¹ã”ã¨ã«å¢—ãˆã‚‹
     {
         int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];

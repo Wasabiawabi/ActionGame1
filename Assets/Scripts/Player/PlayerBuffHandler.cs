@@ -5,43 +5,44 @@ using UnityEngine;
 
 public class PlayerBuffHandler : MonoBehaviour
 {
-    [Tooltip("ƒvƒŒƒCƒ„[‚Ìƒoƒt‚ÌŒø‰Ê‚Æc‚èŠÔ‚ğŠÇ—‚·‚é.")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒãƒ•ã®åŠ¹æœã¨æ®‹ã‚Šæ™‚é–“ã‚’ç®¡ç†ã™ã‚‹.")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerStatus playerStatus;
 
-    //•Ï”
+    //å¤‰æ•°
     public float maintainSpeedDurationSum;
     public bool maintaining = false;
 
     // Update is called once per frame
     void Update()
     {
-        //ƒXƒs[ƒh‚Ìc‚èˆÛŠÔ‚ğŒvZ
+        //ã‚¹ãƒ”ãƒ¼ãƒ‰ã®æ®‹ã‚Šç¶­æŒæ™‚é–“ã‚’è¨ˆç®—
         maintaining = maintainSpeedDurationSum > 0;
         maintainSpeedDurationSum = Mathf.Max(0, maintainSpeedDurationSum - Time.deltaTime);
     }
 
-    public void IncrementSpeed(float incrementNum)//ˆÚ“®‘¬“x‚Ì‰ÁZ
+    public void IncrementSpeed(float incrementNum)//ç§»å‹•é€Ÿåº¦ã®åŠ ç®—
     {
         int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
         playerMovementHandler.playerSpeed += incrementNum / (1 + buffDampingWithNakama);
     }
 
-    public void MultiplySpeed(float multiplyNum)//ˆÚ“®‘¬“x‚Ì”{—¦‹­‰»
+    public void MultiplySpeed(float multiplyNum)//ç§»å‹•é€Ÿåº¦ã®å€ç‡å¼·åŒ–
     {
         int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
-        playerMovementHandler.playerSpeed *= multiplyNum / (1 + buffDampingWithNakama);
+        Debug.Log(buffDampingWithNakama);
+        playerMovementHandler.playerSpeed *= multiplyNum;
     }
 
     public void UpdateMaintainSpeed(float dulation)
     {
         int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
-        maintainSpeedDurationSum += dulation / (1 + buffDampingWithNakama);
+        maintainSpeedDurationSum += dulation;
     }
 }

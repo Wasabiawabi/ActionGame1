@@ -4,7 +4,7 @@ using HandmadeLibrary.DataStore.Upgrade;
 using UnityEngine;
 
 /// <summary>
-/// データを検索する機能
+/// 繝�繝ｼ繧ｿ繧呈､懃ｴ｢縺吶ｋ讖溯�ｽ
 /// </summary>
 public class DataSearchHandler : MonoBehaviour
 {

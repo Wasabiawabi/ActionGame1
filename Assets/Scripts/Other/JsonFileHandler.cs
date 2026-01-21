@@ -5,7 +5,7 @@ using UnityEngine;
 namespace HandmadeLibrary.Json
 {
     /// <summary>
-    /// Jsonファイルでセーブデータを扱うためのクラス
+    /// Json繝輔ぃ繧､繝ｫ縺ｧ繧ｻ繝ｼ繝悶ョ繝ｼ繧ｿ繧呈桶縺�縺溘ａ縺ｮ繧ｯ繝ｩ繧ｹ
     /// </summary>
     public class JsonFileHandler
     {

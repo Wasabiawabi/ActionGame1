@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Tooltip("ƒXƒy[ƒXƒL[‚Åã‚ÉˆÚ“®.\nAƒL[‚Å‚»‚Ìê‚É~‚Ü‚é.")]
-    //ƒAƒ^ƒbƒ`
+    [Tooltip("ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼ã§ä¸Šã«ç§»å‹•.\nAã‚­ãƒ¼ã§ãã®å ´ã«æ­¢ã¾ã‚‹.")]
+    //ã‚¢ã‚¿ãƒƒãƒ
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private CapsuleCollider2D groundTouchTrigger;
 
-    //g‚¤•Ï”
+    //ä½¿ã†å¤‰æ•°
     [SerializeField] private bool summary;
     public bool movingToUpward = false;
     public bool movingToDownward = false;
@@ -23,45 +23,45 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        //Enter‚ª‰Ÿ‚³‚ê‚½‚çƒXƒ^[ƒg
+        //EnterãŒæŠ¼ã•ã‚ŒãŸã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ
         if(Input.GetKeyDown(KeyCode.Return))
         {
             started = true;
             playerMovementHandler.GameStart();
         }
 
-        //WƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éŠÔAã‚ÉˆÚ“®‚µ‘±‚¯‚é
+        //Wã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹é–“ã€ä¸Šã«ç§»å‹•ã—ç¶šã‘ã‚‹
         if(Input.GetKeyDown(KeyCode.W))
         {
             movingToUpward = true;
             isTouchingGround = false;
         }
 
-        //WƒL[‚ª—£‚³‚ê‚½‚çAã‚Ö‚ÌˆÚ“®‚ğ~‚ß‚é
+        //Wã‚­ãƒ¼ãŒé›¢ã•ã‚ŒãŸã‚‰ã€ä¸Šã¸ã®ç§»å‹•ã‚’æ­¢ã‚ã‚‹
         if(Input.GetKeyUp(KeyCode.W))
         {
             movingToUpward = false;
         }
 
-        //SƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éŠÔA‰º‚ÉˆÚ“®‚µ‘±‚¯‚é
+        //Sã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹é–“ã€ä¸‹ã«ç§»å‹•ã—ç¶šã‘ã‚‹
         if(Input.GetKeyDown(KeyCode.S))
         {
             movingToDownward = true;
         }
 
-        //SƒL[‚ª—£‚³‚ê‚½‚çA‰º‚Ö‚ÌˆÚ“®‚ğ~‚ß‚é
+        //Sã‚­ãƒ¼ãŒé›¢ã•ã‚ŒãŸã‚‰ã€ä¸‹ã¸ã®ç§»å‹•ã‚’æ­¢ã‚ã‚‹
         if(Input.GetKeyUp(KeyCode.S))
         {
             movingToDownward = false;
         }
 
-        //Aƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éŠÔ‚ÍA‚»‚Ìê‚É~‚Ü‚é
+        //Aãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹é–“ã¯ã€ãã®å ´ã«æ­¢ã¾ã‚‹
         if(Input.GetKeyDown(KeyCode.A))
         {
             stopped = true;
         }
 
-        //Aƒ{ƒ^ƒ“‚ª—£‚³‚ê‚½‚çAÄ‚ÑˆÚ“®‚ğŠJn‚·‚é
+        //Aãƒœã‚¿ãƒ³ãŒé›¢ã•ã‚ŒãŸã‚‰ã€å†ã³ç§»å‹•ã‚’é–‹å§‹ã™ã‚‹
         if(Input.GetKeyUp(KeyCode.A))
         {
             stopped = false;
@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.CompareTag("Ground")) return;
         isTouchingGround = true;
        //Debug.Log("touch");
     }

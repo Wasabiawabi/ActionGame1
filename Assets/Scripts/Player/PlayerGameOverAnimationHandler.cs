@@ -1,39 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PlayerGameOverAnimationHandler : MonoBehaviour
 {
-    [Tooltip("ƒvƒŒƒCƒ„[‚ÌƒQ[ƒ€ƒI[ƒo[”»’è‚ÆƒAƒjƒ[ƒVƒ‡ƒ“‚ğŠÇ—‚·‚é.\nƒQ[ƒ€ƒI[ƒo[”»’è‚ÍAƒXƒ^[ƒg‚·‚é‚Ü‚Å‚Ís‚í‚È‚¢.")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼åˆ¤å®šã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ç®¡ç†ã™ã‚‹.\nã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼åˆ¤å®šã¯ã€ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹ã¾ã§ã¯è¡Œã‚ãªã„.")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private GameObject gameoveredSummary;
 
-    //•Ï”
+    //å¤‰æ•°
     [SerializeField] private float maxSecondToGameOver = 2f;
     private float secondToGameOver = 2f;
+    public bool isgameovered = false;
 
+    float totalMoney = 0f; // è¿½åŠ : ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®åˆè¨ˆé‡‘é¡
+    Vector3 offSet;
     private void Update()
     {
-        //ƒXƒ^[ƒgÏ‚İ‚ÅAˆÚ“®‚µ‚Ä‚¢‚È‚¯‚ê‚ÎƒJƒEƒ“ƒg‚ğs‚¤
-        if(playerController.started && playerMovementHandler.playerSpeed == 0)CalcGameOver();
+        //ã‚¹ã‚¿ãƒ¼ãƒˆæ¸ˆã¿ã§ã€ç§»å‹•ã—ã¦ã„ãªã‘ã‚Œã°ã‚«ã‚¦ãƒ³ãƒˆã‚’è¡Œã†
+        if(playerController.started && playerMovementHandler.playerSpeed == 0 && !isgameovered)CalcGameOver();
 
-        //ƒQ[ƒ€ƒI[ƒo[”»’è
-        if (secondToGameOver <= 0) GameOverAnimation();
-
-        //ˆÚ“®‚µ‚Ä‚¢‚ê‚ÎƒŠƒZƒbƒg‚µ‘±‚¯‚é
+        //ç§»å‹•ã—ã¦ã„ã‚Œã°ãƒªã‚»ãƒƒãƒˆã—ç¶šã‘ã‚‹
         if (playerMovementHandler.playerSpeed != 0) secondToGameOver = maxSecondToGameOver;
     }
 
-    private void CalcGameOver()//ƒQ[ƒ€ƒI[ƒo[‚Ü‚Å‚Ìc‚èŠÔ‚ğŒvZ‚·‚é
+    private void CalcGameOver()//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã¾ã§ã®æ®‹ã‚Šæ™‚é–“ã‚’è¨ˆç®—ã™ã‚‹
     {
         secondToGameOver -= Time.deltaTime;
+        if (secondToGameOver <= 0) 
+        {
+            secondToGameOver = 0;
+            isgameovered = true;
+            GameOverAnimation();
+        }
     }
 
-    private void GameOverAnimation()//ƒQ[ƒ€ƒI[ƒo[‚Ìˆ—
+    private void GameOverAnimation()//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®å‡¦ç†
     {
+        Debug.Log("Game Over");
 
+        float distanceMoved = Mathf.Abs(transform.position.x + offSet.x); // ç§»å‹•è·é›¢ã®è¨ˆç®—
+        moneyManager.totalMoney = PlayerPrefs.GetFloat("TotalMoney", 0f); // ä¿å­˜ã•ã‚ŒãŸåˆè¨ˆé‡‘é¡ã‚’å–å¾—
+        moneyManager.totalMoney += distanceMoved; // ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®ç§»å‹•è·é›¢ã‚’åˆè¨ˆé‡‘é¡ã«åŠ ç®—
+        PlayerPrefs.SetFloat("TotalMoney", moneyManager.totalMoney); // åˆè¨ˆé‡‘é¡ã‚’PlayerPrefsã«ä¿å­˜
+        Debug.Log("Total Money Collected: " + moneyManager.totalMoney);
+
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ç”»é¢ã‚’è¡¨ç¤º
+        gameoveredSummary.SetActive(true);
+        gameoveredSummary.GetComponent<GameoveredSummaryManager>().SetupSummary(moneyManager.totalMoney, distanceMoved);
     }
 }

@@ -1,17 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class StageObjectMovementHandler : MonoBehaviour
 {
-    [Tooltip("ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚ª¶¬‚³‚ê‚½‚Æ‚«‚ÉY²‚ÌˆÊ’u‚ÆˆÚ“®‘¬“x‚ğŒˆ‚ß‚é.")]
+    [Tooltip("ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç”Ÿæˆã•ã‚ŒãŸã¨ãã«Yè»¸ã®ä½ç½®ã¨ç§»å‹•é€Ÿåº¦ã‚’æ±ºã‚ã‚‹.")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg‚È‚Ç
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆãªã©
     private Camera mainCamera;
     private PlayerBuffHandler playerBuffHandler;
     private DataSearchHandler dataSearchHandler;
-    //•Ï”
+    private UpgradesLevelHandler upgradesLevelHandler;
+    //å¤‰æ•°
     private int objID;
     private float playerXSpeed;
     private float minWindY = 3f;
@@ -27,59 +27,61 @@ public class StageObjectMovementHandler : MonoBehaviour
     float speedIncremnt;
     float speedMultiply;
     float maintainSpeedtime;
-    float multipleBuffPercent;
+    int multipleBuffPercentLevel;
+    int maxMultipleBuffLevel;
+    int increaseBuffEffectLevel;
     int maxMultipleBuff;
-    float increamentBuffMultiplyer;
-    float multipleBuffMultiplyer;
+    int multipleBuffPercent;
 
-    public void Initialize(int id, float playerSpeed, Camera mainCamera, PlayerBuffHandler playerBuffHandler, DataSearchHandler dataSearchHandler) // ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»
+    public void Initialize(int id, float playerSpeed, Camera mainCamera, PlayerBuffHandler playerBuffHandler, DataSearchHandler dataSearchHandler, UpgradesLevelHandler upgradesLevelHandler) // ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–
     {
         this.objID = id;
         this.playerXSpeed = playerSpeed;
-        this.mainCamera = mainCamera ?? Camera.main; // ƒtƒH[ƒ‹ƒoƒbƒN
-        this.playerBuffHandler = playerBuffHandler ?? null; // ƒtƒH[ƒ‹ƒoƒbƒN
-        this.dataSearchHandler = dataSearchHandler ?? null; // ƒtƒH[ƒ‹ƒoƒbƒN
+        this.mainCamera = mainCamera ?? Camera.main; // ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯
+        this.playerBuffHandler = playerBuffHandler ?? null; // ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯
+        this.dataSearchHandler = dataSearchHandler ?? null; // ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯
+        this.upgradesLevelHandler = upgradesLevelHandler ?? null; // ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯
         //Debug.Log("minWindY" + minWindY + "minBallonPlaneY" + minBallonPlaneY);
 
         if (this.mainCamera == null)
         {
-            Debug.LogWarning($"StageObjectMovementHandler.Initialize: mainCamera ‚ª null ‚Å‚·BCamera.main ‚à null ‚Ìê‡AYˆÊ’uŒvZ‚ªŠú‘Ò’Ê‚è“®ì‚µ‚È‚¢‰Â”\«‚ª‚ ‚è‚Ü‚·BobjID={id}");
+            Debug.LogWarning($"StageObjectMovementHandler.Initialize: mainCamera ãŒ null ã§ã™ã€‚Camera.main ã‚‚ null ã®å ´åˆã€Yä½ç½®è¨ˆç®—ãŒæœŸå¾…é€šã‚Šå‹•ä½œã—ãªã„å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚objID={id}");
         }
 
         CalcYAxis();
         CalcMoveSpeed();
         CalcBuff();
-        buffid = Random.Range(0, availableBuffCnt - 1); //  —^‚¦‚éƒoƒt‚Ìí—Ş‚ğ‚±‚±‚ÅŒˆ‚ß‚é
+        buffid = Random.Range(0, availableBuffCnt - 1); //  ä¸ãˆã‚‹ãƒãƒ•ã®ç¨®é¡ã‚’ã“ã“ã§æ±ºã‚ã‚‹
         isInitialized = true;
-        // ƒfƒoƒbƒOƒƒOiŒÄ‚Ño‚µŠm”Fj
+        // ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ï¼ˆå‘¼ã³å‡ºã—ç¢ºèªï¼‰
         //Debug.Log($"StageObjectMovementHandler.Initialize called: id={id}, playerSpeed={playerSpeed}, mainCamera={(this.mainCamera!=null?"ok":"null")}");
     }
 
-    private void Update() // ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚ÌˆÚ“®ˆ—
+    private void Update() // ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç§»å‹•å‡¦ç†
     {
         if (!isInitialized) return;
         transform.Translate(moveSpeed * Time.deltaTime, Space.World);
     }
 
-    private void CalcYAxis() // ID‚²‚Æ‚ÉYÀ•W‚ÌˆÊ’u‚ğŒvZ‚·‚é
+    private void CalcYAxis() // IDã”ã¨ã«Yåº§æ¨™ã®ä½ç½®ã‚’è¨ˆç®—ã™ã‚‹
     {
-        // ˆÀ‘SF mainCamera ‚ª null ‚Ìê‡‚ÍŠÈˆÕŒÅ’è Y ‚ğg‚¤
+        // å®‰å…¨ï¼š mainCamera ãŒ null ã®å ´åˆã¯ç°¡æ˜“å›ºå®š Y ã‚’ä½¿ã†
         var cam = mainCamera ?? Camera.main;
 
-        if (objID == 0) // ‰ÔA–I‚Ì‘ƒ‚Ìê‡A’n–Ê‚ÉÚ’n‚³‚¹‚é
+        if (objID == 0) // èŠ±ã€èœ‚ã®å·£ã®å ´åˆã€åœ°é¢ã«æ¥åœ°ã•ã›ã‚‹
         {
             float randY = Random.Range(-1.5f, -0.5f);
             transform.position = new Vector3(transform.position.x, randY, transform.position.z);
             return;
         }
-        else if (objID == 2) // –I‚Ì‘ƒ‚Ìê‡A’n–Ê‚©‚ç­‚µ•‚‚©‚¹‚é
+        else if (objID == 2) // èœ‚ã®å·£ã®å ´åˆã€åœ°é¢ã‹ã‚‰å°‘ã—æµ®ã‹ã›ã‚‹
         {
             float rand = Random.Range(0f, 3f);
             transform.position = new Vector3(transform.position.x, rand, transform.position.z);
             return;
         }
 
-        if (objID == 1) // —±‚Ìê‡A©—R‚É‹ó’†‚É•‚‚©‚¹‚é
+        if (objID == 1) // ç²’ã®å ´åˆã€è‡ªç”±ã«ç©ºä¸­ã«æµ®ã‹ã›ã‚‹
         {
             float rand = Random.Range(0f, 1f);
             float y = (cam != null) ? cam.ViewportToWorldPoint(new Vector3(0, rand, 0)).y : 0f;
@@ -88,14 +90,14 @@ public class StageObjectMovementHandler : MonoBehaviour
             return;
         }
 
-        // ViewportToWorldPoint ‚É“KØ‚È z ‚ğ“n‚·iƒJƒƒ‰‚ÆƒIƒuƒWƒFƒNƒg‚Ì‹——£j
+        // ViewportToWorldPoint ã«é©åˆ‡ãª z ã‚’æ¸¡ã™ï¼ˆã‚«ãƒ¡ãƒ©ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è·é›¢ï¼‰
         float zDistance = 0f;
         if (cam != null)
         {
             zDistance = Mathf.Abs(cam.transform.position.z - transform.position.z);
         }
 
-        if (objID == 3) // •—‚Ìê‡A‹ó’†‚É•‚‚©‚¹‚é
+        if (objID == 3) // é¢¨ã®å ´åˆã€ç©ºä¸­ã«æµ®ã‹ã›ã‚‹
         {
             float rand = Random.Range(0f, 1f);
             float y = (cam != null) ? cam.ViewportToWorldPoint(new Vector3(0, rand, zDistance)).y : 0f;
@@ -104,7 +106,7 @@ public class StageObjectMovementHandler : MonoBehaviour
             return;
         }
 
-        if (objID == 4 || objID == 5) // •—‘DA”òs‹@‚Ìê‡A‚ ‚é’ö“x‚‚¢ˆÊ’u‚É•‚‚©‚¹‚é
+        if (objID == 4 || objID == 5) // é¢¨èˆ¹ã€é£›è¡Œæ©Ÿã®å ´åˆã€ã‚ã‚‹ç¨‹åº¦é«˜ã„ä½ç½®ã«æµ®ã‹ã›ã‚‹
         {
             float rand = Random.Range(0f, 1f);
             float y = (cam != null) ? cam.ViewportToWorldPoint(new Vector3(0, rand, zDistance)).y : 0f;
@@ -114,21 +116,21 @@ public class StageObjectMovementHandler : MonoBehaviour
         }
     }
 
-    private void CalcMoveSpeed() // ID‚²‚Æ‚ÉˆÚ“®‘¬“x‚ğŒvZ‚·‚é
+    private void CalcMoveSpeed() // IDã”ã¨ã«ç§»å‹•é€Ÿåº¦ã‚’è¨ˆç®—ã™ã‚‹
     {
-        // ‰ÔA—±A–I‚Ì‘ƒ‚Ìê‡A‘¬“x‚Í0
+        // èŠ±ã€ç²’ã€èœ‚ã®å·£ã®å ´åˆã€é€Ÿåº¦ã¯0
         if (objID == 0 || objID == 1 || objID == 2) moveSpeed = Vector3.zero;
-        // ‹ó’†‚Ìê‡A’è‘¬
+        // ç©ºä¸­ã®å ´åˆã€å®šé€Ÿ
         else if (objID == 3) moveSpeed = new Vector3(1, 0, 0);
-        // •—‘D‚Ìê‡AƒvƒŒƒCƒ„[‚Ì10%
+        // é¢¨èˆ¹ã®å ´åˆã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®10%
         else if (objID == 4) moveSpeed = new Vector3(Mathf.Max(playerXSpeed / 10f, minBallonX), 0, 0);
-        // ”òs‹@‚Ìê‡AˆÚ“®‘¬“x‚ÌÅ’á’l‚©AƒvƒŒƒCƒ„[‚Ì”¼•ª(b’è)
+        // é£›è¡Œæ©Ÿã®å ´åˆã€ç§»å‹•é€Ÿåº¦ã®æœ€ä½å€¤ã‹ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åŠåˆ†(æš«å®š)
         else if (objID == 5) moveSpeed = new Vector3(Mathf.Max(playerXSpeed / 2f, minPlaneX), 0, 0);
     }
 
-    private void CalcBuff() //  ©g‚ªÁ”ï‚³‚ê‚½‚Æ‚«‚É—^‚¦‚ç‚ê“¾‚éƒoƒt‚ğŒvZ‚·‚é
+    private void CalcBuff() //  è‡ªèº«ãŒæ¶ˆè²»ã•ã‚ŒãŸã¨ãã«ä¸ãˆã‚‰ã‚Œå¾—ã‚‹ãƒãƒ•ã‚’è¨ˆç®—ã™ã‚‹
     {
-        // ©g‚ª—^‚¦‚éƒoƒtŒø‰Ê‚Ì‰Šú’l‚ğæ“¾‚·‚é
+        // è‡ªèº«ãŒä¸ãˆã‚‹ãƒãƒ•åŠ¹æœã®åˆæœŸå€¤ã‚’å–å¾—ã™ã‚‹
         var data = dataSearchHandler.stageObjectStatusDataStore.GetDataByID(objID);
         speedIncremnt     = data.SpeedIncrement;
         speedMultiply     = data.SpeedMultiply;
@@ -138,14 +140,66 @@ public class StageObjectMovementHandler : MonoBehaviour
         if (speedMultiply > 0) availableBuff[1] = true;
         if (maintainSpeedtime > 0) availableBuff[2] = true;
 
-        // ©g‚Ìƒoƒt‚Ì«”\‚ÉŠÖ‚í‚éƒAƒbƒvƒOƒŒ[ƒh‚ÌƒŒƒxƒ‹‚ğæ“¾‚·‚é
+        // è‡ªèº«ã®ãƒãƒ•ã®æ€§èƒ½ã«é–¢ã‚ã‚‹ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®ãƒ¬ãƒ™ãƒ«ã‚’å–å¾—ã™ã‚‹
+        increaseBuffEffectLevel = upgradesLevelHandler.stageObjectUpgradeData.increaseBuffEffect;
+        maxMultipleBuffLevel = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
+        multipleBuffPercentLevel = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
 
+        // å®Ÿéš›ã«ä»˜ä¸ã•ã‚Œã‚‹ãƒãƒ•ã®åŠ¹æœã‚’è¨ˆç®—ã™ã‚‹
+        speedIncremnt = Mathf.Pow(speedIncremnt, increaseBuffEffectLevel + 1);
+        speedMultiply = Mathf.Pow(speedMultiply, increaseBuffEffectLevel + 1);
+        maintainSpeedtime = Mathf.Pow(maintainSpeedtime, increaseBuffEffectLevel + 1);
+
+        var data2 = dataSearchHandler.upgradeDataStore.GetDataByID(20);
+        maxMultipleBuff = data2.UpgradeCostList[maxMultipleBuffLevel];
+
+        var data3 = dataSearchHandler.upgradeDataStore.GetDataByID(19);
+        multipleBuffPercent = data2.UpgradeCostList[multipleBuffPercentLevel];
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) //  ƒvƒŒƒCƒ„[‚ª“–‚½‚Á‚½‚Æ‚«‚Éƒoƒt‚ğ•t—^‚·‚é
+    private void InvokeBuff()
+    {
+        while (true)
+        {
+            int buffId = Random.Range(0, 3);
+            Debug.Log("buffId" + buffId);
+            if (buffId == 0 && availableBuff[0])
+            {
+                playerBuffHandler.IncrementSpeed(speedIncremnt);
+                Debug.Log("speedIncremnt" + speedIncremnt);
+                return;
+            }
+
+            if (buffId == 1 && availableBuff[1])
+            {
+                playerBuffHandler.MultiplySpeed(speedMultiply);
+                Debug.Log("speedMultiply" + speedMultiply);
+                return;
+            }
+
+            if (buffId == 2 && availableBuff[2])
+            {
+                playerBuffHandler.maintainSpeedDurationSum += maintainSpeedtime;
+                Debug.Log("Added time" + maintainSpeedtime);
+                return;
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) //  ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå½“ãŸã£ãŸã¨ãã«ãƒãƒ•ã‚’ä»˜ä¸ã™ã‚‹
     {
         if (collision.CompareTag("Player"))
         {
+            int buffCount = 1;
+            InvokeBuff();
+            for (int i = buffCount; i <= maxMultipleBuff; i++)
+            {
+                if (Random.Range(0, 100) <= multipleBuffPercent)
+                {
+                    buffCount++;
+                    InvokeBuff();
+                }
+            }
             Destroy(gameObject);
         }
     }

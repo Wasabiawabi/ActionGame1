@@ -1,11 +1,26 @@
 {
-    "increaseMaxSpeedLevel": 0,
-    "increaceMaxInitialMovementSpeedLevel": 0,
-    "decreaceSpeedDumpingLevel": 1,
-    "increaseVerticalMovementSpeedLevel": 1,
-    "increaseMaxNakamaLevel": 1,
-    "decreaceBuffDampingWithNakamaLevel": 0,
-    "increaceDecreaceSpeedDumpingWithNakamaLevel": 0,
-    "increasePlayerHpLevel": 1,
-    "increaseRewardLateLevel": 1
+    "increaseMaxSpeedLevel": 4,
+    "increaceMaxInitialMovementSpeedLevel": 4,
+    "decreaceSpeedDumpingLevel": 4,
+    "increaseMaxSpeedCosts": [
+        100,
+        200,
+        400,
+        800,
+        1600
+    ],
+    "increaceMaxInitialMovementSpeedCosts": [
+        150,
+        300,
+        600,
+        1200,
+        2400
+    ],
+    "decreaceSpeedDumpingCosts": [
+        120,
+        240,
+        480,
+        960,
+        1920
+    ]
 }

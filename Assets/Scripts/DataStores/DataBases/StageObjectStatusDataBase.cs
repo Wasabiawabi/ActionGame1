@@ -3,8 +3,8 @@ using UnityEngine;
 namespace HandmadeLibrary.DataBase.InitialStatus.StageObject
 {
     /// <summary>
-    /// StageObjectStatusDataBase ‚Í BaseOfDataBase<T> ‚ğŒp³‚µ‚Ä‚¢‚é
-    /// T ‚Í BaseOfInitialStatusData ‚ğŒp³‚µ‚½Œ^‚Ì‚İó‚¯•t‚¯‚é
+    /// StageObjectStatusDataBase ã¯ BaseOfDataBase<T> ã‚’ç¶™æ‰¿ã—ã¦ã„ã‚‹
+    /// T ã¯ BaseOfInitialStatusData ã‚’ç¶™æ‰¿ã—ãŸå‹ã®ã¿å—ã‘ä»˜ã‘ã‚‹
     /// </summary>
     [CreateAssetMenu(menuName = "DataBase/StageObjectStatus")]
     public class StageObjectStatusDataBase : BaseOfDataBase<StageObjectInitialStatusData> { }

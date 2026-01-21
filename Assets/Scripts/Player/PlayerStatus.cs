@@ -11,34 +11,39 @@ using System;
 
 public class PlayerStatus : MonoBehaviour
 {
-    [Tooltip("ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX‚âƒoƒt‚ÌŒø‰ÊA’‡ŠÔ‚Ìl”‚â‚»‚ÌŒø‰Ê‚ğŠÇ—‚·‚é.")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚„ãƒãƒ•ã®åŠ¹æœã€ä»²é–“ã®äººæ•°ã‚„ãã®åŠ¹æœã‚’ç®¡ç†ã™ã‚‹.")]
     public bool summary;
 
-    //ƒXƒNƒŠƒvƒg
+    //ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     [SerializeField] private DataSearchHandler dataSearchHandler;
     [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
     [SerializeField] private NakamaHandler nakamaHandler;
 
-    //ƒf[ƒ^ƒx[ƒX‚Ö‚ÌÚ‘±—p
+    //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¸ã®æ¥ç¶šç”¨
     private int playerId = 0;
     private List<string> playerUpgrades = new List<string>();
 
-    //ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX(ƒXƒe[ƒ^ƒX‚Æ‚»‚ê‚É‚©‚©‚éƒAƒbƒvƒOƒŒ[ƒh‚ÌID‚Íˆê’v‚µ‚Ä‚¢‚é)
-    public List<string> playerStatusName = new List<string>
-    { "maxSpeed", "speedDampingPerSecond", "maxInitialMovementSpeed", "verticalMovementSpeed", "maxNakama", "buffDampingWithNakama", "speedDampingReductionWithNakama", "playerHp", "rewardLate" };
-    public List<float> playerStatusValue = new List<float> { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹(ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã¨ãã‚Œã«ã‹ã‹ã‚‹ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®IDã¯ä¸€è‡´ã—ã¦ã„ã‚‹)
+    public List<string> playerStatusName = new List<string> { "maxSpeed", "speedDampingPerSecond", "maxInitialMovementSpeed", "moveVerticalSpeed" };
+    public List<float> playerStatusValue = new List<float> { 0f, 0f, 0f, 0f };
+
+    private int incrementMaxSpeedLevel;
+    private int multiplySpeedDampingLevel;
+    private int incrementMaxInitialSpeedLevel;
+
 
     private void Start()
     {
         GetPlayerInitialStatus();
         GetPlayerUpgradeName();
-        UpgradePlayerStatus();
+        //UpgradePlayerStatus(); // ãƒ‡ãƒ¼ã‚¿ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸå¾Œã«å‘¼ã³å‡ºã™
+        //PrintPlayerStatus(); // ãƒ‡ãƒãƒƒã‚°
     }
 
-    private void GetPlayerUpgradeName()
+    public void GetPlayerUpgradeName()
     {
-        // ƒAƒbƒvƒOƒŒ[ƒhƒf[ƒ^‚ğ‘S•”’²‚×‚ÄAƒvƒŒƒCƒ„[‚ÉŠÖ‚·‚éƒAƒbƒvƒOƒŒ[ƒh‚Å‚ ‚ê‚Î–¼‘O‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+        // ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚’å…¨éƒ¨èª¿ã¹ã¦ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«é–¢ã™ã‚‹ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã§ã‚ã‚Œã°åå‰ã‚’ä¿å­˜ã—ã¦ãŠã
         foreach (var upgrade in dataSearchHandler.upgradeDataStore.DataBase.DataList)
         {
             if(upgrade.TargetName == BaseOfUpgradeData.TargetType.Player)
@@ -48,110 +53,36 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    private void GetPlayerInitialStatus()//ƒvƒŒƒCƒ„[‚Ì‰ŠúƒXƒe[ƒ^ƒX‚ğæ“¾
+    private void GetPlayerInitialStatus()//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å–å¾—
     {
         var playerInitialStatusData = dataSearchHandler.playerStatusDataStore.GetDataByID(playerId);
         playerStatusValue[0] = playerInitialStatusData.MaxSpeed;
         playerStatusValue[1] = playerInitialStatusData.SpeedDampingPerSecond;
         playerStatusValue[2] = playerInitialStatusData.MaxInitialMovementSpeed;
         playerStatusValue[3] = playerInitialStatusData.VerticalMovementSpeed;
-        playerStatusValue[4] = playerInitialStatusData.MaxCompanion;
-        playerStatusValue[5] = playerInitialStatusData.BuffDampingWithCompanion;
-        playerStatusValue[6] = playerInitialStatusData.SpeedDampingReductionWithCompanion;
-        playerStatusValue[7] = playerInitialStatusData.PlayerHp;
-        playerStatusValue[8] = playerInitialStatusData.RewardLate;
+
         //foreach(var i in playerStatusValue)
           //  Debug.Log(i);
     }
 
-    private void UpgradePlayerStatus()//ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒX‚ÌƒAƒbƒvƒOƒŒ[ƒh‚Ìî•ñ‚©‚çAƒXƒe[ƒ^ƒX‚ğ•ÏX‚·‚é
+    public void UpgradePlayerStatus()//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®æƒ…å ±ã‹ã‚‰ã€ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å¤‰æ›´ã™ã‚‹
     {
-        if (dataSearchHandler == null || upgradesLevelHandler == null) return;
-        var dbStore = dataSearchHandler.upgradeDataStore;
-        if (dbStore == null || dbStore.DataBase == null) return;
+        // ãƒ¬ãƒ™ãƒ«ã”ã¨ã®å¼·åŒ–é‡(é…åˆ—)ã‚’å–å¾—
+        IncrementUpgradeData maxSpeedData = dataSearchHandler.upgradeDataStore.GetDataByID(0) as IncrementUpgradeData;
+        MultiplyUpgradeData speedDampingData = dataSearchHandler.upgradeDataStore.GetDataByID(1) as MultiplyUpgradeData;
+        IncrementUpgradeData maxInitialSpeedData = dataSearchHandler.upgradeDataStore.GetDataByID(2) as IncrementUpgradeData;
 
-        // playerStatusValue ‚ÌŠeƒCƒ“ƒfƒbƒNƒX‚ÆƒAƒbƒvƒOƒŒ[ƒhID‚Íˆê’v‚µ‚Ä‚¢‚é‘z’è
-        for (int i = 0; i < playerStatusValue.Count; i++)
-        {
-            // ID==i ‚ÌƒAƒbƒvƒOƒŒ[ƒh‚ğæ“¾
-            var upgrade = dbStore.GetDataByID(i);
-            if (upgrade == null) continue;
-            if (upgrade.TargetName != BaseOfUpgradeData.TargetType.Player) continue;
+        // å„ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®ç¾åœ¨ã®ãƒ¬ãƒ™ãƒ«ã‚’å–å¾—
+        incrementMaxSpeedLevel = upgradesLevelHandler.playerUpgradeData.increaseMaxSpeedLevel;
+        multiplySpeedDampingLevel = upgradesLevelHandler.playerUpgradeData.decreaceSpeedDumpingLevel;
+        incrementMaxInitialSpeedLevel = upgradesLevelHandler.playerUpgradeData.increaceMaxInitialMovementSpeedLevel;
 
-            int level = GetLevelForUpgrade(upgrade);
-            if (level <= 0) continue; // ƒŒƒxƒ‹0‚Í‰‰Z‚µ‚È‚¢
+        // ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã‚’é©ç”¨
+        playerStatusValue[0] += incrementMaxSpeedLevel >= 1 ? maxSpeedData.IncrementAmountList[incrementMaxSpeedLevel - 1] : 0;
+        playerStatusValue[1] *= MathF.Pow(speedDampingData.MultiplyRate, multiplySpeedDampingLevel);
+        playerStatusValue[2] += incrementMaxInitialSpeedLevel >= 1 ? maxInitialSpeedData.IncrementAmountList[incrementMaxInitialSpeedLevel - 1] : 0;
 
-            if (upgrade.upgradeType == BaseOfUpgradeData.UpgradeType.Increment)
-            {
-                if (upgrade is IncrementUpgradeData inc)
-                {
-                    // ”z—ñ‚Íƒ[ƒƒx[ƒXAw’è‚ÍuƒŒƒxƒ‹‚ğ1Œ¸‚ç‚µ‚½‚à‚Ì‚ğ”z—ñ‚Ì’lv
-                    int index = Mathf.Clamp(level - 1, 0, (inc.IncrementAmountList?.Count ?? 0) - 1);
-                    if (inc.IncrementAmountList != null && inc.IncrementAmountList.Count > 0 && index >= 0)
-                    {
-                        float add = inc.IncrementAmountList[index];
-                        playerStatusValue[i] += add;
-                    }
-                }
-            }
-            else if (upgrade.upgradeType == BaseOfUpgradeData.UpgradeType.Multiply)
-            {
-                if (upgrade is MultiplyUpgradeData mul)
-                {
-                    // ƒŒƒxƒ‹•ª‚¾‚¯”{—¦‚ğ‚©‚¯‚éi—İæj
-                    float rate = mul.MultiplyRate;
-                    float factor = Mathf.Pow(rate, level);
-                    playerStatusValue[i] *= factor;
-                }
-            }
-        }
-
-        // ƒfƒoƒbƒOo—ÍF“K—pŒã‚ÌƒXƒe[ƒ^ƒX
-        /*
-        Debug.Log("Upgraded Player Status Values:");
-        for (int i = 0; i < playerStatusValue.Count; i++)
-        {
-            Debug.Log($"{playerStatusName[i]} = {playerStatusValue[i]}");
-        }*/
-    }
-
-    // ƒAƒbƒvƒOƒŒ[ƒh‚²‚Æ‚ÌƒŒƒxƒ‹‚ğæ“¾‚·‚éBƒtƒB[ƒ‹ƒh–¼‚ªu{UpgradeName}Levelv‚ÌŒ`®‚ğ—Dæ‚µ‚Ä’T‚µA
-    // Œ©‚Â‚©‚ç‚È‚¯‚ê‚ÎéŒ¾‡‚Ì®”ƒtƒB[ƒ‹ƒh”z—ñ‚©‚çID‚É‚æ‚éõˆø‚Åæ“¾‚·‚éƒtƒH[ƒ‹ƒoƒbƒN‚ğs‚¤B
-    private int GetLevelForUpgrade(BaseOfUpgradeData upgrade)
-    {
-        var pd = upgradesLevelHandler.playerUpgradeData;
-        if (pd == null) return 0;
-
-        var t = pd.GetType();
-        var intFields = t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                         .Where(f => f.FieldType == typeof(int)).ToArray();
-
-        // 1) {Name}Level ‚Éˆê’v‚·‚éƒtƒB[ƒ‹ƒh‚ğ’T‚·i‘å•¶š¬•¶š–³‹j
-        string candidate1 = upgrade.Name + "Level";
-        var f = intFields.FirstOrDefault(fi => string.Equals(fi.Name, candidate1, StringComparison.OrdinalIgnoreCase));
-        if (f != null)
-        {
-            try { return (int)f.GetValue(pd); } catch { return 0; }
-        }
-
-        // 2) ƒtƒB[ƒ‹ƒh–¼‚ÉƒAƒbƒvƒOƒŒ[ƒh–¼‚ğŠÜ‚Şi‚©‚Â "Level" ‚ğŠÜ‚Şj‚à‚Ì‚ğ’T‚·
-        var f2 = intFields.FirstOrDefault(fi =>
-            fi.Name.IndexOf(upgrade.Name, StringComparison.OrdinalIgnoreCase) >= 0 &&
-            fi.Name.EndsWith("Level", StringComparison.OrdinalIgnoreCase));
-        if (f2 != null)
-        {
-            try { return (int)f2.GetValue(pd); } catch { return 0; }
-        }
-
-        // 3) ƒtƒH[ƒ‹ƒoƒbƒNFéŒ¾‡iMetadataToken‚ªéŒ¾‡‚É‹ß‚¢j‚Å ID ‚ğƒCƒ“ƒfƒbƒNƒX‚Æ‚µ‚Äg‚¤
-        var ordered = intFields.OrderBy(fi => fi.MetadataToken).ToArray();
-        int id = upgrade.ID;
-        if (id >= 0 && id < ordered.Length)
-        {
-            try { return (int)ordered[id].GetValue(pd); } catch { return 0; }
-        }
-
-        return 0;
+        PrintPlayerStatus(); // ãƒ‡ãƒãƒƒã‚°
     }
 
     public Vector3 GetPlayerPos()
@@ -162,5 +93,14 @@ public class PlayerStatus : MonoBehaviour
     public float GetPlayerHeight()
     {
         return transform.position.y;
+    }
+
+    public void PrintPlayerStatus() // ãƒ‡ãƒãƒƒã‚°ç”¨ï¼šç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›
+    {
+        String s = "Current Player Status:\n";
+        s = String.Concat(s, $"{playerStatusName[0]}:level{incrementMaxSpeedLevel}:{playerStatusValue[0]}\n");
+        s = String.Concat(s, $"{playerStatusName[1]}:level{multiplySpeedDampingLevel}:{playerStatusValue[1]}\n");
+        s = String.Concat(s, $"{playerStatusName[2]}:level{incrementMaxInitialSpeedLevel}:{playerStatusValue[2]}\n");
+        Debug.Log(s);
     }
 }
