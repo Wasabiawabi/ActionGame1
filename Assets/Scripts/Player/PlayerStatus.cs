@@ -167,10 +167,11 @@ public class PlayerStatus : MonoBehaviour
 
     public void PrintPlayerStatus() // デバッグ用：現在のステータスをコンソールに出力
     {
-        Debug.Log("Current Player Status:");
+        String s = "Current Player Status:\n";
         for (int i = 0; i < playerStatusName.Count; i++)
         {
-            Debug.Log($"{playerStatusName[i]}: {playerStatusValue[i]}");
+            s = String.Concat(s, $"{playerStatusName[i]}: {playerStatusValue[i]}\n");
         }
+        Debug.Log(s);
     }
 }
