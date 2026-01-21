@@ -6,9 +6,9 @@ using HandmadeLibrary.Json;
 public class PlayerUpgradeData
 {
     // プレイヤーのアップグレードレベル
-    public int increaseMaxSpeedLevel;
-    public int increaceMaxInitialMovementSpeedLevel;
-    public int decreaceSpeedDumpingLevel;
+    [HideInInspector] public int increaseMaxSpeedLevel;
+    [HideInInspector] public int increaceMaxInitialMovementSpeedLevel;
+    [HideInInspector] public int decreaceSpeedDumpingLevel;
     
     // アップグレードコスト（レベルごと）
     public int[] increaseMaxSpeedCosts = { 100, 200, 400, 800, 1600 };
@@ -20,10 +20,10 @@ public class PlayerUpgradeData
 public class StageObjectUpgradeData
 {
     // ステージオブジェクトのアップグレードレベル
-    public int increaseInstantiateProbabiltyPerFrameLevel;
-    public int increaseMultipleBuffProbablityLevel;
-    public int maxMultipleBuffLevel;
-    public int increaseBuffEffect;
+    [HideInInspector] public int increaseInstantiateProbabiltyPerFrameLevel;
+    [HideInInspector] public int increaseMultipleBuffProbablityLevel;
+    [HideInInspector] public int maxMultipleBuffLevel;
+    [HideInInspector] public int increaseBuffEffect;
     
     // アップグレードコスト（レベルごと）
     public int[] increaseInstantiateProbabiltyPerFrameCosts = { 200, 400, 800, 1600, 3200 };
@@ -41,6 +41,8 @@ public class UpgradesLevelHandler : MonoBehaviour
     public PlayerUpgradeData playerUpgradeData;
     public StageObjectUpgradeData stageObjectUpgradeData;
     private JsonFileHandler jsonFileHandler = new JsonFileHandler();
+
+    [SerializeField] private PlayerStatus playerStatus;
 
     [SerializeField] private MoneyManager moneyManager;
 
@@ -62,6 +64,9 @@ public class UpgradesLevelHandler : MonoBehaviour
         //データを読み込む
         playerUpgradeData = jsonFileHandler.ReadFromJson<PlayerUpgradeData>(path_playerData, playerUpgradeData);
         stageObjectUpgradeData = jsonFileHandler.ReadFromJson<StageObjectUpgradeData>(path_stageObjectData, stageObjectUpgradeData);
+
+        Debug.Log("Upgrades Data Loaded:");
+        playerStatus.UpgradePlayerStatus();
     }
 
     public void SaveUpgradesDataFile()
@@ -311,7 +316,7 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Buff Effect is already at maximum level.");
             return;
         }
-        
+
         moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.increaseBuffEffect += 1;
         Debug.Log("Buff Effect upgraded to level " + stageObjectUpgradeData.increaseBuffEffect);
