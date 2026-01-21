@@ -48,6 +48,9 @@ public class UpgradesLevelHandler : MonoBehaviour
     string path_playerData = Path.Combine(Application.dataPath, "Data/Json/playerData.json");
     string path_stageObjectData = Path.Combine(Application.dataPath, "Data/Json/stageObjectData.json");
 
+    // 最大レベル
+    const int maxLevel = 4;
+
     private void Start()
     { 
         ReadUpgradesDataFile();
@@ -99,6 +102,12 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Not enough money to upgrade Max Speed. Required: " + cost + ", Available: " + moneyManager.totalMoney);
             return;
         }
+        if (playerUpgradeData.increaseMaxSpeedLevel >= maxLevel)
+        {
+            Debug.Log("Max Speed is already at maximum level.");
+            return;
+        }
+
         moneyManager.totalMoney -= cost;
         playerUpgradeData.increaseMaxSpeedLevel += 1;
         Debug.Log("Max Speed upgraded to level " + playerUpgradeData.increaseMaxSpeedLevel);
@@ -127,6 +136,12 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Not enough money to upgrade Max Initial Movement Speed. Required: " + cost + ", Available: " + moneyManager.totalMoney);
             return;
         }
+        if (playerUpgradeData.increaceMaxInitialMovementSpeedLevel >= maxLevel)
+        {
+            Debug.Log("Max Initial Movement Speed is already at maximum level.");
+            return;
+        }
+
         moneyManager.totalMoney -= cost;
         playerUpgradeData.increaceMaxInitialMovementSpeedLevel += 1;
         Debug.Log("Max Initial Movement Speed upgraded to level " + playerUpgradeData.increaceMaxInitialMovementSpeedLevel);
@@ -155,6 +170,12 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Not enough money to upgrade Speed Dumping. Required: " + cost + ", Available: " + moneyManager.totalMoney);
             return;
         }
+        if (playerUpgradeData.decreaceSpeedDumpingLevel >= maxLevel)
+        {
+            Debug.Log("Speed Dumping is already at maximum level.");
+            return;
+        }
+
         moneyManager.totalMoney -= cost;
         playerUpgradeData.decreaceSpeedDumpingLevel += 1;
         Debug.Log("Speed Dumping upgraded to level " + playerUpgradeData.decreaceSpeedDumpingLevel);
@@ -183,6 +204,12 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Not enough money to upgrade Instantiate Probability Per Frame. Required: " + cost + ", Available: " + moneyManager.totalMoney);
             return;
         }
+        if (stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel >= maxLevel)
+        {
+            Debug.Log("Instantiate Probability Per Frame is already at maximum level.");
+            return;
+        }
+
         moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel += 1;
         Debug.Log("Instantiate Probability Per Frame upgraded to level " + stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel);
@@ -211,6 +238,12 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Not enough money to upgrade Multiple Buff Probability. Required: " + cost + ", Available: " + moneyManager.totalMoney);
             return;
         }
+        if (stageObjectUpgradeData.increaseMultipleBuffProbablityLevel >= maxLevel)
+        {
+            Debug.Log("Multiple Buff Probability is already at maximum level.");
+            return;
+        }
+
         moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.increaseMultipleBuffProbablityLevel += 1;
         Debug.Log("Multiple Buff Probability upgraded to level " + stageObjectUpgradeData.increaseMultipleBuffProbablityLevel);
@@ -239,6 +272,12 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Not enough money to upgrade Max Multiple Buff. Required: " + cost + ", Available: " + moneyManager.totalMoney);
             return;
         }
+        if (stageObjectUpgradeData.maxMultipleBuffLevel >= maxLevel)
+        {
+            Debug.Log("Max Multiple Buff is already at maximum level.");
+            return;
+        }
+
         moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.maxMultipleBuffLevel += 1;
         Debug.Log("Max Multiple Buff upgraded to level " + stageObjectUpgradeData.maxMultipleBuffLevel);
@@ -267,6 +306,12 @@ public class UpgradesLevelHandler : MonoBehaviour
             Debug.Log("Not enough money to upgrade Buff Effect. Required: " + cost + ", Available: " + moneyManager.totalMoney);
             return;
         }
+        if (stageObjectUpgradeData.increaseBuffEffect >= maxLevel)
+        {
+            Debug.Log("Buff Effect is already at maximum level.");
+            return;
+        }
+        
         moneyManager.totalMoney -= cost;
         stageObjectUpgradeData.increaseBuffEffect += 1;
         Debug.Log("Buff Effect upgraded to level " + stageObjectUpgradeData.increaseBuffEffect);
