@@ -8,7 +8,7 @@ namespace HandmadeLibrary.DataBase.Upgrade.Increment
     /// レベルアップごとの加算量
     /// </summary>
     [CreateAssetMenu(menuName = "Data/Upgrade/Increment")]
-    public class IncrementUpgradeData : BaseOfUpgradeData
+    public class IncrementUpgradeData : BaseOfUpgradeData, IIncrementUpgradeData
     {
         public List<float> IncrementAmountList
         {
@@ -18,4 +18,9 @@ namespace HandmadeLibrary.DataBase.Upgrade.Increment
         [SerializeField]
         private List<float> incrementAmountList;
     }
+}
+
+public interface IIncrementUpgradeData
+{
+    List<float> IncrementAmountList { get; }
 }
