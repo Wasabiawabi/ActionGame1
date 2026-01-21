@@ -20,6 +20,6 @@ MonoBehaviour:
   upgradeCostList: 00000000000000000000000000000000
   incrementAmountList:
   - 10
-  - 20
-  - 30
+  - 25
   - 40
+  - 60

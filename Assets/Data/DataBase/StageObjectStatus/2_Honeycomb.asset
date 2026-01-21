@@ -17,6 +17,6 @@ MonoBehaviour:
   minInstantiateProbability: 0
   instantiateProbabilityIncrementPerSecond: 0.01666667
   speedIncrement: 15
-  speedMultiply: 1.3
-  saveSpeedTime: 4.5
+  speedMultiply: 1.2
+  saveSpeedTime: 3
   isBeeAppear: 1

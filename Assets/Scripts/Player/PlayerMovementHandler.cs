@@ -75,7 +75,8 @@ public class PlayerMovementHandler : MonoBehaviour
         // レベルごとに加算する
         IncrementUpgradeData data = dataSearchHandler.upgradeDataStore.GetDataByID(2) as IncrementUpgradeData;
         //Debug.Log(data.IncrementAmountList[0]);
-        float modifiedMaxInitialSpeed = maxInitialSpeed + data.IncrementAmountList[levelIncreaseInitial];
+        float modifiedMaxInitialSpeed = maxInitialSpeed + (levelIncreaseInitial >= 1 ? data.IncrementAmountList[levelIncreaseInitial - 1] : 0);
+        Debug.Log(modifiedMaxInitialSpeed);
 
         // 初速を設定
         playerSpeed = modifiedMaxInitialSpeed * initialSpeedPower;

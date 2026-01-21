@@ -442,6 +442,7 @@ MonoBehaviour:
   playerBuffHandler: {fileID: 182115586}
   moveCamera: {fileID: 2098643509}
   upgradesLevelHandler: {fileID: 385117595}
+  dataSearchHandler: {fileID: 1232959535}
   speedGaugeSlider: {fileID: 1579302972}
   offSet: {x: 0, y: 0, z: 0}
   initialSpeedPower: 0
