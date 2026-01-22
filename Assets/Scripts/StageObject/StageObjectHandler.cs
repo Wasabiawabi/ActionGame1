@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using HandmadeLibrary.DataBase.Upgrade.Multiply;
 using UnityEngine;
 
 public class StageObjectHandler : MonoBehaviour
@@ -24,6 +25,7 @@ public class StageObjectHandler : MonoBehaviour
     private List<float> minSpawnProbablity = new List<float>();
     private List<float> incrementSpawnProbablityPerSecond = new List<float>();
     [SerializeField] private List<float> nowSpawnProbablity = new List<float>();
+    [SerializeField] private List<bool> notSpawn = new List<bool>(); // デバッグ用.出現させないオブジェクトにチェックを入れる
 
     private void Start()
     {
@@ -82,9 +84,12 @@ public class StageObjectHandler : MonoBehaviour
 
             float minVal = statusData.MinInstantiateProbability;
             float incVal = statusData.InstantiateProbabilityIncrementPerSecond;
+            int level = upgradesLevelHandler.stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel;
+            MultiplyUpgradeData data = dataSearchHandler.upgradeDataStore.GetDataByID(i) as MultiplyUpgradeData;
+            float mlt = data.MultiplyRate;
 
-            // レベルに応じて増分を 1.2^level 倍する
-            incVal *= multiplier;
+            // レベルに応じて掛け算
+            incVal *= Mathf.Pow(mlt, level);
 
             minSpawnProbablity.Add(minVal);
             incrementSpawnProbablityPerSecond.Add(incVal);
@@ -125,6 +130,7 @@ public class StageObjectHandler : MonoBehaviour
                 }
                 else
                 {
+                    if (notSpawn[i]) return; // デバッグ用.
                     GameObject stageObject = Instantiate(stageObjectPrefabs[i], spawnPosition, Quaternion.identity, transform);
                     var mover = stageObject.GetComponent<StageObjectMovementHandler>();
                     if (mover == null)
