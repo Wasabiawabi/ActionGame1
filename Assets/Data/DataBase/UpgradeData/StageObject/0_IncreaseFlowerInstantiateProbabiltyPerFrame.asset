@@ -9,17 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d02278146fe5f3942bdefa2b9cb20b5c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f79607f3c2b80c47a8cda32e57b1dab, type: 3}
   m_Name: 0_IncreaseFlowerInstantiateProbabiltyPerFrame
   m_EditorClassIdentifier: 
   name: IncreaseInstantiateProbabiltyPerFrame
-  id: 9
-  targetName: 1
-  maxLevel: 4
-  _upgradeType: 1
+  id: 0
+  targetName: 0
+  maxLevel: 0
+  _upgradeType: 0
   upgradeCostList: 00000000000000000000000000000000
-  incrementAmountList:
-  - 1.2
-  - 1.44
-  - 1.728
-  - 2.0736
+  multiplyRate: 1.2
