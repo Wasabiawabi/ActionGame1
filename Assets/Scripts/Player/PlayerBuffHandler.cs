@@ -11,6 +11,7 @@ public class PlayerBuffHandler : MonoBehaviour
     //スクリプト
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerStatus playerStatus;
+    [SerializeField] private BuffReminderHandler buffReminderHandler;
 
     //変数
     public float maintainSpeedDurationSum;
@@ -29,6 +30,7 @@ public class PlayerBuffHandler : MonoBehaviour
         int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
         playerMovementHandler.playerSpeed += incrementNum / (1 + buffDampingWithNakama);
+        buffReminderHandler.PushBuffSummary("Speed+", incrementNum);
     }
 
     public void MultiplySpeed(float multiplyNum)//移動速度の倍率強化
@@ -37,12 +39,12 @@ public class PlayerBuffHandler : MonoBehaviour
         float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
         Debug.Log(buffDampingWithNakama);
         playerMovementHandler.playerSpeed *= multiplyNum;
+        buffReminderHandler.PushBuffSummary("Speed×", multiplyNum);
     }
 
     public void UpdateMaintainSpeed(float dulation)
     {
-        int idx = playerStatus.playerStatusName.IndexOf("buffDampingWithNakama");
-        float buffDampingWithNakama = playerStatus.playerStatusValue[idx];
         maintainSpeedDurationSum += dulation;
+        buffReminderHandler.PushBuffSummary("Maintain+", dulation);
     }
 }
