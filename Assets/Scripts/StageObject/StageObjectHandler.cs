@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using HandmadeLibrary.DataBase.Upgrade.Multiply;
@@ -27,7 +28,7 @@ public class StageObjectHandler : MonoBehaviour
     [SerializeField] private List<float> nowSpawnProbablity = new List<float>();
     [SerializeField] private List<bool> notSpawn = new List<bool>(); // デバッグ用.出現させないオブジェクトにチェックを入れる
 
-    private void Start()
+    public void ApplyStageObjectUpgrades()
     {
         // 必要な参照がセットされているか確認
         if (dataSearchHandler == null)
@@ -60,14 +61,15 @@ public class StageObjectHandler : MonoBehaviour
         incrementSpawnProbablityPerSecond.Clear();
         nowSpawnProbablity.Clear();
 
-        // レベル取得（存在しない場合は0）
-        int levelMultiplier = 0;
-        if (upgradesLevelHandler != null && upgradesLevelHandler.stageObjectUpgradeData != null)
-        {
-            levelMultiplier = Mathf.Max(0, upgradesLevelHandler.stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel);
-        }
+        // 出現頻度強化のレベルを取得
+        int level = 0;
+            if (upgradesLevelHandler != null && upgradesLevelHandler.stageObjectUpgradeData != null)
+            {
+                level = upgradesLevelHandler.stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel;
+            }
 
-        float multiplier = Mathf.Pow(1.2f, levelMultiplier);
+            // デバッグ用文字列を用意
+            String dbgStr = $"Stageobject InstProb level <color=yellow>{level}</color>\n";
 
         // それぞれのIdごとの出現確率の初期値を設定する
         for (int i = 0; i < capacity; i++)
@@ -84,17 +86,20 @@ public class StageObjectHandler : MonoBehaviour
 
             float minVal = statusData.MinInstantiateProbability;
             float incVal = statusData.InstantiateProbabilityIncrementPerSecond;
-            int level = upgradesLevelHandler.stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel;
-            MultiplyUpgradeData data = dataSearchHandler.upgradeDataStore.GetDataByID(i) as MultiplyUpgradeData;
+            
+            MultiplyUpgradeData data = dataSearchHandler.upgradeDataStore.GetDataByName("IncreaseInstantiateProbabiltyPerFrame") as MultiplyUpgradeData;
             float mlt = data.MultiplyRate;
 
             // レベルに応じて掛け算
             incVal *= Mathf.Pow(mlt, level);
 
+            dbgStr += String.Concat($"{statusData.Name}'s incVal:\t {incVal}\n");
+
             minSpawnProbablity.Add(minVal);
             incrementSpawnProbablityPerSecond.Add(incVal);
             nowSpawnProbablity.Add(minSpawnProbablity[i]);
         }
+        Debug.Log(dbgStr);
     }
 
     private void Update()
@@ -109,7 +114,7 @@ public class StageObjectHandler : MonoBehaviour
             nowSpawnProbablity[i] += incrementSpawnProbablityPerSecond[i] * Time.deltaTime;
 
             //出現確率が乱数より増えたら出現させる
-            float rand = Random.Range(0f, 100f);
+            float rand = UnityEngine.Random.Range(0f, 100f);
             if (nowSpawnProbablity[i] >= rand)
             {
                 //画面外の座標を計算する
@@ -130,7 +135,7 @@ public class StageObjectHandler : MonoBehaviour
                 }
                 else
                 {
-                    if (notSpawn[i]) return; // デバッグ用.
+                    if (notSpawn[i]) continue; // デバッグ用.
                     GameObject stageObject = Instantiate(stageObjectPrefabs[i], spawnPosition, Quaternion.identity, transform);
                     var mover = stageObject.GetComponent<StageObjectMovementHandler>();
                     if (mover == null)
