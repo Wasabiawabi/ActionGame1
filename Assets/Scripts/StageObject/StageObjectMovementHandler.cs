@@ -170,7 +170,7 @@ public class StageObjectMovementHandler : MonoBehaviour
         while (true)
         {
             int buffId = Random.Range(0, 3);
-            Debug.Log("buffId" + buffId);
+            //Debug.Log("buffId" + buffId);
             if (buffId == 0 && availableBuff[0])
             {
                 playerBuffHandler.IncrementSpeed(speedIncremnt);
@@ -187,7 +187,7 @@ public class StageObjectMovementHandler : MonoBehaviour
 
             if (buffId == 2 && availableBuff[2])
             {
-                playerBuffHandler.maintainSpeedDurationSum += maintainSpeedtime;
+                playerBuffHandler.UpdateMaintainSpeed(maintainSpeedtime);
                 Debug.Log("Added time" + maintainSpeedtime);
                 return;
             }
