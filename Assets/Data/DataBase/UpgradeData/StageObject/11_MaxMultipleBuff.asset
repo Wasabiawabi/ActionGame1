@@ -19,7 +19,7 @@ MonoBehaviour:
   _upgradeType: 0
   upgradeCostList: 00000000000000000000000000000000
   incrementAmountList:
-  - 1
   - 2
   - 3
   - 4
+  - 5

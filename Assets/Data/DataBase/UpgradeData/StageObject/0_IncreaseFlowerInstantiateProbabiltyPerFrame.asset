@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: 0_IncreaseFlowerInstantiateProbabiltyPerFrame
   m_EditorClassIdentifier: 
   name: IncreaseInstantiateProbabiltyPerFrame
-  id: 0
-  targetName: 0
-  maxLevel: 0
-  _upgradeType: 0
+  id: 18
+  targetName: 1
+  maxLevel: 4
+  _upgradeType: 1
   upgradeCostList: 00000000000000000000000000000000
   multiplyRate: 1.2

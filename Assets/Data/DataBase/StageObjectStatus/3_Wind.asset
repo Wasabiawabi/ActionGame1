@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd2abdf2989825499b436bb352912fc, type: 3}
   m_Name: 3_Wind
   m_EditorClassIdentifier: 
-  name: honeycomb
+  name: wind
   id: 3
   minInstantiateProbability: 0
-  instantiateProbabilityIncrementPerSecond: 0.01666667
+  instantiateProbabilityIncrementPerSecond: 0.0125
   speedIncrement: 20
   speedMultiply: -1
   saveSpeedTime: -1
