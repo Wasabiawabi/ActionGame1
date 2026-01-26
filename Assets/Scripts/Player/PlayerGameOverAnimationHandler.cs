@@ -19,6 +19,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     [SerializeField] private float maxSecondToGameOver = 2f;
     private float secondToGameOver = 2f;
     public bool isgameovered = false;
+    public bool overwriteMoney = false;
 
     float totalMoney = 0f; // 追加: ゲームオーバー時の合計金額
     Vector3 offSet;
@@ -49,6 +50,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
         float distanceMoved = Mathf.Abs(transform.position.x + offSet.x); // 移動距離の計算
         moneyManager.totalMoney = PlayerPrefs.GetFloat("TotalMoney", 0f); // 保存された合計金額を取得
         moneyManager.totalMoney += distanceMoved; // ゲームオーバー時の移動距離を合計金額に加算
+        if (overwriteMoney) moneyManager.totalMoney = totalMoney;// 初期化して代入の代わりに上書き
         PlayerPrefs.SetFloat("TotalMoney", moneyManager.totalMoney); // 合計金額をPlayerPrefsに保存
         Debug.Log("Total Money Collected: " + moneyManager.totalMoney);
 
