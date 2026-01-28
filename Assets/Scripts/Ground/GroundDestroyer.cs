@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,11 +10,12 @@ public class GroundDestroyer : MonoBehaviour
     public bool summary;
 
     private Camera cam;
+    public RectTransform rectTransform;
     private float cameraMinX;
     private float objLength;
     private void Start()
     {
-        objLength = gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+        objLength = rectTransform.rect.width;
         cam = Camera.main;
         cameraMinX = cam.ViewportToWorldPoint(new Vector3(0f, 0f, cam.transform.position.z)).x;
     }
