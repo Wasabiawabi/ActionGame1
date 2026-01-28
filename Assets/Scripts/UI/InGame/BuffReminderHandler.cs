@@ -23,9 +23,12 @@ public class BuffReminderHandler : MonoBehaviour
     [SerializeField] private GameObject buff_Inc_Mlt;
     [SerializeField] private GameObject buff_Maintain;
 
+    // プレハブを入れる子オブジェクト
+    [SerializeField] private Transform buffParent;
+
     // 変数
     private List<BuffStruct> buff = new List<BuffStruct>(); // バフ名と値
-    private List<GameObject> buffObjects = new List<GameObject>(); // 生成したGameObject
+    [SerializeField] private List<GameObject> buffObjects = new List<GameObject>(); // 生成したGameObject
     public float displayDuration = 2f; // バフ表示時間
     public bool buffAdded = false;
 
@@ -42,11 +45,14 @@ public class BuffReminderHandler : MonoBehaviour
         GameObject buffObject = null;
         if (buffName == "Speed+" || buffName == "Speed×")
         {
-            buffObject = Instantiate(buff_Inc_Mlt, transform);
+            buffObject = Instantiate(buff_Inc_Mlt, buffParent);
+            char calcChar = buffName[buffName.Length - 1];
+            buffObject.GetComponentInChildren<TextMeshProUGUI>().text = calcChar.ToString() + buffValue.ToString("F1") + "m/s";
         }
         else if (buffName == "Maintain+")
         {
-            buffObject = Instantiate(buff_Maintain, transform);
+            buffObject = Instantiate(buff_Maintain, buffParent);
+            buffObject.GetComponentInChildren<TextMeshProUGUI>().text = "+" + buffValue.ToString("F1") + "sec";
         }
 
         if (buffObject != null)
