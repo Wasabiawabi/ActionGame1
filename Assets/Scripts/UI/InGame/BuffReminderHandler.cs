@@ -27,7 +27,7 @@ public class BuffReminderHandler : MonoBehaviour
     [SerializeField] private Transform buffParent;
 
     // フォント
-    [SerializeField] private Font buffFont;
+    [SerializeField] private TMP_FontAsset buffFont;
 
     // 変数
     private List<BuffStruct> buff = new List<BuffStruct>(); // バフ名と値
