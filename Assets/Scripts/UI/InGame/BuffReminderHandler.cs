@@ -51,15 +51,12 @@ public class BuffReminderHandler : MonoBehaviour
             buffObject = Instantiate(buff_Inc_Mlt, buffParent);
             char calcChar = buffName[buffName.Length - 1];
             buffObject.GetComponentInChildren<TextMeshProUGUI>().text = calcChar.ToString() + buffValue.ToString("F1") + "m/s";
+            buffObject.GetComponentInChildren<TextMeshProUGUI>().font = buffFont;
         }
         else if (buffName == "Maintain+")
         {
             buffObject = Instantiate(buff_Maintain, buffParent);
             buffObject.GetComponentInChildren<TextMeshProUGUI>().text = "+" + buffValue.ToString("F1") + "sec";
-        }
-
-        if (buffObject != null)
-        {
             buffObject.GetComponentInChildren<TextMeshProUGUI>().font = buffFont;
         }
 
