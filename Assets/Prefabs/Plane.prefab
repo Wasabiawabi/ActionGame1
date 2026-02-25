@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c85a0bae5f386945a87e0c28700521f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 5
+  fps: 10
   offset: 0
   image: {fileID: 8488328225009619423}
   frames:
