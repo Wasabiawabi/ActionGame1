@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.IO;
+using HandmadeLibrary.DataBase.Upgrade.Multiply;
+using HandmadeLibrary.DataBase.Upgrade.Increment;
 
 public class StageObjectMovementHandler : MonoBehaviour
 {
@@ -145,16 +147,22 @@ public class StageObjectMovementHandler : MonoBehaviour
         maxMultipleBuffLevel = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
         multipleBuffPercentLevel = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
 
+        // レベルごとのバフの強化を取得する
+        MultiplyUpgradeData mulData = dataSearchHandler.upgradeDataStore.GetDataByID(21) as MultiplyUpgradeData;
+        float mlt = mulData.MultiplyRate;
+
         // 実際に付与されるバフの効果を計算する
-        speedIncremnt = Mathf.Pow(speedIncremnt, increaseBuffEffectLevel + 1);
-        speedMultiply = Mathf.Pow(speedMultiply, increaseBuffEffectLevel + 1);
-        maintainSpeedtime = Mathf.Pow(maintainSpeedtime, increaseBuffEffectLevel + 1);
+        speedIncremnt *= Mathf.Pow(mlt, increaseBuffEffectLevel);
+        speedMultiply *= Mathf.Pow(mlt, increaseBuffEffectLevel);
+        maintainSpeedtime *= Mathf.Pow(mlt, increaseBuffEffectLevel);
 
-        var data2 = dataSearchHandler.upgradeDataStore.GetDataByID(20);
-        maxMultipleBuff = data2.UpgradeCostList[maxMultipleBuffLevel];
+        // 一度に与えられるバフの数の最大値
+        IIncrementUpgradeData data2 = dataSearchHandler.upgradeDataStore.GetDataByID(20) as IIncrementUpgradeData;
+        maxMultipleBuff = maxMultipleBuffLevel >= 1 ? (int)data2.IncrementAmountList[maxMultipleBuffLevel - 1] : 1;
 
-        var data3 = dataSearchHandler.upgradeDataStore.GetDataByID(19);
-        multipleBuffPercent = data2.UpgradeCostList[multipleBuffPercentLevel];
+        // 2回以上バフが付与される確率
+        IIncrementUpgradeData data3 = dataSearchHandler.upgradeDataStore.GetDataByID(19) as IIncrementUpgradeData;
+        multipleBuffPercent = multipleBuffPercentLevel >= 1 ? (int)data3.IncrementAmountList[multipleBuffPercentLevel - 1] : 0;
     }
 
     private void InvokeBuff()
@@ -162,7 +170,7 @@ public class StageObjectMovementHandler : MonoBehaviour
         while (true)
         {
             int buffId = Random.Range(0, 3);
-            Debug.Log("buffId" + buffId);
+            //Debug.Log("buffId" + buffId);
             if (buffId == 0 && availableBuff[0])
             {
                 playerBuffHandler.IncrementSpeed(speedIncremnt);
@@ -179,7 +187,7 @@ public class StageObjectMovementHandler : MonoBehaviour
 
             if (buffId == 2 && availableBuff[2])
             {
-                playerBuffHandler.maintainSpeedDurationSum += maintainSpeedtime;
+                playerBuffHandler.UpdateMaintainSpeed(maintainSpeedtime);
                 Debug.Log("Added time" + maintainSpeedtime);
                 return;
             }
@@ -192,7 +200,7 @@ public class StageObjectMovementHandler : MonoBehaviour
         {
             int buffCount = 1;
             InvokeBuff();
-            for (int i = buffCount; i <= maxMultipleBuff; i++)
+            for (int i = buffCount; i < maxMultipleBuff; i++)
             {
                 if (Random.Range(0, 100) <= multipleBuffPercent)
                 {

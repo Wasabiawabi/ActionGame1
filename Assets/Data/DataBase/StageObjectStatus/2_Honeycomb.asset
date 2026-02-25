@@ -15,8 +15,8 @@ MonoBehaviour:
   name: honeycomb
   id: 2
   minInstantiateProbability: 0
-  instantiateProbabilityIncrementPerSecond: 0.01666667
-  speedIncrement: 15
+  instantiateProbabilityIncrementPerSecond: 0.0125
+  speedIncrement: -1
   speedMultiply: 1.2
   saveSpeedTime: 3
   isBeeAppear: 1

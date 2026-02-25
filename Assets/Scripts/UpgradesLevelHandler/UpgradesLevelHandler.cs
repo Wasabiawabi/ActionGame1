@@ -43,8 +43,8 @@ public class UpgradesLevelHandler : MonoBehaviour
     private JsonFileHandler jsonFileHandler = new JsonFileHandler();
 
     [SerializeField] private PlayerStatus playerStatus;
-
     [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private StageObjectHandler stageObjectHandler;
 
     //Pathを指定
     string path_playerData = Path.Combine(Application.dataPath, "Data/Json/playerData.json");
@@ -65,8 +65,9 @@ public class UpgradesLevelHandler : MonoBehaviour
         playerUpgradeData = jsonFileHandler.ReadFromJson<PlayerUpgradeData>(path_playerData, playerUpgradeData);
         stageObjectUpgradeData = jsonFileHandler.ReadFromJson<StageObjectUpgradeData>(path_stageObjectData, stageObjectUpgradeData);
 
-        Debug.Log("Upgrades Data Loaded:");
+        //Debug.Log("Upgrades Data Loaded:");
         playerStatus.UpgradePlayerStatus();
+        stageObjectHandler.ApplyStageObjectUpgrades();
     }
 
     public void SaveUpgradesDataFile()

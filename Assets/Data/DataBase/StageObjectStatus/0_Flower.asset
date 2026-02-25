@@ -15,8 +15,8 @@ MonoBehaviour:
   name: flower
   id: 0
   minInstantiateProbability: 0
-  instantiateProbabilityIncrementPerSecond: 0.01666667
+  instantiateProbabilityIncrementPerSecond: 0.025
   speedIncrement: 10
-  speedMultiply: 1.05
+  speedMultiply: 1.1
   saveSpeedTime: 1.5
   isBeeAppear: 0

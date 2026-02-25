@@ -21,10 +21,12 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private Slider speedGaugeSlider;
 
     //使う変数
-    [SerializeField] private Vector3 offSet = new Vector3(0, 0, 0);
+    [SerializeField] public Vector3 offSet = new Vector3(0, 0, 0);
     [HideInInspector] public float initialSpeedPower = 0f;
     public float initialSpeedPowerMultiply = 1f;
     [HideInInspector] public Vector3 playerPos = new Vector3(0, 0, 0);
+
+    public float initialMaintainDuration;
     public float playerSpeed = 0f;
     [SerializeField] private float incrementSpeedReductionPerHeight = 10f;
 
@@ -77,6 +79,9 @@ public class PlayerMovementHandler : MonoBehaviour
 
         // スピードゲージを非表示にする
         speedGaugeSlider.gameObject.SetActive(false);
+
+        // 若干秒の速度維持バフを付与
+        playerBuffHandler.UpdateMaintainSpeed(initialMaintainDuration);
     }
 
     private void MoveForward()//プレイヤーの移動処理

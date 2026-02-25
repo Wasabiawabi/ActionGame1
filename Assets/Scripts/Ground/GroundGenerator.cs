@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GroundGenerator : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class GroundGenerator : MonoBehaviour
             prefabWidths = new float[groundPrefab.Length];
             for (int i = 0; i < groundPrefab.Length; i++)
             {
-                prefabWidths[i] = groundPrefab[i].GetComponentInChildren<SpriteRenderer>().bounds.size.x;
+                prefabWidths[i] = groundPrefab[i].GetComponentInChildren<Image>().rectTransform.rect.width;
             }
         }
         else

@@ -15,8 +15,8 @@ MonoBehaviour:
   name: tubu
   id: 1
   minInstantiateProbability: 0
-  instantiateProbabilityIncrementPerSecond: 0.1
-  speedIncrement: -1
-  speedMultiply: 1.3
-  saveSpeedTime: -1
+  instantiateProbabilityIncrementPerSecond: 0.05
+  speedIncrement: 5
+  speedMultiply: 1.05
+  saveSpeedTime: 0.5
   isBeeAppear: 0
