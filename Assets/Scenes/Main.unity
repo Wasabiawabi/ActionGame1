@@ -1680,7 +1680,7 @@ RectTransform:
   m_GameObject: {fileID: 560735373}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2031049865}
@@ -1688,7 +1688,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 64, y: 24}
+  m_SizeDelta: {x: 65, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &560735375
 MonoBehaviour:
@@ -1712,8 +1712,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 999999999 m
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e3b822f2f8e579a4d92f30afbc3b5f41, type: 2}
+  m_sharedMaterial: {fileID: 8827224424140306062, guid: e3b822f2f8e579a4d92f30afbc3b5f41, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4478,8 +4478,8 @@ MonoBehaviour:
 
     Buff'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e3b822f2f8e579a4d92f30afbc3b5f41, type: 2}
+  m_sharedMaterial: {fileID: 8827224424140306062, guid: e3b822f2f8e579a4d92f30afbc3b5f41, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6139,8 +6139,8 @@ MonoBehaviour:
 
     m/s'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e3b822f2f8e579a4d92f30afbc3b5f41, type: 2}
+  m_sharedMaterial: {fileID: 8827224424140306062, guid: e3b822f2f8e579a4d92f30afbc3b5f41, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

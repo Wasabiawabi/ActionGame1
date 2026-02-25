@@ -26,6 +26,9 @@ public class BuffReminderHandler : MonoBehaviour
     // プレハブを入れる子オブジェクト
     [SerializeField] private Transform buffParent;
 
+    // フォント
+    [SerializeField] private Font buffFont;
+
     // 変数
     private List<BuffStruct> buff = new List<BuffStruct>(); // バフ名と値
     [SerializeField] private List<GameObject> buffObjects = new List<GameObject>(); // 生成したGameObject
@@ -53,6 +56,11 @@ public class BuffReminderHandler : MonoBehaviour
         {
             buffObject = Instantiate(buff_Maintain, buffParent);
             buffObject.GetComponentInChildren<TextMeshProUGUI>().text = "+" + buffValue.ToString("F1") + "sec";
+        }
+
+        if (buffObject != null)
+        {
+            buffObject.GetComponentInChildren<TextMeshProUGUI>().font = buffFont;
         }
 
         if (buffObject != null)
