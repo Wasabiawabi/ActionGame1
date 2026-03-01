@@ -93,6 +93,7 @@ public class ButtonUIMaker : MonoBehaviour
         if (level != 0)
         {
             levelImage.sprite = image[level - 1];
+            levelImage.preserveAspect = true;
         }
         else
         {
