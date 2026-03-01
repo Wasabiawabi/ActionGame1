@@ -51,7 +51,7 @@ public class UpgradesLevelHandler : MonoBehaviour
     string path_stageObjectData = Path.Combine(Application.dataPath, "Data/Json/stageObjectData.json");
 
     // 最大レベル
-    const int maxLevel = 4;
+    [HideInInspector] public int maxLevel = 5;
 
     private void Start()
     { 

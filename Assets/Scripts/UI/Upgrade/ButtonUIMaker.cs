@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// アップグレードボタンに表示されるUI(描画)を管理する.
@@ -11,10 +12,9 @@ using TMPro;
 
 public class ButtonUIMaker : MonoBehaviour
 {
-    // スクリプト
+    // アップグレードに関する情報
     public UpgradesLevelHandler upgradesLevelHandler;
 
-    // 変数
     // プレイヤー関連のアップグレードを取得するかどうか
     public bool maxInitialMovementSpeed = false;
     public bool maxSpeed = false;
@@ -32,7 +32,8 @@ public class ButtonUIMaker : MonoBehaviour
 
     // 描画につかうオブジェクト・コンポーネント
     [SerializeField] private TextMeshProUGUI costText;
-    [SerializeField] private Sprite image;
+    [SerializeField] private Image levelImage;
+    [SerializeField] private Sprite[] image;
 
     private void Start()
     {
@@ -74,5 +75,28 @@ public class ButtonUIMaker : MonoBehaviour
             cost = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffCosts[level];
         }
 
+    }
+
+    private void Update()
+    {
+        // コストテキスト描画
+        if (level < upgradesLevelHandler.maxLevel)
+        {
+            costText.text = cost.ToString();
+        }
+        else
+        {
+            costText.text = "MAXED";
+        }
+
+        // レベルイメージ描画
+        if (level != 0)
+        {
+            levelImage.sprite = image[level - 1];
+        }
+        else
+        {
+            levelImage.color = new Color(1, 1, 1, 0); // レベル0の場合は透明
+        }
     }
 }
