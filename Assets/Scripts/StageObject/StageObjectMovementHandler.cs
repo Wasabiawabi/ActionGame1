@@ -13,6 +13,9 @@ public class StageObjectMovementHandler : MonoBehaviour
     private PlayerBuffHandler playerBuffHandler;
     private DataSearchHandler dataSearchHandler;
     private UpgradesLevelHandler upgradesLevelHandler;
+    private GroundGenerator groundGenerator;
+    private PlayerMovementHandler playerMovementHandler;
+
     //変数
     private int objID;
     private float playerXSpeed;
@@ -35,7 +38,7 @@ public class StageObjectMovementHandler : MonoBehaviour
     int maxMultipleBuff;
     int multipleBuffPercent;
 
-    public void Initialize(int id, float playerSpeed, Camera mainCamera, PlayerBuffHandler playerBuffHandler, DataSearchHandler dataSearchHandler, UpgradesLevelHandler upgradesLevelHandler) // ステージオブジェクトの初期化
+    public void Initialize(int id, float playerSpeed, Camera mainCamera, PlayerBuffHandler playerBuffHandler, DataSearchHandler dataSearchHandler, UpgradesLevelHandler upgradesLevelHandler, GroundGenerator groundGenerator, PlayerMovementHandler playerMovementHandler) // ステージオブジェクトの初期化
     {
         this.objID = id;
         this.playerXSpeed = playerSpeed;
@@ -43,6 +46,9 @@ public class StageObjectMovementHandler : MonoBehaviour
         this.playerBuffHandler = playerBuffHandler ?? null; // フォールバック
         this.dataSearchHandler = dataSearchHandler ?? null; // フォールバック
         this.upgradesLevelHandler = upgradesLevelHandler ?? null; // フォールバック
+        this.groundGenerator = groundGenerator ?? null; // フォールバック
+        this.playerMovementHandler = playerMovementHandler ?? null; // フォールバック
+        minY = groundGenerator.groundYOffset;
         //Debug.Log("minWindY" + minWindY + "minBallonPlaneY" + minBallonPlaneY);
 
         if (this.mainCamera == null)
@@ -70,24 +76,19 @@ public class StageObjectMovementHandler : MonoBehaviour
         // 安全： mainCamera が null の場合は簡易固定 Y を使う
         var cam = mainCamera ?? Camera.main;
 
-        if (objID == 0) // 花、蜂の巣の場合、地面に接地させる
+        if (objID == 0) // 花の場合、地面に接地させる
         {
-            float randY = Random.Range(-1.5f, -0.5f);
-            transform.position = new Vector3(transform.position.x, randY, transform.position.z);
-            return;
-        }
-        else if (objID == 2) // 蜂の巣の場合、地面から少し浮かせる
-        {
-            float rand = Random.Range(0f, 3f);
-            transform.position = new Vector3(transform.position.x, rand, transform.position.z);
+            float randY = Random.Range(1f, 2f);
+            transform.position = new Vector3(transform.position.x, minY + randY, transform.position.z);
             return;
         }
 
-        if (objID == 1) // 粒の場合、自由に空中に浮かせる
+        if (objID == 1 || objID == 2) // 粒と蜂の巣の場合、自由に空中に浮かせる
         {
             float rand = Random.Range(0f, 1f);
             float y = (cam != null) ? cam.ViewportToWorldPoint(new Vector3(0, rand, 0)).y : 0f;
-            if (y < minY) y = minY;
+            if (y < minY) y += minY + playerMovementHandler.playerPos.y;
+            Debug.Log("y" + y);
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
             return;
         }
@@ -103,7 +104,7 @@ public class StageObjectMovementHandler : MonoBehaviour
         {
             float rand = Random.Range(0f, 1f);
             float y = (cam != null) ? cam.ViewportToWorldPoint(new Vector3(0, rand, zDistance)).y : 0f;
-            if (y < minWindY) y = minWindY;
+            if (y < minWindY + minY) y += minWindY + minY + playerMovementHandler.playerPos.y;
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
             return;
         }
@@ -112,7 +113,7 @@ public class StageObjectMovementHandler : MonoBehaviour
         {
             float rand = Random.Range(0f, 1f);
             float y = (cam != null) ? cam.ViewportToWorldPoint(new Vector3(0, rand, zDistance)).y : 0f;
-            if (y < minBallonPlaneY) y = minBallonPlaneY;
+            if (y < minBallonPlaneY + minY) y += minBallonPlaneY + minY + playerMovementHandler.playerPos.y;
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
             return;
         }
