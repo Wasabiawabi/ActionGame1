@@ -8,6 +8,7 @@ public class MoveCamera : MonoBehaviour
     // アタッチ
     [SerializeField] private BackgroundHandler backgroundHandler;
     [SerializeField] private GroundGenerator groundGenerator;
+    [SerializeField] private PlayerMovementHandler playerMovementHandler;
 
     // 変数
     [SerializeField] private float zOffset;
@@ -19,7 +20,7 @@ public class MoveCamera : MonoBehaviour
     private void Start()
     {
         //位置を初期化
-        transform.position = new Vector3(0, 0, zOffset);
+        transform.position = new Vector3(0, playerMovementHandler.offSet.y, zOffset);
         CalcBound();
         groundGenerator.Init();
         groundGenerator.GenerateGrounds(minXPos, maxXPos);
