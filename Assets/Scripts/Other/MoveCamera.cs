@@ -23,6 +23,7 @@ public class MoveCamera : MonoBehaviour
         transform.position = new Vector3(0, playerMovementHandler.offSet.y, zOffset);
         CalcBound();
         groundGenerator.Init();
+        backgroundHandler.CalcBackground(transform.position.x, transform.position.y);
         groundGenerator.GenerateGrounds(minXPos, maxXPos);
     }
 
