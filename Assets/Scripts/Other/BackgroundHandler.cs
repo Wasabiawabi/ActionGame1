@@ -12,7 +12,7 @@ public class BackgroundHandler : MonoBehaviour
     [SerializeField] private GameObject[] backgroundPrefabs;
 
     // 変数
-    [SerializeField] private float gamma; // 背景ごとの移動スピードの減衰（0~1 程度を想定）
+    [SerializeField] private float[] gamma; // 背景ごとの移動スピードの減衰（0~1 程度を想定）
     private float[] backgroundWidth; // 背景ごとの幅（ワールド単位）
     private float[] nextBackgroundPosX; // 次に生成する背景の中心 x
     private float[] nextBackgroundPosY; // 次に生成する背景の中心 y
@@ -56,11 +56,10 @@ public class BackgroundHandler : MonoBehaviour
 
         for (int i = 0; i < generatedBackgrounds.Count; i++)
         {
-            float layerFactor = Mathf.Pow(gamma, i); // 遠景ほど小さくなる想定
             // カメラ差分に基づく横移動（パララックス）
-            float moveX = deltaX * (1f - layerFactor);
+            float moveX = deltaX * gamma[i];
             // 縦位置はカメラYに合わせて少し追随（layerFactorで調整）
-            float targetY = cameraPosY * layerFactor + backgroundYOffset[i];
+            float moveY = deltaY * gamma[i];
 
             // 各生成済みオブジェクトに移動を適用
             var list = generatedBackgrounds[i];
@@ -69,13 +68,13 @@ public class BackgroundHandler : MonoBehaviour
                 if (list[j] == null) continue;
                 Vector3 pos = list[j].transform.position;
                 pos.x += moveX;
-                pos.y = targetY;
+                pos.y += moveY;
                 list[j].transform.position = pos;
             }
 
             // 次に生成する位置もカメラ差分分だけ動かす（生成位置の追随）
             nextBackgroundPosX[i] += moveX;
-            nextBackgroundPosY[i] = targetY;
+            nextBackgroundPosY[i] += moveY;
         }
 
         previousCameraX = cameraPosX;
