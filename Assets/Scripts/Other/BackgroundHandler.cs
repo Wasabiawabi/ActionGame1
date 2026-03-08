@@ -17,7 +17,7 @@ public class BackgroundHandler : MonoBehaviour
     private float[] nextBackgroundPosX; // 次に生成する背景の中心 x
     private float[] nextBackgroundPosY; // 次に生成する背景の中心 y
     private List<List<GameObject>> generatedBackgrounds; // 生成済み背景のリスト（レイヤーごと）
-    [SerializeField] private float backgroundYOffset; // 背景の y オフセット
+    [SerializeField] private float[] backgroundYOffset; // 背景の y オフセット
     private float previousCameraX;
     private float previousCameraY;
 
@@ -60,7 +60,7 @@ public class BackgroundHandler : MonoBehaviour
             // カメラ差分に基づく横移動（パララックス）
             float moveX = deltaX * (1f - layerFactor);
             // 縦位置はカメラYに合わせて少し追随（layerFactorで調整）
-            float targetY = cameraPosY * layerFactor + backgroundYOffset;
+            float targetY = cameraPosY * layerFactor + backgroundYOffset[i];
 
             // 各生成済みオブジェクトに移動を適用
             var list = generatedBackgrounds[i];
@@ -154,7 +154,7 @@ public class BackgroundHandler : MonoBehaviour
             if (list.Count == 0)
             {
                 nextBackgroundPosX[i] = left;
-                nextBackgroundPosY[i] = moveCamera.GetCameraPosY() + backgroundYOffset;
+                nextBackgroundPosY[i] = moveCamera.GetCameraPosY() + backgroundYOffset[i];
             }
             else
             {
@@ -207,7 +207,7 @@ public class BackgroundHandler : MonoBehaviour
             // 初期の next pos はカメラ左端から
             float left = moveCamera.GetMinXPos();
             nextBackgroundPosX[i] = left;
-            nextBackgroundPosY[i] = moveCamera.GetCameraPosY() + backgroundYOffset;
+            nextBackgroundPosY[i] = moveCamera.GetCameraPosY() + backgroundYOffset[i];
         }
 
         // 初期カメラ位置を保存
