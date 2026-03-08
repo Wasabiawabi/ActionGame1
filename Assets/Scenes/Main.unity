@@ -636,7 +636,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 12}
+  m_AnchoredPosition: {x: 0, y: 8}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &182115584
@@ -734,7 +734,7 @@ MonoBehaviour:
   upgradesLevelHandler: {fileID: 385117595}
   dataSearchHandler: {fileID: 1232959535}
   speedGaugeSlider: {fileID: 1579302972}
-  offSet: {x: 0, y: 12, z: 0}
+  offSet: {x: 0, y: 9.5, z: 0}
   initialSpeedPower: 0
   initialSpeedPowerMultiply: 5
   playerPos: {x: 0, y: 0, z: 0}
@@ -9516,10 +9516,15 @@ MonoBehaviour:
   backgroundPrefabs:
   - {fileID: 7499442964346300939, guid: 9bcba54bfd37ea342bac48ab90551c5d, type: 3}
   - {fileID: 5913503625309411526, guid: c495fdbfdf3ac7046b910eb224cfefaa, type: 3}
-  - {fileID: 495080500766412044, guid: f2da91050e31d7147a9123d2559d231b, type: 3}
   - {fileID: 7499442964346300939, guid: 9892d71d1aa1097498895b145cfe898b, type: 3}
-  gamma: 0.9
-  backgroundYOffset: 0
+  gamma:
+  - 1
+  - 0.9
+  - 0.5
+  backgroundYOffset:
+  - 0
+  - -5
+  - -4.5
 --- !u!1 &2010261290
 GameObject:
   m_ObjectHideFlags: 0
@@ -10054,7 +10059,7 @@ Transform:
   m_GameObject: {fileID: 2098643504}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 12, z: -10}
+  m_LocalPosition: {x: 0, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
