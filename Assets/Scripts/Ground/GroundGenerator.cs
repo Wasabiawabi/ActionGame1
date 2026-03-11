@@ -14,7 +14,7 @@ public class GroundGenerator : MonoBehaviour
     // 変数
     [SerializeField] private HashSet<int> generatedGroundsCoord;
     [SerializeField] private int prefabIdx = 0;
-    [SerializeField] private float groundYOffset;
+    [SerializeField] public float groundYOffset;
     private float[] prefabWidths;
 
     public void Init()// 変数の取得
@@ -27,7 +27,7 @@ public class GroundGenerator : MonoBehaviour
             prefabWidths = new float[groundPrefab.Length];
             for (int i = 0; i < groundPrefab.Length; i++)
             {
-                prefabWidths[i] = groundPrefab[i].GetComponentInChildren<Image>().rectTransform.rect.width;
+                prefabWidths[i] = groundPrefab[i].GetComponentInChildren<Image>().rectTransform.rect.width * groundPrefab[i].transform.localScale.x;
             }
         }
         else

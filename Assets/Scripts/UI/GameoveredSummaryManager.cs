@@ -10,7 +10,7 @@ public class GameoveredSummaryManager : MonoBehaviour
 
     public void SetupSummary(float totalMoney, float distanceMoved)
     {
-        totalMoneyText.text = "Total Distanse Point: " + totalMoney.ToString("F2");
-        distanceMovedText.text = "Distance Moved: " + distanceMoved.ToString("F2") + " units";
+        totalMoneyText.text = "Total Distanse Point\n" + totalMoney.ToString("F2");
+        distanceMovedText.text = "Distance Moved\n" + distanceMoved.ToString("F2") + "\nunits";
     }
 }

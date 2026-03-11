@@ -2,13 +2,13 @@
 - Project name: ActionGame1
 - Unity version: Unity 2022.3.62f1
 - Active scene:
-  - Name: Buff_Inc_Mlt
+  - Name: Main
   - Tags:
     - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, Ground, stageObject
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI
 - Active game object:
-  - Name: Buff_Text
-  - Tag: Untagged
+  - Name: Player
+  - Tag: Player
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

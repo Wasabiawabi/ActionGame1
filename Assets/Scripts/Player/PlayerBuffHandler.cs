@@ -12,6 +12,8 @@ public class PlayerBuffHandler : MonoBehaviour
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerStatus playerStatus;
     [SerializeField] private BuffReminderHandler buffReminderHandler;
+    [SerializeField] private AudioSource audioSource;
+
 
     //変数
     public float maintainSpeedDurationSum;
@@ -46,5 +48,10 @@ public class PlayerBuffHandler : MonoBehaviour
     {
         maintainSpeedDurationSum += dulation;
         buffReminderHandler.PushBuffSummary("Maintain+", dulation);
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+    audioSource.PlayOneShot(clip);
     }
 }
