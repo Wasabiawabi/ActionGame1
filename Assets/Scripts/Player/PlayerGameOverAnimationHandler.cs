@@ -14,6 +14,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private GameObject gameoveredSummary;
+    [SerializeField] private AudioSource audioSource;
 
     //変数
     [SerializeField] private float maxSecondToGameOver = 2f;
@@ -23,6 +24,11 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
 
     float totalMoney = 0f; // 追加: ゲームオーバー時の合計金額
     Vector3 offSet;
+
+    private void Start()
+    {
+        audioSource.Play();
+    }
     private void Update()
     {
         //スタート済みで、移動していなければカウントを行う
