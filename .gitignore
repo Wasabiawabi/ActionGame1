@@ -76,3 +76,6 @@ crashlytics-build.properties
 
 # フォント
 /[Aa]ssets/TextMesh Pro/Fonts"
+
+# wavファイル
+*.wab
