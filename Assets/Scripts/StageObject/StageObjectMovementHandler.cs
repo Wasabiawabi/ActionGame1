@@ -15,6 +15,7 @@ public class StageObjectMovementHandler : MonoBehaviour
     private UpgradesLevelHandler upgradesLevelHandler;
     private GroundGenerator groundGenerator;
     private PlayerMovementHandler playerMovementHandler;
+    [SerializeField] private AudioClip audioClip;
 
     //変数
     private int objID;
@@ -199,6 +200,7 @@ public class StageObjectMovementHandler : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            playerBuffHandler.PlaySound(audioClip);
             int buffCount = 1;
             InvokeBuff();
             for (int i = buffCount; i < maxMultipleBuff; i++)
