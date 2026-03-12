@@ -2,21 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class PrintDeltaTime : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private PlayerGameOverAnimationHandler playerGameOverAnimationHandler;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private StageObjectHandler stageObjectHandler;
+
+    //void Start(){stageObjectHandler.nowSpawnProbablity = new List<float>();}
 
     // Update is called once per frame
     void Update()
     {
-        text.text = Time.deltaTime.ToString() + "\n" + playerGameOverAnimationHandler.secondToGameOver.ToString();
+        String s = stageObjectHandler.nowSpawnProbablity.Count + "\n";
+        for (int i = 0; i < stageObjectHandler.nowSpawnProbablity.Count; i++)
+        {
+            s += stageObjectHandler.nowSpawnProbablity[i] + "\n";
+        }
+        text.text = s;
     }
 }
