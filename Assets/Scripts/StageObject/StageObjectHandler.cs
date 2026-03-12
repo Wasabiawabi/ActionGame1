@@ -26,7 +26,7 @@ public class StageObjectHandler : MonoBehaviour
     [SerializeField] private GameObject[] stageObjectPrefabs;
     private List<float> minSpawnProbablity = new List<float>();
     private List<float> incrementSpawnProbablityPerSecond = new List<float>();
-    [SerializeField] private List<float> nowSpawnProbablity = new List<float>();
+    [SerializeField] public List<float> nowSpawnProbablity = new List<float>();
     [SerializeField] private List<bool> notSpawn = new List<bool>(); // デバッグ用.出現させないオブジェクトにチェックを入れる
 
     public void ApplyStageObjectUpgrades()
