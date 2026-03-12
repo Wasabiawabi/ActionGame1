@@ -16,7 +16,7 @@ public class SaveData : MonoBehaviour
 
     public void SaveMoneyData()
     {
-        upgradesLevelHandler.SaveUpgradesDataFile();
+        moneyManager.SaveTotalMoney();
     }
 
     public void SaveAll()
