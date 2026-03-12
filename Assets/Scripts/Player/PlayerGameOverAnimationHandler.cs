@@ -13,6 +13,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private SaveData saveData;
     [SerializeField] private GameObject gameoveredSummary;
     [SerializeField] private AudioSource audioSource;
 
@@ -45,6 +46,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
         {
             secondToGameOver = 0;
             isgameovered = true;
+            saveData.SaveAll();
             GameOverAnimation();
         }
     }
