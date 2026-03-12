@@ -19,17 +19,20 @@ public class MoneyManager : MonoBehaviour
     private JsonFileHandler jsonFileHandler = new JsonFileHandler();
     private TotalMoney totalMoneyData = new TotalMoney();
 
-    public float totalMoney;
+    [HideInInspector]public float totalMoney;
     string path_totalMoney = Path.Combine(Application.dataPath, "Data/Json/totalMoney.json");
 
     private void Start()
     {
-        totalMoneyData = jsonFileHandler.ReadFromJson<TotalMoney>(path_totalMoney, new TotalMoney());
+        totalMoneyData = jsonFileHandler.ReadFromJson<TotalMoney>(path_totalMoney, totalMoneyData);
+        jsonFileHandler.SaveToJson<TotalMoney>(path_totalMoney, totalMoneyData);
         totalMoney = totalMoneyData.totalMoney;
     }
 
     public void SaveTotalMoney()
     {
+        totalMoneyData.totalMoney = totalMoney;
+        Debug.Log("totalMoneyData :" + totalMoneyData + " total :" + totalMoneyData.totalMoney);
         jsonFileHandler.SaveToJson<TotalMoney>(path_totalMoney, totalMoneyData);
     }
 }
