@@ -1,0 +1,34 @@
+{
+    "increaseInstantiateProbabiltyPerFrameLevel": 0,
+    "increaseMultipleBuffProbablityLevel": 0,
+    "maxMultipleBuffLevel": 0,
+    "increaseBuffEffect": 0,
+    "increaseInstantiateProbabiltyPerFrameCosts": [
+        200,
+        400,
+        800,
+        1600,
+        -1
+    ],
+    "increaseMultipleBuffProbablityCosts": [
+        250,
+        500,
+        1000,
+        2000,
+        -1
+    ],
+    "maxMultipleBuffCosts": [
+        300,
+        600,
+        1200,
+        2400,
+        -1
+    ],
+    "increaseBuffEffectCosts": [
+        180,
+        360,
+        720,
+        1440,
+        -1
+    ]
+}

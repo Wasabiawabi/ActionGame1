@@ -696,7 +696,6 @@ MonoBehaviour:
   dataSearchHandler: {fileID: 1232959535}
   upgradesLevelHandler: {fileID: 385117595}
   playerBuffHandler: {fileID: 182115586}
-  nakamaHandler: {fileID: 0}
   playerStatusName:
   - maxSpeed
   - speedDampingPerSecond
@@ -760,13 +759,13 @@ MonoBehaviour:
   playerMovementHandler: {fileID: 182115588}
   playerController: {fileID: 182115584}
   moneyManager: {fileID: 182115593}
+  upgradesLevelHandler: {fileID: 385117595}
   saveData: {fileID: 182115597}
   gameoveredSummary: {fileID: 1216907490}
   audioSource: {fileID: 182115596}
   maxSecondToGameOver: 2
   secondToGameOver: 2
   isgameovered: 0
-  overwriteMoney: 0
 --- !u!58 &182115590
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2296,6 +2295,8 @@ MonoBehaviour:
     increaseMultipleBuffProbablityCosts: fa000000f4010000e8030000d0070000ffffffff
     maxMultipleBuffCosts: 2c01000058020000b004000060090000ffffffff
     increaseBuffEffectCosts: b400000068010000d0020000a0050000ffffffff
+  totalMoney:
+    totalMoney: 0
   playerStatus: {fileID: 182115587}
   moneyManager: {fileID: 182115593}
   stageObjectHandler: {fileID: 355728969}
@@ -4070,7 +4071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &664550274
 RectTransform:
   m_ObjectHideFlags: 0

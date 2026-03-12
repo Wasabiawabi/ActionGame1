@@ -1,0 +1,26 @@
+{
+    "increaseMaxSpeedLevel": 1,
+    "increaceMaxInitialMovementSpeedLevel": 1,
+    "decreaceSpeedDumpingLevel": 1,
+    "increaseMaxSpeedCosts": [
+        100,
+        200,
+        400,
+        800,
+        -1
+    ],
+    "increaceMaxInitialMovementSpeedCosts": [
+        150,
+        300,
+        600,
+        1200,
+        -1
+    ],
+    "decreaceSpeedDumpingCosts": [
+        120,
+        240,
+        480,
+        960,
+        -1
+    ]
+}
