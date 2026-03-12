@@ -2295,8 +2295,6 @@ MonoBehaviour:
     increaseMultipleBuffProbablityCosts: fa000000f4010000e8030000d0070000ffffffff
     maxMultipleBuffCosts: 2c01000058020000b004000060090000ffffffff
     increaseBuffEffectCosts: b400000068010000d0020000a0050000ffffffff
-  totalMoney:
-    totalMoney: 0
   playerStatus: {fileID: 182115587}
   moneyManager: {fileID: 182115593}
   stageObjectHandler: {fileID: 355728969}
@@ -4066,7 +4064,7 @@ GameObject:
   - component: {fileID: 664550275}
   - component: {fileID: 664550277}
   m_Layer: 5
-  m_Name: Time
+  m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
