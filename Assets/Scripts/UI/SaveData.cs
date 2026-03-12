@@ -16,6 +16,7 @@ public class SaveData : MonoBehaviour
 
     public void SaveMoneyData()
     {
+        Debug.Log("saved money");
         moneyManager.SaveTotalMoney();
     }
 
