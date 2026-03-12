@@ -613,6 +613,7 @@ GameObject:
   - component: {fileID: 182115589}
   - component: {fileID: 182115593}
   - component: {fileID: 182115595}
+  - component: {fileID: 182115597}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -740,7 +741,7 @@ MonoBehaviour:
   initialSpeedPower: 0
   initialSpeedPowerMultiply: 5
   playerPos: {x: 0, y: 0, z: 0}
-  initialMaintainDuration: 90
+  initialMaintainDuration: 2
   playerSpeed: 0
   incrementSpeedReductionPerHeight: 10
 --- !u!114 &182115589
@@ -759,6 +760,7 @@ MonoBehaviour:
   playerMovementHandler: {fileID: 182115588}
   playerController: {fileID: 182115584}
   moneyManager: {fileID: 182115593}
+  saveData: {fileID: 182115597}
   gameoveredSummary: {fileID: 1216907490}
   audioSource: {fileID: 182115596}
   maxSecondToGameOver: 2
@@ -991,6 +993,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &182115597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182115581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f465ce92151c18408fc3f05581283ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradesLevelHandler: {fileID: 385117595}
+  moneyManager: {fileID: 182115593}
 --- !u!1 &187702252
 GameObject:
   m_ObjectHideFlags: 0
@@ -2267,18 +2283,18 @@ MonoBehaviour:
     increaseMaxSpeedLevel: 0
     increaceMaxInitialMovementSpeedLevel: 0
     decreaceSpeedDumpingLevel: 0
-    increaseMaxSpeedCosts: 64000000c8000000900100002003000040060000
-    increaceMaxInitialMovementSpeedCosts: 960000002c01000058020000b004000060090000
-    decreaceSpeedDumpingCosts: 78000000f0000000e0010000c003000080070000
+    increaseMaxSpeedCosts: 64000000c80000009001000020030000ffffffff
+    increaceMaxInitialMovementSpeedCosts: 960000002c01000058020000b0040000ffffffff
+    decreaceSpeedDumpingCosts: 78000000f0000000e0010000c0030000ffffffff
   stageObjectUpgradeData:
     increaseInstantiateProbabiltyPerFrameLevel: 0
     increaseMultipleBuffProbablityLevel: 0
     maxMultipleBuffLevel: 0
     increaseBuffEffect: 0
-    increaseInstantiateProbabiltyPerFrameCosts: c8000000900100002003000040060000800c0000
-    increaseMultipleBuffProbablityCosts: fa000000f4010000e8030000d0070000a00f0000
-    maxMultipleBuffCosts: 2c01000058020000b004000060090000c0120000
-    increaseBuffEffectCosts: b400000068010000d0020000a0050000400b0000
+    increaseInstantiateProbabiltyPerFrameCosts: c8000000900100002003000040060000ffffffff
+    increaseMultipleBuffProbablityCosts: fa000000f4010000e8030000d0070000ffffffff
+    maxMultipleBuffCosts: 2c01000058020000b004000060090000ffffffff
+    increaseBuffEffectCosts: b400000068010000d0020000a0050000ffffffff
   playerStatus: {fileID: 182115587}
   moneyManager: {fileID: 182115593}
   stageObjectHandler: {fileID: 355728969}
@@ -4375,8 +4391,8 @@ RectTransform:
   - {fileID: 1292557293}
   - {fileID: 817897156}
   - {fileID: 29296005}
-  - {fileID: 231630007}
   - {fileID: 649000735}
+  - {fileID: 231630007}
   m_Father: {fileID: 1900796619}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4612,6 +4628,18 @@ MonoBehaviour:
       - m_Target: {fileID: 832276437}
         m_TargetAssemblyTypeName: PlaySE, Assembly-CSharp
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 466915215}
+        m_TargetAssemblyTypeName: SaveData, Assembly-CSharp
+        m_MethodName: SaveAll
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10131,6 +10159,18 @@ MonoBehaviour:
       - m_Target: {fileID: 2010261295}
         m_TargetAssemblyTypeName: PlaySE, Assembly-CSharp
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1292557295}
+        m_TargetAssemblyTypeName: SaveData, Assembly-CSharp
+        m_MethodName: SaveAll
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

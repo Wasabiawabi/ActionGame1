@@ -15,8 +15,8 @@ MonoBehaviour:
   name: hatcidori
   id: 0
   maxSpeed: 50
-  speedDampingPerSecond: 20
-  maxInitialMovementSpeed: 60
+  speedDampingPerSecond: 15
+  maxInitialMovementSpeed: 40
   verticalMovementSpeed: 10
   maxCompanion: 1
   buffDampingWithCompanion: 1
