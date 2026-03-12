@@ -7,20 +7,20 @@
         200,
         400,
         800,
-        1600
+        -1
     ],
     "increaceMaxInitialMovementSpeedCosts": [
         150,
         300,
         600,
         1200,
-        2400
+        -1
     ],
     "decreaceSpeedDumpingCosts": [
         120,
         240,
         480,
         960,
-        1920
+        -1
     ]
 }

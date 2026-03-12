@@ -8,27 +8,27 @@
         400,
         800,
         1600,
-        3200
+        -1
     ],
     "increaseMultipleBuffProbablityCosts": [
         250,
         500,
         1000,
         2000,
-        4000
+        -1
     ],
     "maxMultipleBuffCosts": [
         300,
         600,
         1200,
         2400,
-        4800
+        -1
     ],
     "increaseBuffEffectCosts": [
         180,
         360,
         720,
         1440,
-        2880
+        -1
     ]
 }
