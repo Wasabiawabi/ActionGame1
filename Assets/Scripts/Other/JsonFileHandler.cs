@@ -24,7 +24,7 @@ namespace HandmadeLibrary.Json
         {
             if (!File.Exists(filePath))
             {
-                throw new FileNotFoundException($"The file at path {filePath} was not found.");
+                return data;
             }
             string jsonData = File.ReadAllText(filePath);
             data = JsonUtility.FromJson<T>(jsonData);
