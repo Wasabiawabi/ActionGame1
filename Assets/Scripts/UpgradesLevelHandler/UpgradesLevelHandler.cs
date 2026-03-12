@@ -11,9 +11,9 @@ public class PlayerUpgradeData
     [HideInInspector] public int decreaceSpeedDumpingLevel;
     
     // アップグレードコスト（レベルごと）
-    public int[] increaseMaxSpeedCosts = { 100, 200, 400, 800, 1600 };
-    public int[] increaceMaxInitialMovementSpeedCosts = { 150, 300, 600, 1200, 2400 };
-    public int[] decreaceSpeedDumpingCosts = { 120, 240, 480, 960, 1920 };
+    [HideInInspector]public int[] increaseMaxSpeedCosts = { 100, 200, 400, 800, -1 };
+    [HideInInspector]public int[] increaceMaxInitialMovementSpeedCosts = { 150, 300, 600, 1200, -1 };
+    [HideInInspector]public int[] decreaceSpeedDumpingCosts = { 120, 240, 480, 960, -1 };
 }
 
 [System.Serializable]
@@ -26,10 +26,10 @@ public class StageObjectUpgradeData
     [HideInInspector] public int increaseBuffEffect;
     
     // アップグレードコスト（レベルごと）
-    public int[] increaseInstantiateProbabiltyPerFrameCosts = { 200, 400, 800, 1600, 3200 };
-    public int[] increaseMultipleBuffProbablityCosts = { 250, 500, 1000, 2000, 4000 };
-    public int[] maxMultipleBuffCosts = { 300, 600, 1200, 2400, 4800 };
-    public int[] increaseBuffEffectCosts = { 180, 360, 720, 1440, 2880 };
+    [HideInInspector]public int[] increaseInstantiateProbabiltyPerFrameCosts = { 200, 400, 800, 1600, -1 };
+    [HideInInspector]public int[] increaseMultipleBuffProbablityCosts = { 250, 500, 1000, 2000, -1 };
+    [HideInInspector]public int[] maxMultipleBuffCosts = { 300, 600, 1200, 2400, -1 };
+    [HideInInspector]public int[] increaseBuffEffectCosts = { 180, 360, 720, 1440, -1 };
 }
 
 public class UpgradesLevelHandler : MonoBehaviour
@@ -87,6 +87,7 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradePlayerMaxSpeed()
     {
+        if (playerUpgradeData.increaseMaxSpeedCosts[playerUpgradeData.increaseMaxSpeedLevel] == -1) return;
         if (moneyManager == null)
         {
             Debug.LogError("MoneyManager is not initialized.");
@@ -121,6 +122,7 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradePlayerMaxInitialMovementSpeed()
     {
+        if (playerUpgradeData.increaceMaxInitialMovementSpeedCosts[playerUpgradeData.increaceMaxInitialMovementSpeedLevel] == -1) return;
         if (moneyManager == null)
         {
             Debug.LogError("MoneyManager is not initialized.");
@@ -155,6 +157,7 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradePlayerSpeedDumping()
     {
+        if (playerUpgradeData.decreaceSpeedDumpingCosts[playerUpgradeData.decreaceSpeedDumpingLevel] == -1) return;
         if (moneyManager == null)
         {
             Debug.LogError("MoneyManager is not initialized.");
@@ -189,6 +192,7 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradeStageObjectInstantiateProbabilityPerFrame()
     {
+        if (stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameCosts[stageObjectUpgradeData.increaseInstantiateProbabiltyPerFrameLevel] == -1) return;
         if (moneyManager == null)
         {
             Debug.LogError("MoneyManager is not initialized.");
@@ -223,6 +227,7 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradeStageObjectMultipleBuffProbability()
     {
+        if (stageObjectUpgradeData.increaseMultipleBuffProbablityCosts[stageObjectUpgradeData.increaseMultipleBuffProbablityLevel] == -1) return;
         if (moneyManager == null)
         {
             Debug.LogError("MoneyManager is not initialized.");
@@ -257,6 +262,7 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradeStageObjectMaxMultipleBuff()
     {
+        if (stageObjectUpgradeData.maxMultipleBuffCosts[stageObjectUpgradeData.maxMultipleBuffLevel] == -1) return;
         if (moneyManager == null)
         {
             Debug.LogError("MoneyManager is not initialized.");
@@ -291,6 +297,7 @@ public class UpgradesLevelHandler : MonoBehaviour
 
     public void UpgradeStageObjectBuffEffect()
     {
+        if (stageObjectUpgradeData.increaseBuffEffectCosts[stageObjectUpgradeData.increaseBuffEffect] == -1) return;
         if (moneyManager == null)
         {
             Debug.LogError("MoneyManager is not initialized.");
