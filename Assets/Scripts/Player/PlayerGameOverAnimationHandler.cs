@@ -18,7 +18,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
 
     //変数
     [SerializeField] private float maxSecondToGameOver = 2f;
-    private float secondToGameOver = 2f;
+    [HideInInspector]public float secondToGameOver = 2f;
     public bool isgameovered = false;
     public bool overwriteMoney = false;
 
