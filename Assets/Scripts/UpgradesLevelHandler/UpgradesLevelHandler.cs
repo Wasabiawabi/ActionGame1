@@ -70,12 +70,12 @@ public class UpgradesLevelHandler : MonoBehaviour
         stageObjectHandler.ApplyStageObjectUpgrades();
     }
 
+
     public void SaveUpgradesDataFile()
     {
         //データを保存する
         jsonFileHandler.SaveToJson<PlayerUpgradeData>(path_playerData, playerUpgradeData);
         jsonFileHandler.SaveToJson<StageObjectUpgradeData>(path_stageObjectData, stageObjectUpgradeData);
-
         /*
         //保存されたデータを確認する
         Debug.Log("Player Upgrade Data Saved:");
