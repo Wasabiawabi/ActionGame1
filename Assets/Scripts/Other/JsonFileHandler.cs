@@ -11,6 +11,11 @@ namespace HandmadeLibrary.Json
     {
         public void SaveToJson<T>(string filePath, T data)
         {
+            string directory = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
             string jsonData = JsonUtility.ToJson(data, true);
             File.WriteAllText(filePath, jsonData);
         }
