@@ -3,3 +3,6 @@
 ### 著作者及び素材元(効果音)
 [8BITSOUNDS](https://sounds.udonko.net/index.html)
 [魔王魂](https://maou.audio/category/se/se-8bit/)
+### ゲームの公開ページ
+https://unityroom.com/games/move-much-more-distance
+### 日記
