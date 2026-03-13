@@ -82,3 +82,8 @@ crashlytics-build.properties
 
 # .metaは無視
 *.meta
+
+# ビルドファイルは無視
+/WinBuild
+/WebBuild
+/WebGL Builds
