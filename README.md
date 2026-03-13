@@ -6,3 +6,4 @@
 ### ゲームの公開ページ
 https://unityroom.com/games/move-much-more-distance
 ### 日記
+https://note.com/wasabi_awabi/n/n48f2e2b7bf17
