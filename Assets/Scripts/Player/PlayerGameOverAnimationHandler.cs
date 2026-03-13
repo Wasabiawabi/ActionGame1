@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -13,16 +12,15 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
     [SerializeField] private PlayerMovementHandler playerMovementHandler;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
+    [SerializeField] private SaveData saveData;
     [SerializeField] private GameObject gameoveredSummary;
     [SerializeField] private AudioSource audioSource;
 
     //変数
     [SerializeField] private float maxSecondToGameOver = 2f;
-    private float secondToGameOver = 2f;
+    [HideInInspector]public float secondToGameOver = 2f;
     public bool isgameovered = false;
-    public bool overwriteMoney = false;
-
-    float totalMoney = 0f; // 追加: ゲームオーバー時の合計金額
     Vector3 offSet;
 
     private void Start()
@@ -45,6 +43,7 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
         {
             secondToGameOver = 0;
             isgameovered = true;
+            saveData.SaveAll();
             GameOverAnimation();
         }
     }
@@ -54,10 +53,8 @@ public class PlayerGameOverAnimationHandler : MonoBehaviour
         Debug.Log("Game Over");
 
         float distanceMoved = Mathf.Abs(transform.position.x + offSet.x); // 移動距離の計算
-        moneyManager.totalMoney = PlayerPrefs.GetFloat("Money", 0f); // 保存された合計金額を取得
         moneyManager.totalMoney += distanceMoved; // ゲームオーバー時の移動距離を合計金額に加算
-        if (overwriteMoney) moneyManager.totalMoney = totalMoney;// 初期化して代入の代わりに上書き
-        PlayerPrefs.SetFloat("Money", moneyManager.totalMoney); // 合計金額をPlayerPrefsに保存
+        moneyManager.SaveTotalMoney();// 合計金額を保存
         Debug.Log("Total Money Collected: " + moneyManager.totalMoney);
 
         //ゲームオーバー画面を表示

@@ -37,7 +37,37 @@ public class ButtonUIMaker : MonoBehaviour
 
     private void Start()
     {
+        LoadCostAndLevel();
+    }
 
+    private void Update()
+    {
+        LoadCostAndLevel();
+        // コストテキスト描画
+        if (cost != -1)
+        {
+            costText.text = cost.ToString();
+        }
+        else
+        {
+            costText.text = "MAX";
+        }
+
+        // レベルイメージ描画
+        if (level != 0)
+        {
+            levelImage.color = new Color(1, 1, 1, 1);
+            levelImage.sprite = image[level - 1];
+            levelImage.preserveAspect = true;
+        }
+        else
+        {
+            levelImage.color = new Color(1, 1, 1, 0); // レベル0の場合は透明
+        }
+    }
+
+    private void LoadCostAndLevel()
+    {
         // レベルとコストを取得
         if (maxInitialMovementSpeed)
         {
@@ -73,31 +103,6 @@ public class ButtonUIMaker : MonoBehaviour
         {
             level = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffLevel;
             cost = upgradesLevelHandler.stageObjectUpgradeData.maxMultipleBuffCosts[level];
-        }
-
-    }
-
-    private void Update()
-    {
-        // コストテキスト描画
-        if (level < upgradesLevelHandler.maxLevel)
-        {
-            costText.text = cost.ToString();
-        }
-        else
-        {
-            costText.text = "MAXED";
-        }
-
-        // レベルイメージ描画
-        if (level != 0)
-        {
-            levelImage.sprite = image[level - 1];
-            levelImage.preserveAspect = true;
-        }
-        else
-        {
-            levelImage.color = new Color(1, 1, 1, 0); // レベル0の場合は透明
         }
     }
 }

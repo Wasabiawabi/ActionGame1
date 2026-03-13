@@ -16,17 +16,13 @@ public class SaveData : MonoBehaviour
 
     public void SaveMoneyData()
     {
-        PlayerPrefs.SetFloat("Money", moneyManager.totalMoney);
+        Debug.Log("saved money");
+        moneyManager.SaveTotalMoney();
     }
 
     public void SaveAll()
     {
         SaveUpgradesData();
         SaveMoneyData();
-    }
-
-    public void Start()
-    {
-        moneyManager.totalMoney = PlayerPrefs.GetFloat("Money", 0f);
     }
 }

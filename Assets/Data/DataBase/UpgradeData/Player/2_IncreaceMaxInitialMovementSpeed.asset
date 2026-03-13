@@ -15,7 +15,7 @@ MonoBehaviour:
   name: IncreaceMaxInitialMovementSpeed
   id: 2
   targetName: 0
-  maxLevel: 5
+  maxLevel: 4
   _upgradeType: 0
   upgradeCostList: 00000000000000000000000000000000
   incrementAmountList:

@@ -18,8 +18,6 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] private DataSearchHandler dataSearchHandler;
     [SerializeField] private UpgradesLevelHandler upgradesLevelHandler;
     [SerializeField] private PlayerBuffHandler playerBuffHandler;
-    [SerializeField] private NakamaHandler nakamaHandler;
-
     //データベースへの接続用
     private int playerId = 0;
     private List<string> playerUpgrades = new List<string>();
